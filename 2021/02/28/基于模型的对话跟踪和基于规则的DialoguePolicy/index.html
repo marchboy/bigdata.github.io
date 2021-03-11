@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Model-based Dialogue State Tracking(DST)Review任务型对话系统（task-oriented dialogue system）的目标是协助用户完成特定的任务，比如订机票、打车、日程管理等。 一个典型的任务型对话系统可以分为四个模块：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于模型的对话跟踪和基于规则的DialoguePolicy">
+<meta property="og:url" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/index.html">
+<meta property="og:site_name" content="ComputerScience">
+<meta property="og:description" content="Model-based Dialogue State Tracking(DST)Review任务型对话系统（task-oriented dialogue system）的目标是协助用户完成特定的任务，比如订机票、打车、日程管理等。 一个典型的任务型对话系统可以分为四个模块：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/%E5%AF%B9%E8%AF%9D%E7%8A%B6%E6%80%81%E8%A1%A8%E7%A4%BA.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84DST.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST%E4%B8%8EDSI%E5%AF%B9%E6%AF%94.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/simple_bert_model_for_dst.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/UserExperience.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DPReview.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/Transformers.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/Action.png">
+<meta property="article:published_time" content="2021-02-27T16:38:10.000Z">
+<meta property="article:modified_time" content="2021-03-11T16:51:27.136Z">
+<meta property="article:author" content="进军要努力呀">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/%E5%AF%B9%E8%AF%9D%E7%8A%B6%E6%80%81%E8%A1%A8%E7%A4%BA.png">
+
+<link rel="canonical" href="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>基于模型的对话跟踪和基于规则的DialoguePolicy | ComputerScience</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74793810-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74793810-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a5f7448ac0b523badc121b2d870f1b0c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ComputerScience</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">温故而知新</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于模型的对话跟踪和基于规则的DialoguePolicy
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-02-28 00:38:10" itemprop="dateCreated datePublished" datetime="2021-02-28T00:38:10+08:00">2021-02-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-12 00:51:27" itemprop="dateModified" datetime="2021-03-12T00:51:27+08:00">2021-03-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/" class="post-meta-item leancloud_visitors" data-flag-title="基于模型的对话跟踪和基于规则的DialoguePolicy" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Model-based-Dialogue-State-Tracking-DST"><a href="#Model-based-Dialogue-State-Tracking-DST" class="headerlink" title="Model-based Dialogue State Tracking(DST)"></a>Model-based Dialogue State Tracking(DST)</h2><h3 id="Review"><a href="#Review" class="headerlink" title="Review"></a><strong>Review</strong></h3><p><strong>任务型对话系统</strong>（task-oriented dialogue system）的目标是协助用户完成特定的任务，比如订机票、打车、日程管理等。</p>
+<p>一个典型的任务型对话系统可以分为四个模块：</p>
+<blockquote>
+<p><strong>自然语言理解（natural language understanding, NLU）、</strong></p>
+<p><strong>对话状态追踪（dialogue state tracking, DST）、</strong></p>
+<p><strong>策略学习（dialogue policy）</strong></p>
+<p><strong>自然语言生成（natural language generation, NLG），</strong></p>
+</blockquote>
+<p>在这个过程中需要跟各种各样的数据库进行查询甚至更新等操作。</p>
+<p>![](./基于模型的对话跟踪和基于规则的DialoguePolicy/task-oriented dialogue.png)</p>
+<p><strong>对话跟踪模块及其限制</strong></p>
+<p>对话状态跟踪模块是任务型对话系统的一个核心模块，对话状态表示了用户在每轮对话所寻求的内容的关键信息，它是从对话开始到当前轮的所有信息的累积，表示形式是一些 slot-value pairs 的集合，inform 表示用户对所寻求的内容的限制，request 表示用户想要寻求哪些内容。</p>
+<p><img src="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/%E5%AF%B9%E8%AF%9D%E7%8A%B6%E6%80%81%E8%A1%A8%E7%A4%BA.png"></p>
+<h3 id="What’s-DST"><a href="#What’s-DST" class="headerlink" title="What’s DST"></a><strong>What’s DST</strong></h3><p><img src="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST.png"></p>
+<p>DST 的做法是先通过 NLU 模块对用户对话进行意图识别和槽位解析，然后将结果输入到 DST 模块中，由 DST 模块处理 NLU 模块带来的一些不确定性，得到最终的对话状态。目前越来越多的工作直接通过一个端到端的 DST 模型来直接处理用户对话（以及历史对话记录）得到当前的对话状态，如图 3 所示</p>
+<p><img src="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84DST.png" alt="端到端的DST"></p>
+<p>延申知识点：DSI</p>
+<p><strong>Dialogue State Induction Using Neural Latent Variable Models</strong></p>
+<p><strong>基于神经隐变量模型的对话状态推理</strong></p>
+<p><strong>论文链接：</strong><a target="_blank" rel="noopener" href="https://www.ijcai.org/Proceedings/2020/0532.pdf">https://www.ijcai.org/Proceedings/2020/0532.pdf</a></p>
+<p><strong>代码链接：</strong><a target="_blank" rel="noopener" href="https://github.com/taolusi/dialogue-state-induction">https://github.com/taolusi/dialogue-state-induction</a></p>
+<p><strong>PPT链接：</strong><a target="_blank" rel="noopener" href="https://taolusi.github.io/qingkai_min/assets/pdf/20-ijcai-dsi_slides.pdf">https://taolusi.github.io/qingkai_min/assets/pdf/20-ijcai-dsi_slides.pdf</a></p>
+<p><strong>视频接：</strong><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1fV41127tq">https://www.bilibili.com/video/BV1fV41127tq</a></p>
+<p>论文总结：</p>
+<p>对话状态跟踪模块是任务型对话系统中的核心部件，目前主流的对话状态跟踪的方法需要在大量人工标注的数据上进行训练。然而，对于现实世界中的各种客户服务对话系统来说，人工标注的过程存在代价高、标注慢、错误率高以及难以覆盖数量庞大的不同领域等问题。</p>
+<p>基于这些问题，提出了一个新的任务：**对话状态推理 (dialogue state induction, DSI)**，任务的目标是从大量的生对话语料中自动推理得到对话状态，并能更好的用于下游任务比如策略学习和对话生成。</p>
+<p>DSI 与 DST 的区别如图 5 所示，和 DST 相似的是，DSI 的输出也是 slot-value pairs 形式的对话状态，不同的是，在训练过程中 DST 依赖于对话语料以及人工标注的对话状态，而 DSI 不依赖于人工标注，可以在生对话中自动生成 slot-value pairs。</p>
+<p><img src="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST%E4%B8%8EDSI%E5%AF%B9%E6%AF%94.png"></p>
+<p><strong>Input and Output</strong></p>
+<p>![](./基于模型的对话跟踪和基于规则的DialoguePolicy/input and output.png)</p>
+<p><strong>BERT-based model for DST（基于Bert模型的对话跟踪）</strong></p>
+<p><img src="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/simple_bert_model_for_dst.png"></p>
+<p>上图显示了我们提议的BERT在DST中的应用。在较高的级别上，给定一个对话框上下文和一个候选槽位值对，我们的模型将输出一个得分，以指示该候选对象的相关性。换句话说，该方法类似于句子对的分类任务。</p>
+<p>第一个输入对应于对话框上下文，它由上一回合的系统话语（system utterance）和当前回合的用户话语（user utterance）组成。这两个话语由[SEP] Token分隔。</p>
+<p>第二个输入是候选的slot-value对。 我们简单地将候选对表示为标记序列（单词或单词片段）。 将两个输入段连接成一个单个令牌序列，然后简单地传递给BERT以获取输出向量（$h_1，h_2···，h_M$）。 在此，$M$表示输入令牌的总数（包括特殊标记，例如[CLS]和[SEP]）。</p>
+<p>基于对应于第一特殊令牌-[CLS]（即h1）的输出矢量，候选时隙值对相关的概率为：<br>$$<br>y = σ(Wh_1 + b) ∈ R<br>$$<br>其中变换矩阵W和偏置项b是模型参数，σ表示Sigmoid函数。 它将分数压缩到0到1之间的概率。</p>
+<p>在每个Turn中，使用所提出的基于BERT的模型来估计每个候选slot-value对的概率值。 此后，仅将预测概率值至少为0.5的slot-value对选择出来作为该turn的最终预测值。 为了获得当前回合的对话状态，我们使用新预测的槽值对来更新上一回合状态下的对应值。 例如，假设用户在当前回合中指定了一个food = chinese的餐馆。 如果对话框状态没有现有的food参数，则可以将food = chinese添加到对话框状态。 如果以前指定过food = korean，我们将其替换为food = chinese。</p>
+<p><strong>论文链接：</strong><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1910.12995.pdf">https://arxiv.org/pdf/1910.12995.pdf</a></p>
+<p><strong>代码链接：</strong><a target="_blank" rel="noopener" href="https://github.com/laituan245/BERT-Dialog-State-Tracking">https://github.com/laituan245/BERT-Dialog-State-Tracking</a></p>
+<p><strong>代码链接：</strong><a target="_blank" rel="noopener" href="https://github.com/BSlience/BERT-DST/">https://github.com/BSlience/BERT-DST/</a></p>
+<h3 id="Further-DST"><a href="#Further-DST" class="headerlink" title="Further DST"></a>Further DST</h3><p>![](./基于模型的对话跟踪和基于规则的DialoguePolicy/personl Info.PNG)</p>
+<p><img src="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/UserExperience.png"></p>
+<h2 id="Rule-based-Dialogue-Policy-DP"><a href="#Rule-based-Dialogue-Policy-DP" class="headerlink" title="Rule-based Dialogue Policy(DP)"></a>Rule-based Dialogue Policy(DP)</h2><h3 id="Review-1"><a href="#Review-1" class="headerlink" title="Review"></a>Review</h3><p><img src="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DPReview.png"></p>
+<h3 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h3><p>Dialogue Policy: Rule-Based, Change Slot, Repeat Intent, System state</p>
+<p>![](./基于模型的对话跟踪和基于规则的DialoguePolicy/System State.png)</p>
+<h3 id="RASA-Policy"><a href="#RASA-Policy" class="headerlink" title="RASA Policy"></a>RASA Policy</h3><p> <img src="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/Transformers.png"></p>
+<p><img src="/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/Action.png"></p>
+<p>详细可参考youtube视频：</p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=dmD3sqzxDXs&list=PL75e0qA87dlG-za8eLI6t0_Pbxafk-cxb&index=30&ab_channel=Rasa">RASA Whiteboard RulePolicy</a></p>
+<h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a target="_blank" rel="noopener" href="https://yan624.github.io/posts/89f2cf08.html">DST论文笔记</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yagreenhand/article/details/100050602">DST文章学习</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yizhen_nlp/article/details/108649313">Dialogue State Induction Using Neural Latent Variable Models</a></p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;"> ------ 本文结束------</div>
+    
+</div>
+        <div class="reward-container">
+  <div>Donate comment here.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="进军要努力呀 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="进军要努力呀 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>进军要努力呀
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://marchboy.github.io/2021/02/28/%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/" title="基于模型的对话跟踪和基于规则的DialoguePolicy">https://marchboy.github.io/2021/02/28/基于模型的对话跟踪和基于规则的DialoguePolicy/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/21/Spark%E7%AC%94%E8%AE%B0-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" rel="prev" title="Spark集群的搭建">
+      <i class="fa fa-chevron-left"></i> Spark集群的搭建
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Model-based-Dialogue-State-Tracking-DST"><span class="nav-number">1.</span> <span class="nav-text">Model-based Dialogue State Tracking(DST)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Review"><span class="nav-number">1.1.</span> <span class="nav-text">Review</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#What%E2%80%99s-DST"><span class="nav-number">1.2.</span> <span class="nav-text">What’s DST</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Further-DST"><span class="nav-number">1.3.</span> <span class="nav-text">Further DST</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rule-based-Dialogue-Policy-DP"><span class="nav-number">2.</span> <span class="nav-text">Rule-based Dialogue Policy(DP)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Review-1"><span class="nav-number">2.1.</span> <span class="nav-text">Review</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Action"><span class="nav-number">2.2.</span> <span class="nav-text">Action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RASA-Policy"><span class="nav-number">2.3.</span> <span class="nav-text">RASA Policy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%EF%BC%9A"><span class="nav-number">3.</span> <span class="nav-text">参考：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="进军要努力呀"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">进军要努力呀</p>
+  <div class="site-description" itemprop="description">可怕的是自己内心的堕落</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/marchboy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;marchboy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jjgdut@gmail.com" title="E-Mail → mailto:jjgdut@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/yourname" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://youtube.com/yourname" title="YouTube → https:&#x2F;&#x2F;youtube.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/pinard" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard" rel="noopener" target="_blank">刘建平Pinard</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://vel.life/" title="https:&#x2F;&#x2F;vel.life&#x2F;" rel="noopener" target="_blank">思维之海</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wulc.me/" title="https:&#x2F;&#x2F;wulc.me&#x2F;" rel="noopener" target="_blank">吴良超的学习笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/IT_job" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;IT_job" rel="noopener" target="_blank">IT_job的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zdaiot.com/categories/" title="https:&#x2F;&#x2F;www.zdaiot.com&#x2F;categories&#x2F;" rel="noopener" target="_blank">zdaiot</a>
+        </li>
+    </ul>
+  </div>
+
+
+      </div>
+	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 
+	 src="//music.163.com/outchain/player?type=2&id=463352828&auto=0&height=66">
+		    </iframe>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">进军要努力呀</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">74k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:07</span>
+</div><!-- ����ҳ�ײ�������վ����ʱ�� -->
+<span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/01/2020 00:00:00");//�˴��޸���Ľ�վʱ�������վ����ʱ��
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9de70fca612487225ccc',
+      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
+      repo        : 'marchboy.github.io',
+      owner       : 'marchboy',
+      admin       : ['marchboy'],
+      id          : '5fbc7f5ca1611111303f64a84af273f6',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'qAoqMWohGTiECb1RgaNqvgNB-MdYXbMMI',
+      appKey     : 'ISI8QFSo7GcRyExPHSjMkz7R',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

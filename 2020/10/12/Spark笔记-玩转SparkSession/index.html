@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="关于SparkConf和SparkContext1、每个Spark应用程序都需要一个Spark环境，这是Spark RDD API的主要入口点。Spark Shell提供了一个名为“sc”的预配置Spark环境和一个名为“spark”的预配置Spark会话； 2、任何Spark程序都是SparkContext开始的（SparkContext是允许驱动程序【spark drive】通过资源管理器访问">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spark笔记-玩转SparkSession">
+<meta property="og:url" content="https://marchboy.github.io/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/index.html">
+<meta property="og:site_name" content="ComputerScience">
+<meta property="og:description" content="关于SparkConf和SparkContext1、每个Spark应用程序都需要一个Spark环境，这是Spark RDD API的主要入口点。Spark Shell提供了一个名为“sc”的预配置Spark环境和一个名为“spark”的预配置Spark会话； 2、任何Spark程序都是SparkContext开始的（SparkContext是允许驱动程序【spark drive】通过资源管理器访问">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-12T02:45:35.000Z">
+<meta property="article:modified_time" content="2020-10-21T13:41:27.422Z">
+<meta property="article:author" content="进军要努力呀">
+<meta property="article:tag" content="Spark">
+<meta property="article:tag" content="RDD">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://marchboy.github.io/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Spark笔记-玩转SparkSession | ComputerScience</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74793810-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74793810-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a5f7448ac0b523badc121b2d870f1b0c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ComputerScience</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">温故而知新</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spark笔记-玩转SparkSession
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-12 10:45:35" itemprop="dateCreated datePublished" datetime="2020-10-12T10:45:35+08:00">2020-10-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-10-21 21:41:27" itemprop="dateModified" datetime="2020-10-21T21:41:27+08:00">2020-10-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/" class="post-meta-item leancloud_visitors" data-flag-title="Spark笔记-玩转SparkSession" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="关于SparkConf和SparkContext"><a href="#关于SparkConf和SparkContext" class="headerlink" title="关于SparkConf和SparkContext"></a>关于SparkConf和SparkContext</h3><p>1、每个Spark应用程序都需要一个Spark环境，这是Spark RDD API的主要入口点。Spark Shell提供了一个名为“sc”的预配置Spark环境和一个名为“spark”的预配置Spark会话；</p>
+<p>2、任何Spark程序都是SparkContext开始的（SparkContext是允许驱动程序【spark drive】通过资源管理器访问集群）；</p>
+<p>3、SparkContext的初始化需要一个SparkConf对象，<strong>SparkConf包含了Spark集群配置的各种参数；</strong></p>
+<p>4、初始化后，就可以使用SparkContext对象所包含的各种方法来创建和操作RDD和共享变量。一旦设置完成SparkConf，就不可被使用者修改。</p>
+<p><strong>Scala写法：</strong></p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">&quot;master&quot;</span>).setAppName(<span class="string">&quot;appName&quot;</span>)</span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(<span class="string">&quot;master&quot;</span>,<span class="string">&quot;appName&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>Python写法：</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line">conf = SparkConf().setMaster(<span class="string">&#x27;local&#x27;</span>).setAppName(<span class="string">&#x27;My App&#x27;</span>)</span><br><span class="line">sc = SparkContext(conf = conf)</span><br><span class="line">sc.stop()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">sc = SparkContext(<span class="string">&#x27;local&#x27;</span>, <span class="string">&#x27;My APP&#x27;</span>)</span><br><span class="line">sc.stop()</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="SQLContext-是什么"><a href="#SQLContext-是什么" class="headerlink" title="SQLContext 是什么?"></a>SQLContext 是什么?</h4><p>SQLContext是通往SparkSQL的入口。下面是如何使用SparkContext创建SQLContext。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sc is an existing SparkContext.</span></span><br><span class="line"><span class="keyword">val</span> sqlContext = <span class="keyword">new</span> org.apache.spark.sql.<span class="type">SQLContext</span>(sc)</span><br></pre></td></tr></table></figure>
+<p>一旦有了SQLContext，就可以开始处理DataFrame、DataSet等。</p>
+<h4 id="HiveContext-是什么"><a href="#HiveContext-是什么" class="headerlink" title="HiveContext 是什么?"></a>HiveContext 是什么?</h4><p>HiveContext是通往hive入口。<br>HiveContext具有SQLContext的所有功能。<br>实际上，如果查看API文档，就会发现HiveContext扩展了SQLContext，这意味着它支持SQLContext支持的功能以及更多(Hive特定的功能)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HiveContext</span> <span class="keyword">extends</span> <span class="title">SQLContext</span> <span class="keyword">implements</span> <span class="title">Logging</span></span></span><br></pre></td></tr></table></figure>
+<p>下面是如何使用SparkContext获得HiveContext。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sc is an existing SparkContext.</span></span><br><span class="line"><span class="keyword">val</span> sqlContext = <span class="keyword">new</span> org.apache.spark.sql.hive.<span class="type">HiveContext</span>(sc)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="SparkSession"><a href="#SparkSession" class="headerlink" title="SparkSession"></a>SparkSession</h3><p>SparkSession实质上是SQLContext和HiveContext的组合（未来可能还会加上StreamingContext），所以在SQLContext和HiveContext上可用的API在SparkSession上同样是可以使用的。</p>
+<h4 id="SparkSession的简单示例"><a href="#SparkSession的简单示例" class="headerlink" title="SparkSession的简单示例"></a>SparkSession的简单示例</h4><p>SparkSession内部封装了SparkContext，所以计算实际上是由SparkContext完成的。</p>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> sparkSession = <span class="type">SparkSession</span>.builder</span><br><span class="line">                    .master(<span class="string">&quot;master&quot;</span>)</span><br><span class="line">                    .appName(<span class="string">&quot;appName&quot;</span>)</span><br><span class="line">                    .getOrCreate()</span><br><span class="line"><span class="comment">//或者SparkSession.builder.config(conf=SparkConf())</span></span><br></pre></td></tr></table></figure>
+<p>上面代码类似于创建一个SparkContext，master设置为”master”，然后创建了一个SQLContext封装它。</p>
+<h4 id="创建支持Hive的SparkSession"><a href="#创建支持Hive的SparkSession" class="headerlink" title="创建支持Hive的SparkSession"></a>创建支持Hive的SparkSession</h4><p>如果你想创建hiveContext，可以使用下面的方法来创建SparkSession，以使得它支持Hive(HiveContext)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">val sparkSession = SparkSession.builder</span><br><span class="line">                    .master(<span class="string">&quot;master&quot;</span>)</span><br><span class="line">                    .appName(<span class="string">&quot;appName&quot;</span>)</span><br><span class="line">                    .enableHiveSupport()</span><br><span class="line">                    .getOrCreate()</span><br><span class="line">//sparkSession 从csv读取数据：</span><br><span class="line">val dq = sparkSession.read.option(<span class="string">&quot;header&quot;</span>, <span class="string">&quot;true&quot;</span>).csv(<span class="string">&quot;src/main/resources/scala.csv&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>上面代码中的getOrCreate()方法表示有就拿过来，没有就创建，类似于单例模式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val s1 = SparkSession().builder.config(<span class="string">&quot;k1&quot;</span>, <span class="string">&quot;v1&quot;</span>).getOrCreat()</span><br><span class="line">val s2 = SparkSession().builder.config(<span class="string">&quot;k2&quot;</span>, <span class="string">&quot;v2&quot;</span>).getOrCreat()</span><br><span class="line"><span class="keyword">return</span> s1.conf.get(<span class="string">&quot;k1&quot;</span>) == s2.conf.get(<span class="string">&quot;k2&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>上面代码类似于创建一个SparkContext，master设置为”master”，然后创建了一个SQLContext封装它。</p>
+<p>**Reference: **</p>
+<p>1、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/lillcol/p/11233456.html">SparkSession、SparkContext、SQLContext和HiveContext之间的区别。</a></p>
+<p>2、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Allen-rg/p/11364683.html">SparkConf和SparkContext</a></p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;"> ------ 本文结束------</div>
+    
+</div>
+        <div class="reward-container">
+  <div>Donate comment here.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="进军要努力呀 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="进军要努力呀 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>进军要努力呀
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://marchboy.github.io/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/" title="Spark笔记-玩转SparkSession">https://marchboy.github.io/2020/10/12/Spark笔记-玩转SparkSession/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/Spark/" rel="tag"><i class="fa fa-tag"></i> Spark</a>
+              <a href="/tags/RDD/" rel="tag"><i class="fa fa-tag"></i> RDD</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/" rel="prev" title="Spark笔记-Spark任务提交方式">
+      <i class="fa fa-chevron-left"></i> Spark笔记-Spark任务提交方式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/10/12/epoch-batchSize-iterations/" rel="next" title="epoch-batchSize-iterations">
+      epoch-batchSize-iterations <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E4%BA%8ESparkConf%E5%92%8CSparkContext"><span class="nav-number">1.</span> <span class="nav-text">关于SparkConf和SparkContext</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SQLContext-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.1.</span> <span class="nav-text">SQLContext 是什么?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HiveContext-%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">1.2.</span> <span class="nav-text">HiveContext 是什么?</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SparkSession"><span class="nav-number">2.</span> <span class="nav-text">SparkSession</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#SparkSession%E7%9A%84%E7%AE%80%E5%8D%95%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.1.</span> <span class="nav-text">SparkSession的简单示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E6%94%AF%E6%8C%81Hive%E7%9A%84SparkSession"><span class="nav-number">2.2.</span> <span class="nav-text">创建支持Hive的SparkSession</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="进军要努力呀"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">进军要努力呀</p>
+  <div class="site-description" itemprop="description">可怕的是自己内心的堕落</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/marchboy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;marchboy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jjgdut@gmail.com" title="E-Mail → mailto:jjgdut@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/yourname" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://youtube.com/yourname" title="YouTube → https:&#x2F;&#x2F;youtube.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/pinard" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard" rel="noopener" target="_blank">刘建平Pinard</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://vel.life/" title="https:&#x2F;&#x2F;vel.life&#x2F;" rel="noopener" target="_blank">思维之海</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wulc.me/" title="https:&#x2F;&#x2F;wulc.me&#x2F;" rel="noopener" target="_blank">吴良超的学习笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/IT_job" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;IT_job" rel="noopener" target="_blank">IT_job的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zdaiot.com/categories/" title="https:&#x2F;&#x2F;www.zdaiot.com&#x2F;categories&#x2F;" rel="noopener" target="_blank">zdaiot</a>
+        </li>
+    </ul>
+  </div>
+
+
+      </div>
+	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 
+	 src="//music.163.com/outchain/player?type=2&id=463352828&auto=0&height=66">
+		    </iframe>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">进军要努力呀</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">74k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">1:07</span>
+</div><!-- ����ҳ�ײ�������վ����ʱ�� -->
+<span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/01/2020 00:00:00");//�˴��޸���Ľ�վʱ�������վ����ʱ��
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9de70fca612487225ccc',
+      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
+      repo        : 'marchboy.github.io',
+      owner       : 'marchboy',
+      admin       : ['marchboy'],
+      id          : 'b493c5ccab0cd5b50ffb15ac3cd219dd',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'qAoqMWohGTiECb1RgaNqvgNB-MdYXbMMI',
+      appKey     : 'ISI8QFSo7GcRyExPHSjMkz7R',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
