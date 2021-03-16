@@ -21,15 +21,15 @@
     var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="谈谈python2和python3的区别字符编码py3中默认字符编码是UTF-8，因此使用Python3不需要文件顶部写‘# coding&#x3D;utf-8’； py2中默认字符编码是ASCII，如果文件中出现了中文，需要在顶部加入coding声明# coding&#x3D;utf-8">
+  <meta name="description" content="谈谈python2和python3的区别字符编码py3中默认字符编码是UTF-8，因此使用Python3不需要文件顶部写‘# coding&#x3D;utf-8’； py2中默认字符编码是 ASCII，如果文件中出现了中文，需要在顶部加入coding声明**# coding&#x3D;utf-8**">
 <meta property="og:type" content="article">
 <meta property="og:title" content="阿里移动事业部面试总结">
 <meta property="og:url" content="https://marchboy.github.io/2020/09/11/ali-interview/index.html">
 <meta property="og:site_name" content="ComputerScience">
-<meta property="og:description" content="谈谈python2和python3的区别字符编码py3中默认字符编码是UTF-8，因此使用Python3不需要文件顶部写‘# coding&#x3D;utf-8’； py2中默认字符编码是ASCII，如果文件中出现了中文，需要在顶部加入coding声明# coding&#x3D;utf-8">
+<meta property="og:description" content="谈谈python2和python3的区别字符编码py3中默认字符编码是UTF-8，因此使用Python3不需要文件顶部写‘# coding&#x3D;utf-8’； py2中默认字符编码是 ASCII，如果文件中出现了中文，需要在顶部加入coding声明**# coding&#x3D;utf-8**">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-09-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-11-30T12:00:42.085Z">
+<meta property="article:modified_time" content="2021-03-16T13:50:05.588Z">
 <meta property="article:author" content="进军要努力呀">
 <meta property="article:tag" content="应用">
 <meta name="twitter:card" content="summary">
@@ -240,7 +240,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-11-30 20:00:42" itemprop="dateModified" datetime="2020-11-30T20:00:42+08:00">2020-11-30</time>
+                <time title="修改时间：2021-03-16 21:50:05" itemprop="dateModified" datetime="2021-03-16T21:50:05+08:00">2021-03-16</time>
               </span>
 
           
@@ -277,14 +277,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>11k</span>
+              <span>12k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>10 分钟</span>
+              <span>11 分钟</span>
             </span>
 
         </div>
@@ -297,9 +297,11 @@
 
       
         <h2 id="谈谈python2和python3的区别"><a href="#谈谈python2和python3的区别" class="headerlink" title="谈谈python2和python3的区别"></a>谈谈python2和python3的区别</h2><h3 id="字符编码"><a href="#字符编码" class="headerlink" title="字符编码"></a>字符编码</h3><p>py3中默认字符编码是<code>UTF-8</code>，因此使用Python3不需要文件顶部写‘# coding=utf-8’；</p>
-<p>py2中默认字符编码是<code>ASCII</code>，如果文件中出现了中文，需要在顶部加入coding声明<strong># coding=utf-8</strong></p>
+<p>py2中默认字符编码是<code> ASCII</code>，如果文件中出现了中文，需要在顶部加入coding声明**# coding=utf-8**</p>
 <p><strong>注意：# coding=utf-8的=号两边不要空格。</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">py2: </span><br><span class="line">  　　- <span class="built_in">ascii</span> </span><br><span class="line"> 　　 文件头可以修改：<span class="comment">#-*- encoding:utf-8 -*-</span></span><br><span class="line">py3:</span><br><span class="line"> 　　 - utf-<span class="number">8</span></span><br><span class="line">  　　文件头可以修改：<span class="comment">#-*- encoding:utf-8 -*-</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h3><p>Python3：</p>
 <p>str 对象和 bytes 对象可以使用 .encode() (<strong>str -&gt; bytes</strong>) 或 .decode() (<strong>bytes -&gt; str</strong>)方法相互转化。</p>
 <p><strong>从str到bytes，是编码,  比特流 = str(串, encoding=’utf-8’)</strong></p>
@@ -308,40 +310,71 @@
 <p><strong>为什么英文显示是b’hello’呢，因为英文里，utf-8和ASCII是兼容的，所以只是显示为b’hello’，其实也是数字</strong></p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## str --&gt; bytes</span></span><br><span class="line">tt = <span class="string">&#x27;奥德赛&#x27;</span></span><br><span class="line"><span class="built_in">type</span>(tt)</span><br><span class="line"></span><br><span class="line">ss = <span class="built_in">bytes</span>(tt, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="comment"># to bytes</span></span><br><span class="line"><span class="built_in">type</span>(ss)</span><br><span class="line"></span><br><span class="line">rr = ss.decode(<span class="string">&quot;utf-8&quot;</span>)          <span class="comment"># to string</span></span><br><span class="line"><span class="built_in">type</span>(rr)</span><br><span class="line"></span><br><span class="line">uu = <span class="built_in">str</span>(ss, encoding=<span class="string">&#x27;utf-8&#x27;</span>)   <span class="comment"># to string</span></span><br><span class="line"><span class="built_in">type</span>(uu)</span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">output:</span></span><br><span class="line"><span class="string">&lt;class &#x27;bytes&#x27;&gt;</span></span><br><span class="line"><span class="string">&lt;class &#x27;str&#x27;&gt;</span></span><br><span class="line"><span class="string">&lt;class &#x27;str&#x27;&gt;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-<p><strong><em>可以使用encode()函数对字符串进行编码，转换成二进制字节数据，也可用decode()函数将字节解码成字符串</em></strong>；用decode()函数解码，英文可不要用指定编码格式，中文需要指定解码方式；</p>
+
+
+<p><em><strong>可以使用encode()函数对字符串进行编码，转换成二进制字节数据，也可用decode()函数将字节解码成字符串</strong></em>；用decode()函数解码，英文可不要用指定编码格式，中文需要指定解码方式；</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&#x27;&#x27;&#x27;中文编码&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = <span class="string">&#x27;中文&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(a)</span><br><span class="line"><span class="built_in">str</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = a.encode(encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b</span><br><span class="line"><span class="string">b&#x27;\xe4\xb8\xad\xe6\x96\x87&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;中文解码&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = b.decode(encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c</span><br><span class="line"><span class="string">&#x27;中文&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;可以省略解码格式&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = b.decode()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d</span><br><span class="line"><span class="string">&#x27;中文&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <p>Python2：</p>
 <p>Python2中字符串有两种类型：unicode和str，前者表示文本字符串，后者表示字节序列，两者没有明显的界限。<br>如上所述，Python3中也有两种类型，str表示字符串，byte表示字节序列，任何需要写入文本或者网络传输的数据都只接收字节序列。</p>
-<p>字符串：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">py2: </span><br><span class="line">    unicode         v = <span class="string">u&quot;root&quot;</span>    <span class="comment">#本质上用unicode存储（万国码）</span></span><br><span class="line">    (<span class="built_in">str</span>/<span class="built_in">bytes</span>)     v = <span class="string">&quot;root&quot;</span>     <span class="comment">#本质用字节存储</span></span><br><span class="line">       </span><br><span class="line">py3:         </span><br><span class="line">    <span class="built_in">str</span>             v = <span class="string">&quot;root&quot;</span>     <span class="comment">#本质上用unicode存储（万国码）</span></span><br><span class="line">    <span class="built_in">bytes</span>           v = <span class="string">b&quot;root&quot;</span>    <span class="comment">#本质上用字节存储</span></span><br></pre></td></tr></table></figure></p>
+<p>字符串：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">py2: </span><br><span class="line">    unicode         v = <span class="string">u&quot;root&quot;</span>    <span class="comment">#本质上用unicode存储（万国码）</span></span><br><span class="line">    (<span class="built_in">str</span>/<span class="built_in">bytes</span>)     v = <span class="string">&quot;root&quot;</span>     <span class="comment">#本质用字节存储</span></span><br><span class="line">       </span><br><span class="line">py3:         </span><br><span class="line">    <span class="built_in">str</span>             v = <span class="string">&quot;root&quot;</span>     <span class="comment">#本质上用unicode存储（万国码）</span></span><br><span class="line">    <span class="built_in">bytes</span>           v = <span class="string">b&quot;root&quot;</span>    <span class="comment">#本质上用字节存储</span></span><br></pre></td></tr></table></figure>
+
+
 <p>例子：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>t = <span class="string">&#x27;存贮&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t</span><br><span class="line"><span class="string">&#x27;\xe5\xad\x98\xe8\xb4\xae&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">type</span>(t)</span><br><span class="line">&lt;<span class="built_in">type</span> <span class="string">&#x27;str&#x27;</span>&gt;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>t.encode(encoding=<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">&quot;&lt;stdin&gt;&quot;</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">UnicodeDecodeError: <span class="string">&#x27;ascii&#x27;</span> codec can<span class="string">&#x27;t decode byte 0xe5 in position 0: ordinal not in range(128)</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; </span></span><br><span class="line"><span class="string">&gt;&gt;&gt; s = t.decode(encoding=&#x27;</span>utf-<span class="number">8</span><span class="string">&#x27;)</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; s</span></span><br><span class="line"><span class="string">u&#x27;</span>\u5b58\u8d2e<span class="string">&#x27;</span></span><br><span class="line"><span class="string">&gt;&gt;&gt;</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; print(s)</span></span><br><span class="line"><span class="string">存贮</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; type(s)</span></span><br><span class="line"><span class="string">&lt;type &#x27;</span>unicode<span class="string">&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
 <p>补充知识（参考2）</p>
-<p><strong>原码：数值X的原码记为[x]原，如果机器字长为n(即采用n个二进制位表示数据)。则最高位是符号位。0表示正号，1表示负号，其余的n-1位表示数值的绝对值。数值零的原码表示有两种形式：[+0]原=0000 0000  ,-[0]原=1000 0000. </strong></p>
+<p>**原码：数值X的原码记为[x]原，如果机器字长为n(即采用n个二进制位表示数据)。则最高位是符号位。0表示正号，1表示负号，其余的n-1位表示数值的绝对值。数值零的原码表示有两种形式：[+0]原=0000 0000  ,-[0]原=1000 0000. **</p>
 <p>例子：若机器字长n等于8，则</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[+1]原&#x3D;0000 00001      [-1]原&#x3D;1000 00001 </span><br><span class="line">[+127]原&#x3D;0111 1111     [-127]原&#x3D;1111 1111</span><br><span class="line">[+45]原&#x3D;0010 1101      [-45]原&#x3D;1010 1101  </span><br></pre></td></tr></table></figure>
 <p>可见，原码，在计算数值上出问题了，当然，你也可以实验下，原码在计算正数和正数的时候，它是一点问题都没有的，但是出现负数的时候就出现问题了。所以才会有我下面将的问题：反码。</p>
 <p><strong>反码：数值X的反码记作[x]反，如果机器字长为n，则最高位是符号位，0表示正号，1表示负号，正数的反码与原码相同，负数的反码则是其绝对值按位求反。数值0的反码表示有两种形式：[+0]反=0000 0000  ,-[0]反=1111 1111.</strong></p>
 <p>例子：若机器字长n等于8，则</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[+1]反&#x3D;0000 00001      [-1]反&#x3D;1111 1110 </span><br><span class="line">[+127]反&#x3D;0111 1111     [-127]反&#x3D;1000 0000</span><br><span class="line">[+45]反&#x3D;0010 1101      [-45]反&#x3D;1101 0010  </span><br></pre></td></tr></table></figure>
+
+
 <p>在看反码计算的问题：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1+（-1）&#x3D;0     |   (0000 0001)反+（1111 1110）反&#x3D;（1111 1111）反&#x3D;（1000 0000）原&#x3D;【-0】 可以看到，虽然是-0，但是问题还不是很大。</span><br><span class="line">1+（-2）&#x3D;-1    |   (0000 0001）反+（1111 1101）反&#x3D;（1111 1110）反&#x3D;（1000 0001）原&#x3D;【-1】 可以看到，没有问题。</span><br><span class="line">(-1)+（2）&#x3D;1   |   (1111 1110）反+（0000 0010）反&#x3D;（0000 0000）反&#x3D;（0000 0000）原&#x3D;【0】 可以看到，问题发生了，因为溢出，导致结果变为0了。</span><br><span class="line">所以，看以看到，用反码表示，问题依然没有解决，所以，出现了下面的补码。</span><br></pre></td></tr></table></figure>
+
+
 <p><strong>补码：数值X的补码记作[x]补，如果机器字长为n，则最高位是符号位，0表示正号，1表示负号，正数的补码与原码反码都相同，负数的补码则等于其反码的末尾加1。数值0的补码表示有唯一的编码：[+0]补=0000 0000  ,-[0]补=0000 0000.</strong></p>
 <p>例子：若机器字长n等于8，则</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[+1]补&#x3D;0000 00001      [-1]补&#x3D;1111 1111 </span><br><span class="line">[+127]补&#x3D;0111 1111     [-127]补&#x3D;1000 0001</span><br><span class="line">[+45]补&#x3D;0010 1101      [-45]补&#x3D;1101 0011 </span><br></pre></td></tr></table></figure>
+
+
 <p>在看补码计算的问题：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1+（-1）&#x3D;0        |      （0000 0001）补+（1111 1111）补&#x3D;（0000 0000）补&#x3D;（0000 0000）原&#x3D;【0】 可以看到。没有问题</span><br><span class="line">1+（-2）&#x3D;-1       |      （0000 0001）补+（1111 1110）补&#x3D;（1111 1111）补&#x3D;（1000 0001）原&#x3D;【-1】 可以看到，没有问题</span><br><span class="line">-1+（2）&#x3D;1        |      （1111 1111）补+（0000 0010）补&#x3D;（0000 0001）补 &#x3D;（0000 0001）原&#x3D;【1】 可以看到，没有问题</span><br></pre></td></tr></table></figure>
+
+
 <p>通过上面的计算，我们发现，用补码的方式，就不存在在原码和反码中存在的计算问题了。其实，这也是计算机表达带符号整数用补码的原因。如果，你觉得我举得例子太少，缺少代表行，你可以自己试试。不过，放心补码一定是不会存在原码和反码的问题的。</p>
 <h3 id="缩进格式"><a href="#缩进格式" class="headerlink" title="缩进格式"></a>缩进格式</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Python2的缩进机制中，1个Tab和8个Space等价的，同时允许缩进中Tab和Space在代码中共存，但这种机制在部分IDE使用中有问题。</span><br><span class="line"></span><br><span class="line">Python3中Tab和Space不再能共存，同时存在时会报错：</span><br><span class="line">TabError: inconsistent use of tabs and spaces in indentation.</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="print-exec的用法"><a href="#print-exec的用法" class="headerlink" title="print, exec的用法"></a>print, exec的用法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">在python2中，<span class="built_in">print</span>作为语句使用，而在python3中作为函数使用，<span class="built_in">exec</span>同理：</span><br><span class="line"></span><br><span class="line">print(“hello”,“world”)</span><br><span class="line"></span><br><span class="line">在python2中则输出为一个元组；</span><br><span class="line">在pyton3中输出为两个字符串，默认中间用空格隔开。</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="True和False用法"><a href="#True和False用法" class="headerlink" title="True和False用法"></a>True和False用法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Python2中True和False都是全局变量，数值分别表示为1和0，因为是变量，所以存在可以被赋值的情况。</span><br><span class="line"></span><br><span class="line">Python3中True和False是关键字，固定指向两个固定对象，不再允许被重新赋值。</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="小数和除法的用法"><a href="#小数和除法的用法" class="headerlink" title="小数和除法的用法"></a>小数和除法的用法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Python2中&#x2F;作用就是整除，只输出整数，&#x2F;&#x2F;是小数除法；</span><br><span class="line">而在Python3中用&#x2F;&#x2F;作为整除，&#x2F;是小数除法。</span><br><span class="line"></span><br><span class="line">实例：3&#x2F;2在Python2中输出为1，在Python3中是1.5</span><br></pre></td></tr></table></figure>
 <h3 id="小数和除法的用法-1"><a href="#小数和除法的用法-1" class="headerlink" title="小数和除法的用法"></a>小数和除法的用法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Python2中/作用就是整除，只输出整数，//是小数除法；</span></span><br><span class="line"><span class="comment"># 在默认情况下，这两种运算符有很大的重叠地方，比如，当两个数都是整数的时候，两者的运算结果是没有区别的。如果想在python中让这两种有一个明确的分工。即&quot;/&quot;可以用于float除法，&quot;//&quot;用于整除法，我们可以在程序开始的时候做以下</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> division</span><br><span class="line"></span><br><span class="line"><span class="comment">#而在Python3中用//作为整除，/是小数除法。</span></span><br><span class="line"><span class="comment">#实例：3/2在Python2中输出为1，在Python3中是1.5</span></span><br></pre></td></tr></table></figure>
 <h3 id="比较运算符的区别"><a href="#比较运算符的区别" class="headerlink" title="比较运算符的区别"></a>比较运算符的区别</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Python2中任意两对象都可以比较。</span><br><span class="line"></span><br><span class="line">Python3中只有同种数据类型对象可以比较。</span><br></pre></td></tr></table></figure>
 <h3 id="nonlocal"><a href="#nonlocal" class="headerlink" title="nonlocal"></a>nonlocal</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在Python2中可以在函数中使用global声明变量为全局变量，但是给一个变量声明为非局部变量是无法实现的。在Python3，新增了关键字nonlocal，使得定义非局部变量成为了可能。</span><br></pre></td></tr></table></figure>
 <h3 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Python2中很多返回列表对象的内置函数和方法。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">在Python3中都改成了返回类似于迭代器的对象，迭代器的惰性求值特性使得操作大数据更加有效率。</span><br></pre></td></tr></table></figure>
 <h3 id="for循环变量值区别"><a href="#for循环变量值区别" class="headerlink" title="for循环变量值区别"></a>for循环变量值区别</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#python2中，for循环会修改外部相同名称变量的值：</span></span><br><span class="line"></span><br><span class="line">i = <span class="number">1</span></span><br><span class="line">print(<span class="string">&#x27;comprehension: &#x27;</span>, [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)])</span><br><span class="line">print(<span class="string">&#x27;after: i =&#x27;</span>, i)  <span class="comment">#i=4</span></span><br><span class="line">类似于Python3中：</span><br><span class="line">i=<span class="number">1</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span>  <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">    print(i)</span><br><span class="line">    print(i)          <span class="comment">##两次结果都是4</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Python3，for循环不会修改外部相同名称变量的值：</span></span><br><span class="line">i = <span class="number">1</span></span><br><span class="line">print(<span class="string">&#x27;comprehension: &#x27;</span>, [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)])</span><br><span class="line">print(<span class="string">&#x27;after: i =&#x27;</span>, i) <span class="comment">#i=1</span></span><br><span class="line"></span><br><span class="line">[i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>)]生成的是一个链表</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="round函数返回值区别"><a href="#round函数返回值区别" class="headerlink" title="round函数返回值区别"></a>round函数返回值区别</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Python3，<span class="built_in">round</span>函数返回<span class="built_in">int</span>类型值</span><br><span class="line">  <span class="built_in">isinstance</span>(<span class="built_in">round</span>(<span class="number">15.5</span>),<span class="built_in">int</span>)   <span class="comment">#True</span></span><br><span class="line"></span><br><span class="line">Python2，<span class="built_in">round</span>函数返回<span class="built_in">float</span>类型值</span><br><span class="line">  <span class="built_in">isinstance</span>(<span class="built_in">round</span>(<span class="number">15.5</span>),<span class="built_in">float</span>) <span class="comment">#True</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="通过input-解析用户输入"><a href="#通过input-解析用户输入" class="headerlink" title="通过input()解析用户输入"></a>通过input()解析用户输入</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Python3中<span class="built_in">input</span>得到的为<span class="built_in">str</span>；</span><br><span class="line">Python2的<span class="built_in">input</span>的到的为<span class="built_in">int</span>型，Python2的raw_input得到的为<span class="built_in">str</span>类型；</span><br><span class="line"></span><br><span class="line">统一一下：Python3中用<span class="built_in">input</span>，Python2中用row_input，都输入为<span class="built_in">str</span>。</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="迭代器range和xrange"><a href="#迭代器range和xrange" class="headerlink" title="迭代器range和xrange"></a>迭代器range和xrange</h3><p>py3中的range == py2中的 xrange， 返回类似迭代器的东西，节省内存空间</p>
 <h3 id="语句变函数"><a href="#语句变函数" class="headerlink" title="语句变函数"></a>语句变函数</h3><p>py3中为print(), exec() 是一个方法，必须加上括号； </p>
 <p>py2中为print, exec，是一个语句</p>
@@ -358,59 +391,55 @@
 <p>2）不减少原表的行数</p>
 <p>3）语法如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;窗口函数&gt; over (partition by &lt;用于分组的列名&gt;</span><br><span class="line">                order by &lt;用于排序的列名&gt;)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>若一张表里面记录了一些用户的ID和其出行的城市信息，写一条SQL输出他出行最高频次的那条记录，表如下。</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:left">id</th>
-<th style="text-align:left">city</th>
+<th align="left">id</th>
+<th align="left">city</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">10000</td>
-<td style="text-align:left">广州</td>
+<tbody><tr>
+<td align="left">10000</td>
+<td align="left">广州</td>
 </tr>
 <tr>
-<td style="text-align:left">10000</td>
-<td style="text-align:left">广州</td>
+<td align="left">10000</td>
+<td align="left">广州</td>
 </tr>
 <tr>
-<td style="text-align:left">10000</td>
-<td style="text-align:left">深圳</td>
+<td align="left">10000</td>
+<td align="left">深圳</td>
 </tr>
 <tr>
-<td style="text-align:left">10001</td>
-<td style="text-align:left">广州</td>
+<td align="left">10001</td>
+<td align="left">广州</td>
 </tr>
 <tr>
-<td style="text-align:left">10001</td>
-<td style="text-align:left">深圳</td>
+<td align="left">10001</td>
+<td align="left">深圳</td>
 </tr>
 <tr>
-<td style="text-align:left">10001</td>
-<td style="text-align:left">深圳</td>
+<td align="left">10001</td>
+<td align="left">深圳</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>1、先对该表出行记录汇总，计算出每个id对应出行city的次数；</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT id, city, count(*) AS ctime FROM travel GROUP BY id, city </span><br></pre></td></tr></table></figure>
 <p>2、对步骤1中的出行次数进行排序；</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT t1.id, t1.city, ctime, ROW_NUMBER() over ( PARTITION BY t1.id ORDER BY ctime DESC ) AS rank FROM</span><br><span class="line"></span><br><span class="line">  (SELECT id, city, count(*) AS ctime FROM travel GROUP BY id, city ) AS t1 </span><br></pre></td></tr></table></figure>
 <p>3、取出top 1。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">SELECT t2.id, t2.city FROM (</span><br><span class="line"></span><br><span class="line">  SELECT t1.id, t1.city, ctime, ROW_NUMBER() over ( PARTITION BY t1.id ORDER BY ctime DESC ) AS rank FROM</span><br><span class="line"></span><br><span class="line">  (SELECT id, city, count(*) AS ctime FROM travel GROUP BY id, city ) AS t1 </span><br><span class="line"></span><br><span class="line">) AS t2</span><br><span class="line"></span><br><span class="line">WHERE t2.rank &#x3D; 1</span><br><span class="line"></span><br><span class="line">;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;</span><br><span class="line"></span><br><span class="line">WITH t2 AS (   </span><br><span class="line">	WITH t1 AS (</span><br><span class="line">    </span><br><span class="line">	SELECT id, city, count(*) AS ctime FROM travel GROUP BY id, city </span><br><span class="line">	) </span><br><span class="line">	</span><br><span class="line">    SELECT t1.id,	t1.city, ctime, ROW_NUMBER() over ( PARTITION BY t1.id ORDER BY ctime DESC ) AS rank FROM t1</span><br><span class="line">	) </span><br><span class="line"></span><br><span class="line">	SELECT t2.id,	t2.city FROM t2 WHERE	t2.rank &#x3D; 1</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><div class="table-container">
-<table>
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><table>
 <thead>
 <tr>
 <th>id</th>
 <th>city</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>10000</td>
 <td>广州</td>
 </tr>
@@ -418,25 +447,29 @@
 <td>10001</td>
 <td>深圳</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="关于排序"><a href="#关于排序" class="headerlink" title="关于排序"></a>关于排序</h4><p>Rank()：可查询出并列第一，是跳跃查询；两个第一名下来就是第三名；</p>
 <p>Row_number()：是没有重复值的排序（即使两条记录相等也是不重复的），可以利用它来实现分页；</p>
 <p>dense_rank()：连续排序，两个第二名仍然跟着第三名。</p>
 <h4 id="关于group-by和over-partition-by的区别"><a href="#关于group-by和over-partition-by的区别" class="headerlink" title="关于group by和over partition by的区别"></a>关于group by和over partition by的区别</h4><p>group by分组汇总后改变表的行数，一行只有一个类别；</p>
 <p>而over partition by分组汇总不会减少原表中的行数。</p>
-<h2 id="数据仓库的层"><a href="#数据仓库的层" class="headerlink" title="数据仓库的层"></a>数据仓库的层</h2><p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000016199946">https://segmentfault.com/a/1190000016199946</a></p>
+<h2 id="数据仓库的层"><a href="#数据仓库的层" class="headerlink" title="数据仓库的层"></a>数据仓库的层</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>1、<strong>数仓是什么，其实就是存储数据，体现历史变化的一个数据仓库。</strong>因为互联网时代到来，基于数据量的大小，分为了传统数仓和现代数仓。</p>
+<p>2、传统数仓，使用传统的关系型数据库进行数据存储，因为关系型数据库本身可以使用SQL以及函数等做数据分析。所以把数据存储和数据分析功能集合为一体，加上一个可视化界面，就能从数据存储，数据分析，数据展示完整方案.</p>
+<p>3、到了互联网时代，由于上网用户剧增，特别是移动互联网时代，海量的网络设备，导致了海量的数据产生，企业需要也希望从这些海量数据中挖掘有效信息，如行为日志数据，业务数据，爬虫数据等等中提炼出有价值信息。但传统的关系型数据库由于本身技术限制，无法很好承担这么大数据量存储和分析的任务，现代大数据技术应运而生.而数仓就是做这些海量数据存储的地方。</p>
+<h3 id="经典数仓分层架构"><a href="#经典数仓分层架构" class="headerlink" title="经典数仓分层架构"></a>经典数仓分层架构</h3><p>ADS</p>
+<p>DWS           DIM</p>
+<p>DWD</p>
+<p>ODS</p>
+<p>其实数仓数据分层，就跟代码分层一样。如果所有数据都放在一层，就跟代码都放在一个文件，肯定是可以运行的，但带来的问题就是阅读性差,复用性和维护性降低。</p>
+<blockquote>
+<p>数仓的分层也是一样，每一层都有自己的职责，同时都是基于下一层或者下面多层做数据处理之后的结果。<br>这样一来，<strong>最上层就是ADS，数据应用层</strong>，当更上层需要数据时，不需要再从最底层进行数据计算，可以复用中间层级的现有结果，可以提升数据处理速度。<br>同样的，因为更上层数据都是从下一层或者下面多层数据处理而来，这样就算下层数据丢失，也不会造成企业所有数据毁灭性灾难，算是一种数据冗余机制，不过更上层数据一般做了数据处理，提升了维度信息。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/xiaohu21/article/details/109149589">https://blog.csdn.net/xiaohu21/article/details/109149589</a></p>
 <h2 id="谈谈贝叶斯概率"><a href="#谈谈贝叶斯概率" class="headerlink" title="谈谈贝叶斯概率"></a>谈谈贝叶斯概率</h2><h3 id="贝叶斯公式"><a href="#贝叶斯公式" class="headerlink" title="贝叶斯公式"></a>贝叶斯公式</h3><p>贝叶斯定理由英国数学家贝叶斯 (Thomas Bayes 1702-1761) 发展，用来描述两个条件概率之间的关系，比如 $P(A|B)$ 和$P(B|A)$。主要用于文本分类。</p>
 <p>（1）条件概率公式</p>
-<p>设A，B是两个事件，且$P(B)&gt;0$，则在事件B发生的条件下，事件A发生的条件概率为：</p>
-<script type="math/tex; mode=display">
-P(A|B) = \frac{P(AB)}{P(B)}</script><p>（2）由条件概率公式得出乘法公式：$P(AB)=P(A|B)P(B)=P(B|A)P(A)$</p>
-<p>也可变形为：</p>
-<script type="math/tex; mode=display">
-P(A|B) = \frac{P(B|A) · P(A)} {P(B)}</script><p>也可以这样来看贝叶斯公式：</p>
-<script type="math/tex; mode=display">
-P(A|B) = P(A) · \frac{P(B|A)} {P(B)}</script><ul>
+<p>设A，B是两个事件，且$P(B)&gt;0$，则在事件B发生的条件下，事件A发生的条件概率为：<br>$$<br>P(A|B) = \frac{P(AB)}{P(B)}<br>$$<br>（2）由条件概率公式得出乘法公式：$P(AB)=P(A|B)P(B)=P(B|A)P(A)$</p>
+<p>也可变形为：<br>$$<br>P(A|B) = \frac{P(B|A) · P(A)} {P(B)}<br>$$<br>也可以这样来看贝叶斯公式：<br>$$<br>P(A|B) = P(A) · \frac{P(B|A)} {P(B)}<br>$$</p>
+<ul>
 <li><p>第一部分是先验概率$P(A)$，后一部分是“调整因子”。</p>
 </li>
 <li><p>P(A) 称为”先验概率”，即在B事件发生之前，我们对A事件概率的一个判断。</p>
@@ -448,12 +481,8 @@ P(A|B) = P(A) · \frac{P(B|A)} {P(B)}</script><ul>
 </ul>
 <p>（3）全概率公式：</p>
 <p>全概率公式的意义在于，当直接计算P(A)较为困难，而$P(B_i)$ 和$P(A|B_i)(i=1,2,\cdots)$的计算较为简单时，可以利用全概率公式计算$P(A)$。将事件A分解成几个小事件，<code>通过求小事件的概率</code>，然后相加从而求得事件A的概率。而将事件A进行分割的时候，不是直接对A进行分割，而是先找到样本空间Ω的一个个划分$B_1,B_2,\cdots,B_n$，这样事件A就被事件$AB_1,AB_2,\cdots,AB_n$分解成了n 部分。</p>
-<p>即$A=AB_1+AB_2+…+AB_n$, 每一个$B_i$发生都可能导致A发生相应的概率是$P(A|B_i)$ ，由加法公式得：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-P(A) &= P(AB_1)+P(AB_2)+\cdots+P(AB_n)\\
-   &= P(A|B_1)·P(B_1)+P(A|B_2)·P(B_2)+\cdots+P(A|B_n)·P(B_n)
-\end{align}</script><h3 id="垃圾邮件问题"><a href="#垃圾邮件问题" class="headerlink" title="垃圾邮件问题"></a>垃圾邮件问题</h3><p>垃圾邮件曾经是一个令人头痛的问题，长期困扰着邮件运营商和用户。据统计，用户收到的电子邮件中80%以上是垃圾邮件。</p>
+<p>即$A=AB_1+AB_2+…+AB_n$, 每一个$B_i$发生都可能导致A发生相应的概率是$P(A|B_i)$ ，由加法公式得：<br>$$<br>\begin{align}<br>P(A) &amp;= P(AB_1)+P(AB_2)+\cdots+P(AB_n)\<br>   &amp;= P(A|B_1)·P(B_1)+P(A|B_2)·P(B_2)+\cdots+P(A|B_n)·P(B_n)<br>\end{align}<br>$$</p>
+<h3 id="垃圾邮件问题"><a href="#垃圾邮件问题" class="headerlink" title="垃圾邮件问题"></a>垃圾邮件问题</h3><p>垃圾邮件曾经是一个令人头痛的问题，长期困扰着邮件运营商和用户。据统计，用户收到的电子邮件中80%以上是垃圾邮件。</p>
 <p>传统的垃圾邮件过滤方法，主要有”关键词法”和”校验码法”等。</p>
 <p>关键词法的过滤依据是特定的词语，（如垃圾邮件的关键词：“发票”，“贷款”，“利率”，“中奖”，“办证”，“抽奖”，“号码”，“钱”，“款”，“幸运”……等等。）但这种方法效果很不理想，而且容易规避。一是正常邮件中也可能有这些关键词，非常容易误判。二是将关键词进行变形，如“代！开-发/票”，就很容易规避关键词过滤，如果将关键词的各种变形都找出来过滤，那是无穷无尽的，而且更容易误判正常邮件。</p>
 <p>校验码法则是计算邮件文本的校验码，再与已知的垃圾邮件进行对比。它们的识别效果都不理想，而且很容易规避。</p>
@@ -462,16 +491,10 @@ P(A) &= P(AB_1)+P(AB_2)+\cdots+P(AB_n)\\
 <li>贝叶斯过滤器的使用过程</li>
 </ul>
 <p>现在我们收到一封新邮件，我们假定它是 正常邮件 和 垃圾邮件的概率各是50%，即：</p>
-<script type="math/tex; mode=display">
-P(正常) = P(垃圾) =50\%</script><p>然后，对这封新邮件的内容进行解析，发现其中含有“发票”这个词，那么这封邮件属于垃圾邮件的概率提高到多少？其实就是计算一个条件概率，在有“发票”词语的条件下，邮件是垃圾邮件的概率：P(垃圾|发票)。直接计算肯定是无法计算了，这时要用到贝叶斯定理：</p>
-<script type="math/tex; mode=display">
-P(垃圾|发票) = \frac{P(发票|垃圾) · P(垃圾)} {P(发票)}</script><p>根据全概率公式：</p>
-<script type="math/tex; mode=display">
-P(发票)=P(发票|垃圾)⋅P(垃圾)+P(发票|正常)⋅P(正常)</script><p>所以：</p>
-<script type="math/tex; mode=display">
-P(垃圾|发票) = \frac{P(发票|垃圾) · P(垃圾)} {P(发票)=P(发票|垃圾)⋅P(垃圾)+P(发票|正常)⋅P(正常)}</script><p>其中，P(发票|垃圾) 表示所有垃圾邮件中出现“发票”的概率，我们假设100封垃圾邮件中有5封包含“发票”这个词，那么这个概率是5%。P(发票|正常) 表示所有正常邮件中出现“发票”的概率，我们假设1000封正常邮件中有1封包含“发票”这个词，那么这个概率是0.1%。于是：</p>
-<script type="math/tex; mode=display">
-P(垃圾|发票)= \frac{5\%×50\%} {5\%×50\% +0.1\%×50\%}=98\%</script><p>因此，这封新邮件是垃圾邮件的概率是98%。从贝叶斯思维的角度，这个“发票”推断能力很强，直接将垃圾邮件50%的概率提升到98%了。那么，我们是否就此能给出结论：这是封垃圾邮件？</p>
+<p>$$<br>P(正常) = P(垃圾) =50%<br>$$<br>然后，对这封新邮件的内容进行解析，发现其中含有“发票”这个词，那么这封邮件属于垃圾邮件的概率提高到多少？其实就是计算一个条件概率，在有“发票”词语的条件下，邮件是垃圾邮件的概率：P(垃圾|发票)。直接计算肯定是无法计算了，这时要用到贝叶斯定理：<br>$$<br>P(垃圾|发票) = \frac{P(发票|垃圾) · P(垃圾)} {P(发票)}<br>$$<br>根据全概率公式：<br>$$<br>P(发票)=P(发票|垃圾)⋅P(垃圾)+P(发票|正常)⋅P(正常)<br>$$</p>
+<p>所以：<br>$$<br>P(垃圾|发票) = \frac{P(发票|垃圾) · P(垃圾)} {P(发票)=P(发票|垃圾)⋅P(垃圾)+P(发票|正常)⋅P(正常)}<br>$$<br>其中，P(发票|垃圾) 表示所有垃圾邮件中出现“发票”的概率，我们假设100封垃圾邮件中有5封包含“发票”这个词，那么这个概率是5%。P(发票|正常) 表示所有正常邮件中出现“发票”的概率，我们假设1000封正常邮件中有1封包含“发票”这个词，那么这个概率是0.1%。于是：</p>
+<p>$$<br>P(垃圾|发票)= \frac{5%×50%} {5%×50% +0.1%×50%}=98%<br>$$</p>
+<p>因此，这封新邮件是垃圾邮件的概率是98%。从贝叶斯思维的角度，这个“发票”推断能力很强，直接将垃圾邮件50%的概率提升到98%了。那么，我们是否就此能给出结论：这是封垃圾邮件？</p>
 <p>根据以上的“发票”关键词，我们不能给出结论说这是一封垃圾邮件。这里还有2个核心问题没有解决：</p>
 <ul>
 <li><p>（1）P(发票|垃圾) 和 P(发票|正常)是我们假定的，怎样实际计算它们？</p>
@@ -487,25 +510,8 @@ P(垃圾|发票)= \frac{5\%×50\%} {5\%×50\% +0.1\%×50\%}=98\%</script><p>因�
 <h3 id="联合概率的计算"><a href="#联合概率的计算" class="headerlink" title="联合概率的计算"></a>联合概率的计算</h3><p>对于<strong>误判问题</strong>，可以采用“多特征判断”的思路，就像猫和老虎，如何单看颜色，花纹都不好判断，那就颜色、花纹、大小、体重等一起来判断。</p>
 <p>同理，对于“发票”不好来判断，那就联合其他词语一起来判断，如果这封邮件中除了“发票”，还有“常年”，“代开”，“各种”，“行业”，“绝对正规”，“税点低”等词语，那么就通过这些词语联合认定这封邮件是垃圾邮件。</p>
 <p>在基本方法计算的基础上，选取前n个（例如n=3，实际应用中是15个词/字以上）概率最高的词，假设为：“发票”，“常年”，“代开”。然后计算其联合条件概率。即在这3个词同时出现的条件下，这是一封垃圾邮件的概率。</p>
-<p>即：P(垃圾|发票;常年;代开)，这时仍要用到贝叶斯定理：</p>
-<script type="math/tex; mode=display">
-P(垃圾|发票；常年；代开) = \frac {P(发票；常年；代开|垃圾)·P(垃圾)}{P(发票；常年；代开)}</script><p>这里假设：所有词语彼此之间是不相关的（严格说这个假设不成立；实际上各词语之间不可能完全没有相关性，但可以忽略）。</p>
-<p>所以：</p>
-<script type="math/tex; mode=display">
-P(垃圾|发票；常年；代开) = \frac{P(发票|垃圾)·P(常年|垃圾)·P(代开|垃圾)·P(垃圾)}{P(发票；常年；代开)}</script><p>由于上式中右边的分母不太好求。我们可以求这封邮件是正常邮件的概率：</p>
-<script type="math/tex; mode=display">
-P(正常|发票；常年；代开)=\frac{P(发票|正常)·P(常年|正常)·P(代开|正常)·P(正常)}{P(发票；常年；代开)}</script><p>上面两个式子相除，得到：</p>
-<script type="math/tex; mode=display">
-\frac{P(垃圾|发票；常年；代开)}{P(正常|发票；常年；代开)}=\frac{P(发票|垃圾)·P(常年|垃圾)·P(代开|垃圾)·P(垃圾)}{P(发票|正常)·P(常年|正常)·P(代开|正常)·P(正常)}</script><p>即在这3个词同时出现的情况下，属于垃圾邮件的概率与属于正常邮件的概率的比值。上边式子中的每一项，都可以用前面介绍的统计学方法得到。 假设：</p>
-<script type="math/tex; mode=display">
-\begin{align}
-P(常年|垃圾)&=5\% \\
-P(常年|正常)&=5\% \\
-P(代开|垃圾)&=5\% \\
-P(发票|垃圾)&=5\% \\
-P(代开|正常)&=0.1\% \\
-P(发票|正常)&=0.1\% \\
-\end{align}</script><p>那么上式比值为2500，即多个词（或字）联合认定，这封邮件是垃圾邮件的概率是正常邮件概率的2500倍，可以确定是垃圾邮件了。</p>
+<p>即：P(垃圾|发票;常年;代开)，这时仍要用到贝叶斯定理：<br>$$<br>P(垃圾|发票；常年；代开) = \frac {P(发票；常年；代开|垃圾)·P(垃圾)}{P(发票；常年；代开)}<br>$$<br>这里假设：所有词语彼此之间是不相关的（严格说这个假设不成立；实际上各词语之间不可能完全没有相关性，但可以忽略）。</p>
+<p>所以：<br>$$<br>P(垃圾|发票；常年；代开) = \frac{P(发票|垃圾)·P(常年|垃圾)·P(代开|垃圾)·P(垃圾)}{P(发票；常年；代开)}<br>$$<br>由于上式中右边的分母不太好求。我们可以求这封邮件是正常邮件的概率：<br>$$<br>P(正常|发票；常年；代开)=\frac{P(发票|正常)·P(常年|正常)·P(代开|正常)·P(正常)}{P(发票；常年；代开)}<br>$$<br>上面两个式子相除，得到：<br>$$<br>\frac{P(垃圾|发票；常年；代开)}{P(正常|发票；常年；代开)}=\frac{P(发票|垃圾)·P(常年|垃圾)·P(代开|垃圾)·P(垃圾)}{P(发票|正常)·P(常年|正常)·P(代开|正常)·P(正常)}<br>$$<br>即在这3个词同时出现的情况下，属于垃圾邮件的概率与属于正常邮件的概率的比值。上边式子中的每一项，都可以用前面介绍的统计学方法得到。 假设：<br>$$<br>\begin{align}<br>P(常年|垃圾)&amp;=5% \<br>P(常年|正常)&amp;=5% \<br>P(代开|垃圾)&amp;=5% \<br>P(发票|垃圾)&amp;=5% \<br>P(代开|正常)&amp;=0.1% \<br>P(发票|正常)&amp;=0.1% \<br>\end{align}<br>$$<br>那么上式比值为2500，即多个词（或字）联合认定，这封邮件是垃圾邮件的概率是正常邮件概率的2500倍，可以确定是垃圾邮件了。</p>
 <h2 id="讲讲AC自动机算法，与KMP的区别"><a href="#讲讲AC自动机算法，与KMP的区别" class="headerlink" title="讲讲AC自动机算法，与KMP的区别"></a>讲讲AC自动机算法，与KMP的区别</h2><h2 id="讲讲stacking，如果stacking若干模型后没有提升，可能的原因有哪些"><a href="#讲讲stacking，如果stacking若干模型后没有提升，可能的原因有哪些" class="headerlink" title="讲讲stacking，如果stacking若干模型后没有提升，可能的原因有哪些"></a>讲讲stacking，如果stacking若干模型后没有提升，可能的原因有哪些</h2><p><strong>Reference:</strong></p>
 <p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/lyb3b3b/article/details/74993327">Python3中的bytes和str类型</a></p>
 <p>2、<a target="_blank" rel="noopener" href="https://blog.csdn.net/LonelyRoamer/article/details/7670869">数据在计算机中的存储形式和运算</a></p>
@@ -664,7 +670,7 @@ P(发票|正常)&=0.1\% \\
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%88%E8%B0%88python2%E5%92%8Cpython3%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">谈谈python2和python3的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">字符编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">字符串类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%A9%E8%BF%9B%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">缩进格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#print-exec%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">print, exec的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#True%E5%92%8CFalse%E7%94%A8%E6%B3%95"><span class="nav-number">1.5.</span> <span class="nav-text">True和False用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E6%95%B0%E5%92%8C%E9%99%A4%E6%B3%95%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">1.6.</span> <span class="nav-text">小数和除法的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E6%95%B0%E5%92%8C%E9%99%A4%E6%B3%95%E7%9A%84%E7%94%A8%E6%B3%95-1"><span class="nav-number">1.7.</span> <span class="nav-text">小数和除法的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.8.</span> <span class="nav-text">比较运算符的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nonlocal"><span class="nav-number">1.9.</span> <span class="nav-text">nonlocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-number">1.10.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF%E5%8F%98%E9%87%8F%E5%80%BC%E5%8C%BA%E5%88%AB"><span class="nav-number">1.11.</span> <span class="nav-text">for循环变量值区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#round%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC%E5%8C%BA%E5%88%AB"><span class="nav-number">1.12.</span> <span class="nav-text">round函数返回值区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87input-%E8%A7%A3%E6%9E%90%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5"><span class="nav-number">1.13.</span> <span class="nav-text">通过input()解析用户输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8range%E5%92%8Cxrange"><span class="nav-number">1.14.</span> <span class="nav-text">迭代器range和xrange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5%E5%8F%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.15.</span> <span class="nav-text">语句变函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-number">1.16.</span> <span class="nav-text">数据传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E6%95%B0%E7%9B%B8%E9%99%A4"><span class="nav-number">1.17.</span> <span class="nav-text">两数相除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#print%E5%87%BD%E6%95%B0"><span class="nav-number">1.18.</span> <span class="nav-text">print函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E4%B8%80%E4%B8%AAdict%EF%BC%8C%E6%8C%89%E5%85%B6value%E5%80%BC%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">对于一个dict，按其value值进行排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">窗口函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0%E6%9C%89%E4%BB%A5%E4%B8%8B%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">窗口函数有以下功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">3.2.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">3.3.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">3.4.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.5.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%8E%92%E5%BA%8F"><span class="nav-number">3.5.1.</span> <span class="nav-text">关于排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Egroup-by%E5%92%8Cover-partition-by%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">3.5.2.</span> <span class="nav-text">关于group by和over partition by的区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E7%9A%84%E5%B1%82"><span class="nav-number">4.</span> <span class="nav-text">数据仓库的层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%88%E8%B0%88%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%A6%82%E7%8E%87"><span class="nav-number">5.</span> <span class="nav-text">谈谈贝叶斯概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%85%AC%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">贝叶斯公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E9%97%AE%E9%A2%98"><span class="nav-number">5.2.</span> <span class="nav-text">垃圾邮件问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%8E%86%E5%8F%B2%E8%B5%84%E6%96%99%E5%BA%93"><span class="nav-number">5.3.</span> <span class="nav-text">建立历史资料库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">5.4.</span> <span class="nav-text">联合概率的计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%B2%E8%AE%B2AC%E8%87%AA%E5%8A%A8%E6%9C%BA%E7%AE%97%E6%B3%95%EF%BC%8C%E4%B8%8EKMP%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">6.</span> <span class="nav-text">讲讲AC自动机算法，与KMP的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%B2%E8%AE%B2stacking%EF%BC%8C%E5%A6%82%E6%9E%9Cstacking%E8%8B%A5%E5%B9%B2%E6%A8%A1%E5%9E%8B%E5%90%8E%E6%B2%A1%E6%9C%89%E6%8F%90%E5%8D%87%EF%BC%8C%E5%8F%AF%E8%83%BD%E7%9A%84%E5%8E%9F%E5%9B%A0%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-number">7.</span> <span class="nav-text">讲讲stacking，如果stacking若干模型后没有提升，可能的原因有哪些</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%88%E8%B0%88python2%E5%92%8Cpython3%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">谈谈python2和python3的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81"><span class="nav-number">1.1.</span> <span class="nav-text">字符编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">字符串类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%A9%E8%BF%9B%E6%A0%BC%E5%BC%8F"><span class="nav-number">1.3.</span> <span class="nav-text">缩进格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#print-exec%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">print, exec的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#True%E5%92%8CFalse%E7%94%A8%E6%B3%95"><span class="nav-number">1.5.</span> <span class="nav-text">True和False用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E6%95%B0%E5%92%8C%E9%99%A4%E6%B3%95%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">1.6.</span> <span class="nav-text">小数和除法的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E6%95%B0%E5%92%8C%E9%99%A4%E6%B3%95%E7%9A%84%E7%94%A8%E6%B3%95-1"><span class="nav-number">1.7.</span> <span class="nav-text">小数和除法的用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.8.</span> <span class="nav-text">比较运算符的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nonlocal"><span class="nav-number">1.9.</span> <span class="nav-text">nonlocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-number">1.10.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#for%E5%BE%AA%E7%8E%AF%E5%8F%98%E9%87%8F%E5%80%BC%E5%8C%BA%E5%88%AB"><span class="nav-number">1.11.</span> <span class="nav-text">for循环变量值区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#round%E5%87%BD%E6%95%B0%E8%BF%94%E5%9B%9E%E5%80%BC%E5%8C%BA%E5%88%AB"><span class="nav-number">1.12.</span> <span class="nav-text">round函数返回值区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87input-%E8%A7%A3%E6%9E%90%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5"><span class="nav-number">1.13.</span> <span class="nav-text">通过input()解析用户输入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8range%E5%92%8Cxrange"><span class="nav-number">1.14.</span> <span class="nav-text">迭代器range和xrange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5%E5%8F%98%E5%87%BD%E6%95%B0"><span class="nav-number">1.15.</span> <span class="nav-text">语句变函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-number">1.16.</span> <span class="nav-text">数据传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E6%95%B0%E7%9B%B8%E9%99%A4"><span class="nav-number">1.17.</span> <span class="nav-text">两数相除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#print%E5%87%BD%E6%95%B0"><span class="nav-number">1.18.</span> <span class="nav-text">print函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E4%BA%8E%E4%B8%80%E4%B8%AAdict%EF%BC%8C%E6%8C%89%E5%85%B6value%E5%80%BC%E8%BF%9B%E8%A1%8C%E6%8E%92%E5%BA%8F"><span class="nav-number">2.</span> <span class="nav-text">对于一个dict，按其value值进行排序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">窗口函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0%E6%9C%89%E4%BB%A5%E4%B8%8B%E5%8A%9F%E8%83%BD%EF%BC%9A"><span class="nav-number">3.1.</span> <span class="nav-text">窗口函数有以下功能：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">3.2.</span> <span class="nav-text">题目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%9D%E8%B7%AF"><span class="nav-number">3.3.</span> <span class="nav-text">思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C"><span class="nav-number">3.4.</span> <span class="nav-text">结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.5.</span> <span class="nav-text">总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E6%8E%92%E5%BA%8F"><span class="nav-number">3.5.1.</span> <span class="nav-text">关于排序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E4%BA%8Egroup-by%E5%92%8Cover-partition-by%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">3.5.2.</span> <span class="nav-text">关于group by和over partition by的区别</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E7%9A%84%E5%B1%82"><span class="nav-number">4.</span> <span class="nav-text">数据仓库的层</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">4.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E6%95%B0%E4%BB%93%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84"><span class="nav-number">4.2.</span> <span class="nav-text">经典数仓分层架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%88%E8%B0%88%E8%B4%9D%E5%8F%B6%E6%96%AF%E6%A6%82%E7%8E%87"><span class="nav-number">5.</span> <span class="nav-text">谈谈贝叶斯概率</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9D%E5%8F%B6%E6%96%AF%E5%85%AC%E5%BC%8F"><span class="nav-number">5.1.</span> <span class="nav-text">贝叶斯公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E9%82%AE%E4%BB%B6%E9%97%AE%E9%A2%98"><span class="nav-number">5.2.</span> <span class="nav-text">垃圾邮件问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%BA%E7%AB%8B%E5%8E%86%E5%8F%B2%E8%B5%84%E6%96%99%E5%BA%93"><span class="nav-number">5.3.</span> <span class="nav-text">建立历史资料库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%94%E5%90%88%E6%A6%82%E7%8E%87%E7%9A%84%E8%AE%A1%E7%AE%97"><span class="nav-number">5.4.</span> <span class="nav-text">联合概率的计算</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%B2%E8%AE%B2AC%E8%87%AA%E5%8A%A8%E6%9C%BA%E7%AE%97%E6%B3%95%EF%BC%8C%E4%B8%8EKMP%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">6.</span> <span class="nav-text">讲讲AC自动机算法，与KMP的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%B2%E8%AE%B2stacking%EF%BC%8C%E5%A6%82%E6%9E%9Cstacking%E8%8B%A5%E5%B9%B2%E6%A8%A1%E5%9E%8B%E5%90%8E%E6%B2%A1%E6%9C%89%E6%8F%90%E5%8D%87%EF%BC%8C%E5%8F%AF%E8%83%BD%E7%9A%84%E5%8E%9F%E5%9B%A0%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-number">7.</span> <span class="nav-text">讲讲stacking，如果stacking若干模型后没有提升，可能的原因有哪些</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -680,7 +686,7 @@ P(发票|正常)&=0.1\% \\
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -774,13 +780,13 @@ P(发票|正常)&=0.1\% \\
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">73k</span>
+    <span title="站点总字数">80k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:07</span>
+    <span title="站点阅读时长">1:13</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
