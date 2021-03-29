@@ -310,61 +310,59 @@
 <p>2）不减少原表的行数</p>
 <p>3）语法如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;窗口函数&gt; over (partition by &lt;用于分组的列名&gt;</span><br><span class="line">                order by &lt;用于排序的列名&gt;)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="聚合函数group-by与开窗函数over-partition-by的区别"><a href="#聚合函数group-by与开窗函数over-partition-by的区别" class="headerlink" title="聚合函数group by与开窗函数over partition by的区别"></a>聚合函数group by与开窗函数over partition by的区别</h3><p>group by分组汇总后改变表的行数，一行只有一个类别；</p>
 <p>而over partition by分组汇总后不会减少原表中的行数。</p>
 <h3 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h3><p>若一张表里面记录了一些用户的ID和其出行的城市信息，写一条SQL输出他出行最高频次的那条记录，表如下。</p>
-<div class="table-container">
 <table>
 <thead>
 <tr>
-<th style="text-align:left">id</th>
-<th style="text-align:left">city</th>
+<th align="left">id</th>
+<th align="left">city</th>
 </tr>
 </thead>
-<tbody>
-<tr>
-<td style="text-align:left">10000</td>
-<td style="text-align:left">广州</td>
+<tbody><tr>
+<td align="left">10000</td>
+<td align="left">广州</td>
 </tr>
 <tr>
-<td style="text-align:left">10000</td>
-<td style="text-align:left">广州</td>
+<td align="left">10000</td>
+<td align="left">广州</td>
 </tr>
 <tr>
-<td style="text-align:left">10000</td>
-<td style="text-align:left">深圳</td>
+<td align="left">10000</td>
+<td align="left">深圳</td>
 </tr>
 <tr>
-<td style="text-align:left">10001</td>
-<td style="text-align:left">广州</td>
+<td align="left">10001</td>
+<td align="left">广州</td>
 </tr>
 <tr>
-<td style="text-align:left">10001</td>
-<td style="text-align:left">深圳</td>
+<td align="left">10001</td>
+<td align="left">深圳</td>
 </tr>
 <tr>
-<td style="text-align:left">10001</td>
-<td style="text-align:left">深圳</td>
+<td align="left">10001</td>
+<td align="left">深圳</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>1、先对该表出行记录汇总，计算出每个id对应出行city的次数；</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELECT id, city, count(*) AS ctime FROM travel GROUP BY id, city </span><br></pre></td></tr></table></figure>
 <p>2、对步骤1中的出行次数进行排序；</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT t1.id, t1.city, ctime, ROW_NUMBER() over ( PARTITION BY t1.id ORDER BY ctime DESC ) AS rank FROM</span><br><span class="line"></span><br><span class="line">  (SELECT id, city, count(*) AS ctime FROM travel GROUP BY id, city ) AS t1 </span><br></pre></td></tr></table></figure>
 <p>3、取出top 1。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SELECT t2.id, t2.city FROM (</span><br><span class="line"></span><br><span class="line">  SELECT t1.id, t1.city, ctime, ROW_NUMBER() over ( PARTITION BY t1.id ORDER BY ctime DESC ) AS rank FROM</span><br><span class="line"></span><br><span class="line">  (SELECT id, city, count(*) AS ctime FROM travel GROUP BY id, city ) AS t1 </span><br><span class="line"></span><br><span class="line">) AS t2</span><br><span class="line"></span><br><span class="line">WHERE t2.rank &#x3D; 1</span><br></pre></td></tr></table></figure>
-<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><div class="table-container">
-<table>
+
+
+<h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><table>
 <thead>
 <tr>
 <th>id</th>
 <th>city</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>10000</td>
 <td>广州</td>
 </tr>
@@ -372,9 +370,7 @@
 <td>10001</td>
 <td>深圳</td>
 </tr>
-</tbody>
-</table>
-</div>
+</tbody></table>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="关于排序"><a href="#关于排序" class="headerlink" title="关于排序"></a>关于排序</h4><p>Rank()：可查询出并列第一，是跳跃查询；两个第一名下来就是第三名；</p>
 <p>Row_number()：是没有重复值的排序（即使两条记录相等也是不重复的），可以利用它来实现分页；</p>
 <p>dense_rank()：连续排序，两个第二名仍然跟着第三名。</p>

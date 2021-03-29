@@ -32,8 +32,8 @@
 <meta property="og:image" content="https://marchboy.github.io/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Standalone-cluster.png">
 <meta property="og:image" content="https://marchboy.github.io/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Yarn-Client.png">
 <meta property="og:image" content="https://marchboy.github.io/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Yarn-cluster.png">
-<meta property="og:image" content="https://marchboy.github.io/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Spark资源调度和任务调度流程.png">
-<meta property="og:image" content="https://marchboy.github.io/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/图解Spark资源调度和任务调度流程.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Spark%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%E5%92%8C%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/%E5%9B%BE%E8%A7%A3Spark%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%E5%92%8C%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B.png">
 <meta property="article:published_time" content="2020-10-11T02:48:43.000Z">
 <meta property="article:modified_time" content="2021-03-11T17:01:19.602Z">
 <meta property="article:author" content="进军要努力呀">
@@ -316,22 +316,22 @@
         <h2 id="Spark任务提交方式"><a href="#Spark任务提交方式" class="headerlink" title="Spark任务提交方式"></a>Spark任务提交方式</h2><h3 id="Standalone模式两种提交任务方式"><a href="#Standalone模式两种提交任务方式" class="headerlink" title="Standalone模式两种提交任务方式"></a>Standalone模式两种提交任务方式</h3><h4 id="Standalone-client提交方式"><a href="#Standalone-client提交方式" class="headerlink" title="Standalone-client提交方式"></a>Standalone-client提交方式</h4><p><strong>提交命令：</strong></p>
 <p><code>...</code>代表spark安装目录</p>
 <blockquote>
-<p>./spark-submit —master spark://hadoop101:7077 —class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
-<p>./spark-submit —master spark://hadoop101:7077 —depoly-mode client —class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
+<p>./spark-submit –master spark://hadoop101:7077 –class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
+<p>./spark-submit –master spark://hadoop101:7077 –depoly-mode client –class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
 </blockquote>
 <p><strong>执行流程：</strong><br>1、在客户端提交Spark应用程序，会在客户端启动Driver。<br>2、客户端向Master申请资源，Master找到资源返回。<br>3、Driver向worker节点发送task，监控task执行，回收结果。</p>
 <p><strong>执行原理图解：</strong></p>
-<p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Standalone-client.png" alt></p>
+<p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Standalone-client.png"></p>
 <p><strong>总结：</strong><br>1、client方式提交任务，在客户端提交多个application，客户端会为每个application都启动一个Driver， Driver与集群Worker节点有大量通信，这样会造成客户端网卡流量激增。</p>
 <p>2、在客户端可以看到task执行情况和计算结果。</p>
 <p>3、client方式提交任务适用于程序测试，<code>不适用于真实生产环境</code>。</p>
 <h4 id="Standalone-cluster提交任务方式"><a href="#Standalone-cluster提交任务方式" class="headerlink" title="Standalone-cluster提交任务方式"></a>Standalone-cluster提交任务方式</h4><p><strong>提交命令：</strong></p>
 <blockquote>
-<p>./spark-submit —master spark://hadoop101:7077 —depoly-mode cluster —class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
+<p>./spark-submit –master spark://hadoop101:7077 –depoly-mode cluster –class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
 </blockquote>
 <p><strong>执行流程：</strong><br>1、客户端提交application，客户端首先向Master申请启动Driver。<br>2、Master收到请求之后，随机在一台Worker节点上启动Driver。<br>3、Driver启动之后，向Master申请资源，Master返回资源。<br>4、Driver发送task，监控task执行，回收结果。</p>
 <p><strong>执行原理图解:</strong></p>
-<p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Standalone-cluster.png" alt></p>
+<p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Standalone-cluster.png"></p>
 <p><strong>总结：</strong><br>cluster方式提交任务，Driver在集群中的<code>随机</code>一台Worker节点上启动，分散了client方式的网卡流量激增问题。 cluster方式<code>适用于真实生产环境</code>，在客户端看不到task执行情况和执行结果，要去WEBUI中去查看。</p>
 <h4 id="Driver的功能"><a href="#Driver的功能" class="headerlink" title="Driver的功能"></a>Driver的功能</h4><p>在standalone模式中Driver的功能</p>
 <p>1、发送task</p>
@@ -339,9 +339,9 @@
 <p>3、申请资源  </p>
 <h3 id="yarn模式两种提交任务方式"><a href="#yarn模式两种提交任务方式" class="headerlink" title="yarn模式两种提交任务方式"></a>yarn模式两种提交任务方式</h3><h4 id="yarn-client提交任务方式"><a href="#yarn-client提交任务方式" class="headerlink" title="yarn-client提交任务方式"></a>yarn-client提交任务方式</h4><p><strong>提交命令：</strong></p>
 <blockquote>
-<p>./spark-submit —master yarn  —class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
-<p>./spark-submit —master yarn-client —class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
-<p>./spark-submit —master yarn —depoly-mode client —class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
+<p>./spark-submit –master yarn  –class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
+<p>./spark-submit –master yarn-client –class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
+<p>./spark-submit –master yarn –depoly-mode client –class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
 </blockquote>
 <p><strong>执行流程：</strong></p>
 <ol>
@@ -355,13 +355,13 @@
 <li>Driver发送task到Executor执行，监控task的执行并回收结果   </li>
 </ol>
 <p><strong>执行原理图解：</strong></p>
-<p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Yarn-Client.png" alt></p>
+<p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Yarn-Client.png"></p>
 <p><strong>总结：</strong></p>
-<p>Yarn-client模式提交任务，Driver在客户端启动，当提交多分application，每个application的Driver都会在客户端启动，也会有网卡流量激增问题，这种模式适用于程序测试，<strong><code>不适用与生产环境</code></strong>，在客户端可以看到任务的执行和结果。</p>
+<p>Yarn-client模式提交任务，Driver在客户端启动，当提交多分application，每个application的Driver都会在客户端启动，也会有网卡流量激增问题，这种模式适用于程序测试，**<code>不适用与生产环境</code>**，在客户端可以看到任务的执行和结果。</p>
 <h4 id="Yarn-cluster提交任务方式"><a href="#Yarn-cluster提交任务方式" class="headerlink" title="Yarn-cluster提交任务方式"></a>Yarn-cluster提交任务方式</h4><p><strong>提交命令</strong></p>
 <blockquote>
-<p>./spark-submit —master yarn —depoly-mode cluster —class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
-<p>./spark-submit —master yarn-cluster —class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
+<p>./spark-submit –master yarn –depoly-mode cluster –class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
+<p>./spark-submit –master yarn-cluster –class org.apache.saprk.examples.SparkPi …/examlpes/jars/spark-examples_2.11-2.2.0.jar 100</p>
 </blockquote>
 <p><strong>执行原理图解</strong></p>
 <p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Yarn-cluster.png" alt="img"></p>
@@ -374,7 +374,7 @@
 <p>6、Executor启动之后会反向注册给ApplicationMaster(Driver)</p>
 <p>7、ApplicationMaster(Driver)发送task到Executor执行</p>
 <p><strong>总结</strong></p>
-<p>Yarn-cluster模式提交任务，使用于生产环境，AM(Driver)<strong><em>\</em>随机**</strong>在一台NM节点上启动，当提交多个application时，每个application的Driver会分散到集群中的NM中启动，相当于将Yarn-client模式的客户端网卡流量激增问题分散到集群中。在客户端看不到task执行和结果，要去WEBUI中查看。</p>
+<p>Yarn-cluster模式提交任务，使用于生产环境，AM(Driver)****随机****在一台NM节点上启动，当提交多个application时，每个application的Driver会分散到集群中的NM中启动，相当于将Yarn-client模式的客户端网卡流量激增问题分散到集群中。在客户端看不到task执行和结果，要去WEBUI中查看。</p>
 <h4 id="Application功能"><a href="#Application功能" class="headerlink" title="Application功能"></a>Application功能</h4><p>在Yarn模式下Application（Driver）的功能</p>
 <ol>
 <li>申请资源</li>
@@ -392,25 +392,25 @@
 <li>Job：包含恨到任务（Task）的并行计算，可以看作和action对应</li>
 <li>Stage：一个job会被拆分很多组任务，每组任务被称为Stage（就像MapReduce分为map task和reduce task一样）</li>
 </ol>
-<h3 id="Spark任务调度和资源调度"><a href="#Spark任务调度和资源调度" class="headerlink" title="Spark任务调度和资源调度"></a><strong>Spark任务调度和资源调度</strong></h3><h4 id="spark资源调度和任务调度流程"><a href="#spark资源调度和任务调度流程" class="headerlink" title="spark资源调度和任务调度流程"></a>spark资源调度和任务调度流程</h4><p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Spark资源调度和任务调度流程.png" alt="img"></p>
+<h3 id="Spark任务调度和资源调度"><a href="#Spark任务调度和资源调度" class="headerlink" title="Spark任务调度和资源调度"></a><strong>Spark任务调度和资源调度</strong></h3><h4 id="spark资源调度和任务调度流程"><a href="#spark资源调度和任务调度流程" class="headerlink" title="spark资源调度和任务调度流程"></a>spark资源调度和任务调度流程</h4><p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/Spark%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%E5%92%8C%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B.png" alt="img"></p>
 <p>启动集群后，Worker节点会向Master节点汇报资源情况，Master掌握了集群资源情况。</p>
 <p>当Spark提交一个Application后，根据RDD之间的依赖关系将Application形成一个DAG有向无环图。</p>
 <p>任务提交后，Spark会在Driver端创建两个对象：DAGScheduler和TaskScheduler，DAGScheduler是任务调度的高层调度器，是一个对象。DAGScheduler的主要作用就是将DAG根据RDD之间的宽窄依赖关系划分为一个个的Stage，然后将这些Stage以TaskSet的形式提交给TaskScheduler（TaskScheduler是任务调度的低层调度器，这里TaskSet其实就是一个集合，里面封装的就是一个个的task任务,也就是stage中的并行度task任务），TaskSchedule会遍历TaskSet集合，拿到每个task后会将task发送到计算节点Executor中去执行（其实就是发送到Executor中的线程池ThreadPool去执行）。</p>
 <blockquote>
-<p>task在Executor线程池中的运行情况会向TaskScheduler反馈，当task执行失败时，则由TaskScheduler负责重试，将task重新发送给Executor去执行，默认重试3次。如果重试3次依然失败，那么这个task所在的stage就失败了。stage失败了则由DAGScheduler来负责重试，重新发送TaskSet到TaskSchdeuler，Stage默认重试4次。如果重试4次以后依然失败，那么这个job就失败了。job失败了，Application就失败了。（<strong>*\</strong>*Job=多个stage，Stage=多个同种task**<em>**</em>）</p>
+<p>task在Executor线程池中的运行情况会向TaskScheduler反馈，当task执行失败时，则由TaskScheduler负责重试，将task重新发送给Executor去执行，默认重试3次。如果重试3次依然失败，那么这个task所在的stage就失败了。stage失败了则由DAGScheduler来负责重试，重新发送TaskSet到TaskSchdeuler，Stage默认重试4次。如果重试4次以后依然失败，那么这个job就失败了。job失败了，Application就失败了。（**<em>*</em>*Job=多个stage，Stage=多个同种task******）</p>
 </blockquote>
 <p>TaskScheduler不仅能重试失败的task,还会重试straggling（落后，缓慢）task（也就是执行速度比其他task慢太多的task）。如果有运行缓慢的task那么TaskScheduler会启动一个新的task来与这个运行缓慢的task执行相同的处理逻辑。两个task哪个先执行完，就以哪个task的执行结果为准。这就是Spark的推测执行机制。在Spark中推测执行默认是关闭的。推测执行可以通过spark.speculation属性来配置。</p>
 <p><strong>注意：</strong></p>
 <p>对于ETL(数据清洗)类型要入数据库的业务要关闭推测执行机制，这样就不会有重复的数据入库。</p>
 <p>如果遇到数据倾斜的情况，开启推测执行则有可能导致一直会有task重新启动处理相同的逻辑，任务可能一直处于处理不完的状态。</p>
 <p>推测执行机制默认是关闭的。</p>
-<h4 id="图解Spark资源调度和任务调度的流程"><a href="#图解Spark资源调度和任务调度的流程" class="headerlink" title="图解Spark资源调度和任务调度的流程"></a><strong>图解Spark资源调度和任务调度的流程</strong></h4><p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/图解Spark资源调度和任务调度流程.png" alt="img"></p>
+<h4 id="图解Spark资源调度和任务调度的流程"><a href="#图解Spark资源调度和任务调度的流程" class="headerlink" title="图解Spark资源调度和任务调度的流程"></a><strong>图解Spark资源调度和任务调度的流程</strong></h4><p><img src="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/%E5%9B%BE%E8%A7%A3Spark%E8%B5%84%E6%BA%90%E8%B0%83%E5%BA%A6%E5%92%8C%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6%E6%B5%81%E7%A8%8B.png" alt="img"></p>
 <h4 id="粗粒度资源申请和细粒度资源申请"><a href="#粗粒度资源申请和细粒度资源申请" class="headerlink" title="粗粒度资源申请和细粒度资源申请"></a>粗粒度资源申请和细粒度资源申请</h4><p><strong>粗粒度资源申请(Spark)</strong></p>
 <p>获取到所有资源后才开始任务，执行完所有任务后释放资源；任务执行速度快，但是资源就无法充分利用。</p>
 <p>在Application执行之前，将所有的资源申请完毕，当资源申请成功后，才会进行任务的调度，当所有的task执行完成后， 才会释放这部分资源。</p>
 <p><strong>优点</strong>：在Application执行之前，所有的资源都申请完毕，每一个task直接使用资源就可以了，不需要task在执行前自己去申请资源，task启动就快了，task执行快了，stage执行就快了，job就快了，application执行就快了。</p>
 <p><strong>缺点：</strong>直到最后一个task执行完成才会释放资源，集群的资源无法充分利用。</p>
-<p><strong>细粒度资源申请（MapReduce) </strong></p>
+<p>**细粒度资源申请（MapReduce) **</p>
 <p>执行时每一个task去提前获取资源，执行完就释放资源；资源的利用率高，但是这样执行的效率就慢</p>
 <p>Application执行之前不需要先去申请资源，而是直接执行，让job中的每一个task在执行前自己去申请资源，task执行完成就释放资源。</p>
 <p><strong>优点：</strong>集群的资源可以充分利用。</p>
