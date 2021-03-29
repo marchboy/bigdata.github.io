@@ -310,55 +310,31 @@
       
         <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>主机：Windows 10<br>Hadoop：2.7.7<br>Java：1.8.0_241</p>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1、确认Java已经安装，并已经添加到环境变量中，测试方法：cmd中输入<code>java -version</code>，显示如下：</p>
-<img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/JavaVersion.png" style="zoom:80%;">
-
-
-
+<p><img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/JavaVersion.png" style="zoom:80%;"></p>
 <p>2、下载 <a target="_blank" rel="noopener" href="http://hadoop.apache.org/releases.html">hadoop binary</a>，解压后修改以下配置文件：</p>
 <p>1）hadoop-2.7.1/etc/hadoop/hadoop-env.cmd，把<code>JAVA_HOME</code>的值修改为本机上jdk的路径，注意路径上不能有空格，jdk装在<code>Program File</code>文件夹下的同学可以这么写：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 若JDK安装路径有空格</span></span><br><span class="line"><span class="comment"># set JAVA_HOME=C:\PROGRA~1\Java\jdk-9.0.1</span></span><br><span class="line"><span class="built_in">set</span> JAVA_HOME=D:\Programs\Java\jdk</span><br></pre></td></tr></table></figure>
 <p>此时在hadoop根目录下的bin文件夹下，你可以输入<code>hadoop version</code>查看你的hadoop版本了。</p>
-<img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/HadoopVersion.png" style="zoom:80%;">
-
-
-
+<p><img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/HadoopVersion.png" style="zoom:80%;"></p>
 <p>2）hadoop-2.7.5/etc/hadoop/core-site.xml</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">name</span>&gt;</span>fs.defaultFS<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">value</span>&gt;</span>hdfs://localhost:9000<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
 <p>3）hadoop-2.7.5/etc/hadoop/mapred-site.xml</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">name</span>&gt;</span>mapreduce.framework.name<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>yarn<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
 <p>4）hadoop-2.7.1/etc/hadoop/hdfs-site.xml</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.replication<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>1<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.namenode.name.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>/d:/software/hadoop-2.7.5/data/namenode<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">name</span>&gt;</span>dfs.datanode.data.dir<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">value</span>&gt;</span>/d:/software/hadoop-2.7.5/data/datanode<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>注意把<code>/d:/software/hadoop-2.7.5</code>替换成你的hadoop根目录</p>
 <p>5）hadoop-2.7.5/etc/hadoop/yarn-site.xml</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>mapreduce_shuffle<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">name</span>&gt;</span>yarn.nodemanager.aux-services.mapreduce.shuffle.class<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;<span class="name">value</span>&gt;</span>org.apache.hadoop.mapred.ShuffleHandler<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-
 <p>3、 启动hadoop</p>
 <p>1）在<code>bin</code>目录下输入<code>hadoop namenode -format</code>，应该能看到这样的结果：</p>
-<img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/HadoopFormat.png" style="zoom:80%;">
-
-
-
+<p><img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/HadoopFormat.png" style="zoom:80%;"></p>
 <p>2）在<code>sbin</code>目录下输入<code>start-all</code>，会有多个cmd窗口被创建，此时输入<code>jps</code>，应当看到如下结果：</p>
-<img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/StartAll.png" style="zoom:80%;">
-
-
-
+<p><img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/StartAll.png" style="zoom:80%;"></p>
 <p>有时会遇到DataNode创建失败的情况，删除根目录下data/datanode文件夹再<code>start-all</code>解决问题。</p>
 <p>3）在浏览器中输入<code>localhost:50070</code>应当能看到如下网页：</p>
-<img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/port50070.png" style="zoom:80%;">
-
-
-
+<p><img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/port50070.png" style="zoom:80%;"></p>
 <p>4）输入<code>localhost:8088</code>页面如下：</p>
-<img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/port8088.png" style="zoom:80%;">
-
-
-
+<p><img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/port8088.png" style="zoom:80%;"></p>
 <p>4、停止hadoop</p>
 <p>在<code>bin</code>目录下输入<code>stop-all</code></p>
 <h2 id="Wordcount运行"><a href="#Wordcount运行" class="headerlink" title="Wordcount运行"></a>Wordcount运行</h2><p>Hadoop基于HDFS(Hadoop Distributed File System)这一文件系统管理文件，使用指令<code>hadoop fs -op &lt;args&gt;</code>可以对HDFS进行操作。</p>
@@ -368,15 +344,11 @@
 <p>2）在本地创建两个文本文件，上传到<code>/input</code>文件夹：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -put *.txt /input</span><br></pre></td></tr></table></figure>
 <p>这样我们输入就准备好了，确认一下：</p>
-<img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/HadoopFS-ls.png" style="zoom:80%;">
-
-
-
+<p><img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/HadoopFS-ls.png" style="zoom:80%;"></p>
 <p>3）运行示例jar包：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.7.jar wordcount /input /output</span><br></pre></td></tr></table></figure>
 <p>一开始报错<code>createSymbolicError</code>，解决方案：运行-&gt;gpedit.msc-&gt;计算机配置-&gt;Windows设置-&gt;安全设置-&gt;本地策略-&gt;用户权限分配-&gt;创建符号链接，添加你的用户名。然后重启电脑，再运行就ok了。附上成功的截图：</p>
-<img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/port8088.png" style="zoom:80%;">
-
+<p><img src="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/port8088.png" style="zoom:80%;"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hadoop fs -ls &#x2F;output</span><br></pre></td></tr></table></figure>
 <p>输出文件在output/part-r-00000，通过命令<code>hadoop fs -cat /output/part-r-00000</code>查看内容。</p>
 <p><strong>Referencen:</strong></p>
@@ -555,7 +527,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -649,13 +621,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">80k</span>
+    <span title="站点总字数">142k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">1:13</span>
+    <span title="站点阅读时长">2:09</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
