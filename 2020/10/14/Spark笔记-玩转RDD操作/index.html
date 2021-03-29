@@ -316,10 +316,8 @@
 <p>3、RDD也即分布式对象集合，是一个<strong>只读</strong>的分区记录集合，每个RDD可以划分成多个<strong>分区</strong>，每个分区就是数据集的一部分，同时不同分区可以存储在集群中不同的节点上，从而利用集群节点优势进行并行计算；</p>
 <p>4、RDD提供了丰富的操作以支持常见的数据处理，即<code>“转换”（Transformation）和“行动”（Action）</code>两种类型操作：</p>
 <ul>
-<li><font color="red">**转换操作：指定RDD的依赖关系，通过接受RDD并返回RDD，即从一个RDD转换到另外一个RDD；**</font></li>
-<li><font color="red">**行动操作：执行计算并指定输出的形式，通过接受RDD返回输出值或结果（非RDD）；**</font>
-
-</li>
+<li><font color="red"><strong>转换操作：指定RDD的依赖关系，通过接受RDD并返回RDD，即从一个RDD转换到另外一个RDD；</strong></font></li>
+<li><font color="red"><strong>行动操作：执行计算并指定输出的形式，通过接受RDD返回输出值或结果（非RDD）；</strong></font></li>
 </ul>
 <p>5、通过Spark的API可以使用不同的语言调用RDD的操作，常见过程流程如下：</p>
 <ul>
@@ -328,17 +326,26 @@
 <li>最后调用行动操作，输出结果或写入外部数据源；</li>
 </ul>
 <p>6、RDD操作的<font color="red"><strong>惰性机制</strong></font>，是指在RDD执行操作时，只有触发<code>行动操作</code>才会做真正的计算，而在行动前的所有转换操作都只是记录下相互的依赖关系，形成数据流的管道化（pipeline），而不会做真正的计算；</p>
-<p><img src="/2020/10/14/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACRDD%E6%93%8D%E4%BD%9C/Spark-Scheduling-Process.png" alt="SparkRDD的执行过程" title="SparkRDD的执行过程"></p>
+<img src="/2020/10/14/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACRDD%E6%93%8D%E4%BD%9C/Spark-Scheduling-Process.png" alt="SparkRDD的执行过程" title="SparkRDD的执行过程">
+
+
+
 <h2 id="RDD的创建"><a href="#RDD的创建" class="headerlink" title="RDD的创建"></a>RDD的创建</h2><h3 id="通过数据集合转化为RDD"><a href="#通过数据集合转化为RDD" class="headerlink" title="通过数据集合转化为RDD"></a>通过数据集合转化为RDD</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">sc = SparkContext(<span class="string">&quot;local&quot;</span>, <span class="string">&quot;create_rdd&quot;</span>)</span><br><span class="line"></span><br><span class="line">ints = [<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>]</span><br><span class="line">rdd = sc.parallelize(ints)</span><br><span class="line"><span class="comment"># parallelize()函数将一个List列表转化为了一个RDD对象</span></span><br><span class="line"></span><br><span class="line">strings = [<span class="string">&#x27;spark&#x27;</span>,<span class="string">&#x27;hadoop&#x27;</span>,<span class="string">&#x27;rdd&#x27;</span>]</span><br><span class="line">rdd_1 = sc.parallelize(strings, <span class="number">2</span>)</span><br><span class="line"><span class="comment"># parallelize()函数的第二个参数表示分区，默认是1，此处为2，表示将列表对应的RDD对象分为两个区。</span></span><br><span class="line"><span class="comment"># 后面的glom()函数就是要显示出RDD对象的分区情况，可以看出分了两个区，如果没有glom()函数，则不显示分区，如第一个结果所示。</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="从HDFS数据源或本地文件创建"><a href="#从HDFS数据源或本地文件创建" class="headerlink" title="从HDFS数据源或本地文件创建"></a>从HDFS数据源或本地文件创建</h3><p>从一篇CNN新闻报道 <a target="_blank" rel="noopener" href="https://us.cnn.com/2019/04/11/tech/uber-lyft-businesses/index.html">Uber and Lyft may look the same, but their visions are not</a> 中抽取新闻主体并放到文件<code>news_sep.txt</code>中，一段话为一行。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">At first blush, it can be hard to tell Uber and ...</span><br><span class="line">But look under the hood and there&#39;s a clear difference ...</span><br><span class="line">Uber filed paperwork on Thursday for what is expected ...</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>通过指定文件路径读取为RDD：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sc = SparkContext(<span class="string">&quot;local&quot;</span>, <span class="string">&quot;create_rdd&quot;</span>)</span><br><span class="line"><span class="comment"># 从本地文件系统地址加载</span></span><br><span class="line"></span><br><span class="line">rdd = sc.textFile(<span class="string">&quot;file:///path/to/news_sep.txt&quot;</span>)</span><br><span class="line"><span class="comment"># 从分布式文件系统HDFS地址加载，下面三种方式等价</span></span><br><span class="line"></span><br><span class="line">rdd = sc.textFile(<span class="string">&quot;hdfs://localhost:9000/path/to/news_sep.txt&quot;</span>)</span><br><span class="line">rdd = sc.textFile(<span class="string">&quot;/path/to/news_sep.txt&quot;</span>)</span><br><span class="line">rdd = sc.textFile(<span class="string">&quot;news_sep.txt&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="从其他数据库读取数据创建"><a href="#从其他数据库读取数据创建" class="headerlink" title="从其他数据库读取数据创建"></a>从其他数据库读取数据创建</h3><p>（待更新）</p>
 <h3 id="使用数据流创建"><a href="#使用数据流创建" class="headerlink" title="使用数据流创建"></a>使用数据流创建</h3><p>结合流数据处理技术，如Spark Streaming、Kafka以及flume等，通过接收实时的输入数据流创建RDD。</p>
 <h2 id="一般RDD的转换操作（Transformation）"><a href="#一般RDD的转换操作（Transformation）" class="headerlink" title="一般RDD的转换操作（Transformation）"></a>一般RDD的转换操作（Transformation）</h2><p><a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/rdd-programming-guide.html#transformations">官方API文档</a>详细列出转换操作函数，下面简单介绍RDD常用的转换操作：</p>
 <h3 id="flatMap"><a href="#flatMap" class="headerlink" title="flatMap()"></a>flatMap()</h3><p><code>flatMap(func)</code>：对于每一个输入元素，通过指定函数映射到0或多个元素，输出新的RDD。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将上述新闻文本的每一行每一段话根据空格进行分词</span></span><br><span class="line">rdd = rdd.flatMap(<span class="keyword">lambda</span> line: line.split(<span class="string">&quot; &quot;</span>))</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h3><p><code>map(func)</code>：对于每一个输入元素，通过执行指定函数映射到唯一输出（1v1关系），产生新的RDD。</p>
 <ul>
 <li><p>map()类似于Python中的map，针对RDD对应的列表的每一个元素，进行map()函数里面的尼玛函数（这个函数是map函数的一个参数）对应的操作，返回的仍然是一个RDD对象；</p>
@@ -347,27 +354,49 @@
 </li>
 </ul>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对上述分词结果的RDD中每一个单词去除标点符号，并转化为小写</span></span><br><span class="line">rdd = rdd.<span class="built_in">map</span>(<span class="keyword">lambda</span> w: w.strip(<span class="string">&quot;\&quot;&quot;</span>).strip(<span class="string">&quot;,&quot;</span>).strip(<span class="string">&quot;.&quot;</span>).lower())</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="filter"><a href="#filter" class="headerlink" title="filter()"></a>filter()</h3><p><code>filter(func)</code>：是对RDD元素进行过滤，把经过指定函数后返回值为true的元素组成一个新的RDD。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对上述结果筛选掉一些常见的介词，如</span></span><br><span class="line">rm_words = [<span class="string">&quot;and&quot;</span>,<span class="string">&quot;in&quot;</span>,<span class="string">&quot;at&quot;</span>,<span class="string">&quot;a&quot;</span>,<span class="string">&quot;an&quot;</span>,<span class="string">&quot;is&quot;</span>,<span class="string">&quot;are&quot;</span>,<span class="string">&quot;may&quot;</span>,<span class="string">&quot;that&quot;</span>,<span class="string">&quot;this&quot;</span>,<span class="string">&quot;to&quot;</span>,<span class="string">&quot;as&quot;</span>,<span class="string">&quot;with&quot;</span>,<span class="string">&quot;of&quot;</span>,<span class="string">&quot;can&quot;</span>,<span class="string">&quot;be&quot;</span>]</span><br><span class="line">rdd = rdd.<span class="built_in">filter</span>(<span class="keyword">lambda</span> w: w <span class="keyword">not</span> <span class="keyword">in</span> rm_words)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="distinct"><a href="#distinct" class="headerlink" title="distinct()"></a>distinct()</h3><p><code>distinct([numPartitions])</code>：对数据进行去重，返回一个新的RDD，numPartitions参数用于设置任务并行数。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 输出新闻中所有提及过的单词</span></span><br><span class="line">rdd = rdd.distinct(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="sample"><a href="#sample" class="headerlink" title="sample()"></a>sample()</h3><p><code>sample(withReplacement,fraction,seed=None)</code>：对数据进行采样，withReplacement参数表示是否放回抽样；fraction参数表示抽样比例；seed表示随机种子。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 随机抽取新闻提及部分单词</span></span><br><span class="line">rdd1 = rdd.sample(<span class="literal">False</span>, <span class="number">0.2</span>, <span class="number">2019</span>)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="union"><a href="#union" class="headerlink" title="union()"></a>union()</h3><p><code>union(otherRDD)</code>：可以与另一个RDD数据集合并，合并后并不会去掉重复的数值，它返回一个新的RDD。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rdd1 = sc.parallelize([<span class="string">&quot;union&quot;</span>,<span class="string">&quot;other&quot;</span>,<span class="string">&quot;rdd&quot;</span>])</span><br><span class="line">rdd = rdd.union(rdd1)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="intersection"><a href="#intersection" class="headerlink" title="intersection()"></a>intersection()</h3><p><code>intersection(otherRDD)</code>：可以与另一个RDD数据集进行求交集计算，返回新的RDD。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rdd1 = sc.parallelize([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</span><br><span class="line">rdd2 = sc.parallelize([<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>])</span><br><span class="line">rdd3 = rdd1.intersection(rdd2)</span><br><span class="line"><span class="comment"># 最后rdd3的结果为 [3,4,5]</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="subtract"><a href="#subtract" class="headerlink" title="subtract()"></a>subtract()</h3><p><code>subtract(otherRDD,[numPartitions])</code>：是对otherRDD进行减法操作，将原始RDD的元素减去新输入RDD的元素，将差值返回新RDD。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rdd1 = sc.parallelize([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>])</span><br><span class="line">rdd2 = sc.parallelize([<span class="number">2</span>,<span class="number">4</span>])</span><br><span class="line">rdd3 = rdd1.subtract(rdd2)</span><br><span class="line"><span class="comment"># 最后rdd3的结果为 [1,3,5]</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="cartesian"><a href="#cartesian" class="headerlink" title="cartesian()"></a>cartesian()</h3><p><code>cartesian(otherRDD)</code>：可以对两个RDD数据集U，V求笛卡尔积，返回一个新的RDD数据集，其中每个元素为(u,v)。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rdd1 = sc.parallelize([<span class="number">1</span>,<span class="number">2</span>])</span><br><span class="line">rdd2 = sc.parallelize([<span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">rdd3 = rdd1.cartesian(rdd2)</span><br><span class="line"><span class="comment"># 最后rdd3的结果为 [(1,3),(1,4),(2,3),(2,4)]</span></span><br></pre></td></tr></table></figure>
+
+
 <h2 id="键值对RDD的转换操作（Transformation）"><a href="#键值对RDD的转换操作（Transformation）" class="headerlink" title="键值对RDD的转换操作（Transformation）"></a>键值对RDD的转换操作（Transformation）</h2><h3 id="map-1"><a href="#map-1" class="headerlink" title="map()"></a>map()</h3><p><code>map(func)</code>：操作可以将一般RDD转换为键值对RDD，元素变成(K,V)。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对上述新闻分词结果的RDD中每一个单词转化为(w,1)键值对</span></span><br><span class="line">rdd = rdd.<span class="built_in">map</span>(<span class="keyword">lambda</span> w: (w,<span class="number">1</span>))</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="reduceByKey"><a href="#reduceByKey" class="headerlink" title="reduceByKey()"></a>reduceByKey()</h3><p><code>reduceByKey(func,[numPartitions])</code>：可以对具有相同键的值进行合并，返回一个新的键值对RDD，numPartitions用于设置任务并行数。</p>
 <p>需要区分的是：<br>reduce()最终只返回一个值，reduceByKey()和reduceByKeyLocally()均是将Key相同的元素合并。<br>区别在于，reduce()和reduceByKeyLocally()函数均是将RDD转化为非RDD对象，而reduceByKey()将RDD对象转化为另一个RDD对象，需要collect()函数才能输出。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对新闻出现过的单词进行词频统计</span></span><br><span class="line">rdd = rdd.reduceByKey(<span class="keyword">lambda</span> w1,w2: w1+w2)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="groupByKey"><a href="#groupByKey" class="headerlink" title="groupByKey()"></a>groupByKey()</h3><p><code>groupByKey([numPartitions])</code>：可以对具有相同键的值进行分组，返回一个元素为(K,[Iterable])的键值对RDD，numPartitions用于指定任务并行数，默认为8。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对新闻出现过的单词进行词频统计</span></span><br><span class="line">rdd = rdd.groupByKey()</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="aggregateByKey"><a href="#aggregateByKey" class="headerlink" title="aggregateByKey()"></a>aggregateByKey()</h3><p><code>aggregateByKey(zeroValue,seqFunc,combFunc,[numPartitions])</code>：可以对具有相同键的值进行聚合，把(K,V)键值对RDD转换为新的(K,U)键值对RDD，其中U由给定的combFunc和中立零值zeroValue聚合而成，U可以有与V不一致的形式；</p>
 <ul>
 <li>zeroValue 可以是0如果聚合的目的是求和，可以是List如果目的是对值进行统合，可以是Set如果目的是聚合唯一值；</li>
@@ -379,6 +408,8 @@
 <p>为什么使用两个函数？见<a target="_blank" rel="noopener" href="https://backtobazics.com/big-data/spark/apache-spark-aggregatebykey-example/">Apache Spark aggregateByKey Example</a></p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 同样对新闻出现过的单词进行词频统计</span></span><br><span class="line">rdd = rdd.aggregateByKey(<span class="number">0</span>,<span class="keyword">lambda</span> v1,v2: v1+v2, <span class="keyword">lambda</span> a1,a2: a1+a2)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="combineByKey"><a href="#combineByKey" class="headerlink" title="combineByKey()"></a>combineByKey()</h3><p><code>combineByKey(createCombiner,mergeValue,mergeCombiners,[numPartitions])</code>：可以对具有相同键的值按照自定义函数的逻辑进行聚合，把(K,V)键值对RDD转换为新的(K,U)键值对RDD，U可以有与V不一致的形式；</p>
 <ul>
 <li>createCombiner: V =&gt; C 创建新的聚合器方便后续步骤操作，对原始值进行附加操作并返回，跟flatMap()类似；</li>
@@ -390,6 +421,8 @@
 <p>groupByKey(), groupByKey(), aggregateByKey() 等都不同程度上依赖于 combineByKey() 操作</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对词频统计的结果求频数均值，例如</span></span><br><span class="line">strings = [<span class="string">&#x27;spark&#x27;</span>,<span class="string">&#x27;hadoop&#x27;</span>,<span class="string">&#x27;rdd&#x27;</span>,<span class="string">&#x27;rdd&#x27;</span>,<span class="string">&#x27;spark&#x27;</span>,<span class="string">&#x27;rdd&#x27;</span>]</span><br><span class="line">rdd = sc.parallelize(strings)</span><br><span class="line">rdd = rdd.<span class="built_in">map</span>(<span class="keyword">lambda</span> w: (w,<span class="number">1</span>))</span><br><span class="line">rdd = rdd.reduceByKey(<span class="keyword">lambda</span> v1,v2: v1 + v2)</span><br><span class="line">rdd = rdd.combineByKey(<span class="keyword">lambda</span> v: (<span class="number">1</span>,v), <span class="keyword">lambda</span> c, v: (c[<span class="number">0</span>]+<span class="number">1</span>,c[<span class="number">1</span>]+v), <span class="keyword">lambda</span> c1, c2: (c1[<span class="number">0</span>]+c1[<span class="number">0</span>],c2[<span class="number">1</span>]+c2[<span class="number">1</span>]))</span><br><span class="line"><span class="comment"># 最后的结果为 [(&#x27;spark&#x27;, (1, 2)), (&#x27;hadoop&#x27;, (1, 1)), (&#x27;rdd&#x27;, (1, 3))]</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="sortByKey"><a href="#sortByKey" class="headerlink" title="sortByKey()"></a>sortByKey()</h3><p><code>sortByKey(ascending,[numPartitions])</code>：可以对键值对RDD按照键进行排序操作，其中K需要实现Ordered方法。</p>
 <ul>
 <li>ascending 决定RDD中的元素按升序还是降序排序，默认是True升序；</li>
@@ -398,8 +431,12 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对词频统计结果按降序排序（先把K-V值互换）</span></span><br><span class="line">rdd = rdd.<span class="built_in">map</span>(<span class="keyword">lambda</span> v: (v[<span class="number">1</span>],v[<span class="number">0</span>]))</span><br><span class="line">rdd = rdd.sortByKey(<span class="literal">False</span>)</span><br><span class="line">rdd = rdd.<span class="built_in">map</span>(<span class="keyword">lambda</span> v: (v[<span class="number">1</span>],v[<span class="number">0</span>]))</span><br></pre></td></tr></table></figure>
 <h3 id="keys-与values"><a href="#keys-与values" class="headerlink" title="keys()与values()"></a>keys()与values()</h3><p><code>keys(),values()</code>：分别把键值对RDD的key和value返回形成一个新的RDD。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获得上一步排序结果的key或value</span></span><br><span class="line">rdd = rdd.keys()</span><br><span class="line">rdd = rdd.values()</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="mapValues"><a href="#mapValues" class="headerlink" title="mapValues()"></a>mapValues()</h3><p><code>mapValues(func)</code>：可以对键值对RDD每个元素的value加载到预定义函数进行操作，而不改变key。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 例如对词频统计结果值都减去1</span></span><br><span class="line">rdd = rdd.mapValues(<span class="keyword">lambda</span> v: v - <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="join"><a href="#join" class="headerlink" title="join()"></a>join()</h3><p><code>join(otherRDD,[numPartitions])</code>：与关系数据库查询一样，表示内连接，给定两个键值对RDD如(K,V1)和(K,V2)，对于两个数据集都存在的key才对其输出，得到一个新的RDD，元素为(K,(V1,V2))。除此以外，还包括其他情形：</p>
 <ul>
 <li>fullOuterJoin(otherRDD,[numPartitions]) 全连接</li>
@@ -414,17 +451,27 @@
 <p>top()</p>
 <p><code>top(num,key=None)</code>：以数组的形式返回RDD数据集的前num个元素，默认按<strong>降序</strong>，或者通过key函数指定。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rdd = sc.parallelize([<span class="number">5</span>,<span class="number">24</span>,<span class="number">3</span>,<span class="number">12</span>,<span class="number">46</span>])</span><br><span class="line">print(rdd.takeOrdered(<span class="number">3</span>))</span><br><span class="line"><span class="comment"># 输出 [46,24,12]</span></span><br><span class="line">rdd = sc.parallelize([<span class="number">5</span>,<span class="number">24</span>,<span class="number">3</span>,<span class="number">12</span>,<span class="number">46</span>])</span><br><span class="line">print(rdd.takeOrdered(<span class="number">3</span>, key=<span class="built_in">str</span>))</span><br><span class="line"><span class="comment"># 输出 [5,46,3]</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="take"><a href="#take" class="headerlink" title="take()"></a>take()</h3><p><code>take(num)</code>：以数组的形式返回RDD数据集的前num个元素。</p>
 <h3 id="takeOrdered"><a href="#takeOrdered" class="headerlink" title="takeOrdered()"></a>takeOrdered()</h3><p><code>takeOrdered(num,key=None)</code>：以数组的形式返回RDD数据集的前nu</p>
 <p>m个元素，默认按<strong>升序</strong>排序，或者通过key函数指定。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">rdd = sc.parallelize([<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>])</span><br><span class="line">print(rdd.takeOrdered(<span class="number">3</span>))</span><br><span class="line"><span class="comment"># 输出 [1,2,3]</span></span><br><span class="line">rdd = sc.parallelize([<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>])</span><br><span class="line">print(rdd.takeOrdered(<span class="number">3</span>, key=<span class="keyword">lambda</span> x: -x))</span><br><span class="line"><span class="comment"># 输出 [5,4,3]</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="takeSample"><a href="#takeSample" class="headerlink" title="takeSample()"></a>takeSample()</h3><p><code>takeSample(withReplacement,num,seed=None)</code>：对RDD数据集进行采样，并以数组的形式返回，withReplacement参数表示是否放回抽样；num参数表示抽样个数；seed表示随机种子。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rdd = sc.parallelize([<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>])</span><br><span class="line">print(rdd.takeSample(<span class="literal">False</span>,<span class="number">3</span>,seed=<span class="number">2019</span>))</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="lookup"><a href="#lookup" class="headerlink" title="lookup()"></a>lookup()</h3><p><code>lookup(key)</code>：以数组的形式返回键值对RDD中键为key的所有值，如果RDD数据集经过特定转换操作按照key进行了分区，那么此行动操作效率会很高。</p>
 <h3 id="foreach"><a href="#foreach" class="headerlink" title="foreach()"></a>foreach()</h3><p><code>foreach(func)</code>：将RDD数据集中的每个元素加载到指定函数进行操作，无返回值。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对转换结果逐个输出</span></span><br><span class="line">rdd.foreach(<span class="built_in">print</span>)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h3><p><code>reduce(func)</code>：通过指定函数（如求和、统计）对RDD数据集元素进行聚合。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 对所有元素进行求和</span></span><br><span class="line"><span class="built_in">sum</span> = rdd.reduce(<span class="keyword">lambda</span> v1,v2: v1 + v2)</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="aggregate"><a href="#aggregate" class="headerlink" title="aggregate()"></a>aggregate()</h3><p><code>aggregate(zeroValue,seqOp,combOp)</code>：对RDD数据集的元素进行聚合，不要求返回值类型与RDD类型一致；</p>
 <ul>
 <li>zeroValue: U 给定初始值，形式与最终返回值U一致；</li>
@@ -434,17 +481,27 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 求一个数组元素的均值</span></span><br><span class="line">rdd = sc.parallelize([<span class="number">5</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">4</span>])</span><br><span class="line">res = rdd.aggregate((<span class="number">0</span>,<span class="number">0</span>), <span class="keyword">lambda</span> u,v: (u[<span class="number">0</span>]+v,u[<span class="number">1</span>]+<span class="number">1</span>), <span class="keyword">lambda</span> u1,u2: (u1[<span class="number">0</span>]+u2[<span class="number">0</span>],u1[<span class="number">1</span>]+u2[<span class="number">1</span>]))</span><br><span class="line">print(res[<span class="number">0</span>]/res[<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
 <h3 id="countByKey"><a href="#countByKey" class="headerlink" title="countByKey()"></a>countByKey()</h3><p><code>countByKey()</code>：以字典的形式返回键值对RDD数据集中每个键的元素的统计数，即(K,count)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rdd = sc.parallelize([(<span class="string">&quot;rdd&quot;</span>,<span class="number">1</span>),(<span class="string">&quot;rdd&quot;</span>,<span class="number">2</span>),(<span class="string">&quot;spark&quot;</span>,<span class="number">2</span>)])</span><br><span class="line">res = rdd.countByKey()</span><br><span class="line"><span class="comment"># 输出结果 &#123;&#x27;rdd&#x27;: 2, &#x27;spark&#x27;: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="countByValue"><a href="#countByValue" class="headerlink" title="countByValue()"></a>countByValue()</h3><p><code>countByValue()</code>：以字典的形式返回RDD数据集中每个元素的统计数，即(V,count)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rdd = sc.parallelize([<span class="number">2</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">1</span>,<span class="number">1</span>])</span><br><span class="line">res = rdd.countByValue()</span><br><span class="line"><span class="comment"># 输出结果 &#123;2: 2, 3: 1, 1: 2&#125;</span></span><br></pre></td></tr></table></figure>
+
+
 <h3 id="saveAsTextFile"><a href="#saveAsTextFile" class="headerlink" title="saveAsTextFile()"></a>saveAsTextFile()</h3><p><code>saveAsTextFile(path, compressionCodecClass=None)</code>：把RDD数据集保存为文本文件，并可以指定是否压缩。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = NamedTemporaryFile(delete=<span class="literal">True</span>)</span><br><span class="line">f.close()</span><br><span class="line">codec = <span class="string">&quot;org.apache.hadoop.io.compress.GzipCodec&quot;</span></span><br><span class="line">sc.parallelize([<span class="string">&#x27;spark&#x27;</span>, <span class="string">&#x27;rdd&#x27;</span>]).saveAsTextFile(f.name, codec)</span><br></pre></td></tr></table></figure>
+
+
 <h2 id="RDD的持久化"><a href="#RDD的持久化" class="headerlink" title="RDD的持久化"></a>RDD的持久化</h2><ul>
 <li>由于RDD采用惰性机制，每次遇到行动操作都会根据DAG的依赖关系从头开始执行计算，如果遇到迭代计算，需要重复调用中间数据，会造成极大的计算开销；</li>
 <li>可以通过持久化操作来解决以上的问题，用<code>persist()</code>方法对需要重复使用的RDD标记为持久化，当遇到第一次行动操作后，会把计算结果持久化，保存在计算节点的内存备用；</li>
 </ul>
 <h3 id="persist"><a href="#persist" class="headerlink" title="persist()"></a>persist()</h3><p><code>persist(storageLevel)</code>：storageLevel参数表示持久化级别，通过使用不同的级别可以把数据缓存到不同的位置，详见 <a target="_blank" rel="noopener" href="http://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence">RDD Persistence</a>；其中使用<code>cache()</code>函数会调用默认的持久化方法，即<code>persist(MEMORY_ONLY)</code>将RDD作为反序列化的对象存储在JVM中；而<code>unpersist()</code>方法则可以把持久化的RDD从缓存中删除。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">rdd = sc.parallelize([<span class="string">&#x27;spark&#x27;</span>,<span class="string">&#x27;rdd&#x27;</span>,<span class="string">&#x27;hadoop&#x27;</span>])</span><br><span class="line">rdd.cache()</span><br><span class="line">print(rdd.take(<span class="number">1</span>))</span><br><span class="line"><span class="comment"># 第一次行动操作，触发完整计算，同时把rdd放入缓存</span></span><br><span class="line"><span class="comment"># 输出 [&#x27;spark&#x27;]</span></span><br><span class="line">print(rdd.collect())</span><br><span class="line"><span class="comment"># 第二次行动操作，此时直接重复利用上述的缓存rdd</span></span><br><span class="line"><span class="comment"># 输出 [&#x27;spark&#x27;,&#x27;rdd&#x27;,&#x27;hadoop&#x27;]</span></span><br><span class="line">rdd.unpersist()</span><br></pre></td></tr></table></figure>
-<p><strong>Reference: </strong></p>
+
+
+
+
+<p>**Reference: **</p>
 <p>1、<a target="_blank" rel="noopener" href="https://yxnchen.github.io/technique/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACRDD%E6%93%8D%E4%BD%9C/">Spark笔记-玩转RDD操作</a></p>
 
     </div>
@@ -715,13 +772,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">141k</span>
+    <span title="站点总字数">142k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:08</span>
+    <span title="站点阅读时长">2:09</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
