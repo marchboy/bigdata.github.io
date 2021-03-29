@@ -314,8 +314,6 @@
 <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> conf = <span class="keyword">new</span> <span class="type">SparkConf</span>().setMaster(<span class="string">&quot;master&quot;</span>).setAppName(<span class="string">&quot;appName&quot;</span>)</span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(conf)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 或者</span></span><br><span class="line"><span class="keyword">val</span> sc = <span class="keyword">new</span> <span class="type">SparkContext</span>(<span class="string">&quot;master&quot;</span>,<span class="string">&quot;appName&quot;</span>)</span><br></pre></td></tr></table></figure>
 <p><strong>Python写法：</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pyspark <span class="keyword">import</span> SparkConf, SparkContext</span><br><span class="line">conf = SparkConf().setMaster(<span class="string">&#x27;local&#x27;</span>).setAppName(<span class="string">&#x27;My App&#x27;</span>)</span><br><span class="line">sc = SparkContext(conf = conf)</span><br><span class="line">sc.stop()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">sc = SparkContext(<span class="string">&#x27;local&#x27;</span>, <span class="string">&#x27;My APP&#x27;</span>)</span><br><span class="line">sc.stop()</span><br></pre></td></tr></table></figure>
-
-
 <h4 id="SQLContext-是什么"><a href="#SQLContext-是什么" class="headerlink" title="SQLContext 是什么?"></a>SQLContext 是什么?</h4><p>SQLContext是通往SparkSQL的入口。下面是如何使用SparkContext创建SQLContext。</p>
 <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sc is an existing SparkContext.</span></span><br><span class="line"><span class="keyword">val</span> sqlContext = <span class="keyword">new</span> org.apache.spark.sql.<span class="type">SQLContext</span>(sc)</span><br></pre></td></tr></table></figure>
 <p>一旦有了SQLContext，就可以开始处理DataFrame、DataSet等。</p>
@@ -323,8 +321,6 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HiveContext</span> <span class="keyword">extends</span> <span class="title">SQLContext</span> <span class="keyword">implements</span> <span class="title">Logging</span></span></span><br></pre></td></tr></table></figure>
 <p>下面是如何使用SparkContext获得HiveContext。</p>
 <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// sc is an existing SparkContext.</span></span><br><span class="line"><span class="keyword">val</span> sqlContext = <span class="keyword">new</span> org.apache.spark.sql.hive.<span class="type">HiveContext</span>(sc)</span><br></pre></td></tr></table></figure>
-
-
 <h3 id="SparkSession"><a href="#SparkSession" class="headerlink" title="SparkSession"></a>SparkSession</h3><p>SparkSession实质上是SQLContext和HiveContext的组合（未来可能还会加上StreamingContext），所以在SQLContext和HiveContext上可用的API在SparkSession上同样是可以使用的。</p>
 <h4 id="SparkSession的简单示例"><a href="#SparkSession的简单示例" class="headerlink" title="SparkSession的简单示例"></a>SparkSession的简单示例</h4><p>SparkSession内部封装了SparkContext，所以计算实际上是由SparkContext完成的。</p>
 <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">val</span> sparkSession = <span class="type">SparkSession</span>.builder</span><br><span class="line">                    .master(<span class="string">&quot;master&quot;</span>)</span><br><span class="line">                    .appName(<span class="string">&quot;appName&quot;</span>)</span><br><span class="line">                    .getOrCreate()</span><br><span class="line"><span class="comment">//或者SparkSession.builder.config(conf=SparkConf())</span></span><br></pre></td></tr></table></figure>
@@ -334,7 +330,7 @@
 <p>上面代码中的getOrCreate()方法表示有就拿过来，没有就创建，类似于单例模式：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">val s1 = SparkSession().builder.config(<span class="string">&quot;k1&quot;</span>, <span class="string">&quot;v1&quot;</span>).getOrCreat()</span><br><span class="line">val s2 = SparkSession().builder.config(<span class="string">&quot;k2&quot;</span>, <span class="string">&quot;v2&quot;</span>).getOrCreat()</span><br><span class="line"><span class="keyword">return</span> s1.conf.get(<span class="string">&quot;k1&quot;</span>) == s2.conf.get(<span class="string">&quot;k2&quot;</span>)</span><br></pre></td></tr></table></figure>
 <p>上面代码类似于创建一个SparkContext，master设置为”master”，然后创建了一个SQLContext封装它。</p>
-<p>**Reference: **</p>
+<p><strong>Reference: </strong></p>
 <p>1、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/lillcol/p/11233456.html">SparkSession、SparkContext、SQLContext和HiveContext之间的区别。</a></p>
 <p>2、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/Allen-rg/p/11364683.html">SparkConf和SparkContext</a></p>
 
@@ -606,13 +602,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">142k</span>
+    <span title="站点总字数">141k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:09</span>
+    <span title="站点阅读时长">2:08</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>

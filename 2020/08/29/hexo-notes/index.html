@@ -311,22 +311,15 @@
 <p><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>是一个快速、简洁而又高效的博客框架。Hexo使用Markdown解析文章，常与Github、gitlab结合组成静态网页托管服务。</p>
 <h2 id="基本环境准备"><a href="#基本环境准备" class="headerlink" title="基本环境准备"></a>基本环境准备</h2><p>1、首先分别安装<a target="_blank" rel="noopener" href="https://git-scm.com/">Git</a>和<a target="_blank" rel="noopener" href="https://nodejs.org/zh-cn/">Node.js</a>，然后在命令行中输入相应的命令验证是否成功。</p>
 <a id="more"></a>
-
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ git version</span><br><span class="line">$ git version 2.25.0.windows.1</span><br><span class="line"></span><br><span class="line">$ node -v</span><br><span class="line">$ v12.18.3</span><br><span class="line"></span><br><span class="line">$ npm -v</span><br><span class="line">$ 6.14.6</span><br></pre></td></tr></table></figure>
-
-
 <h2 id="开始搭建Hexo系统"><a href="#开始搭建Hexo系统" class="headerlink" title="开始搭建Hexo系统"></a>开始搭建Hexo系统</h2><p>1、安装Hexo</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-
-
 <p>2、开始搭建博客</p>
 <p>新建一个文件夹，如E:\myBlog，从终端进入myBlog文件夹后，输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init hexoBlog  //项目目录</span><br><span class="line">$ <span class="built_in">cd</span> HexoBlog         //进入项目目录</span><br><span class="line">$ npm install         // 安装</span><br><span class="line">$ hexo server         //启动服务</span><br></pre></td></tr></table></figure>
 <p>然后在浏览器中输入lcalhost:4000，即可查看hexo默认landscape主题界面。</p>
 <h2 id="选择主题"><a href="#选择主题" class="headerlink" title="选择主题"></a>选择主题</h2><p>1、Hexo提供了丰富的<a target="_blank" rel="noopener" href="https://hexo.io/themes/">主题</a>，这里以切换为<a target="_blank" rel="noopener" href="https://github.com/theme-next/hexo-theme-next">Next主题</a>为例。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> hexoBlog</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/theme-next/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
-
-
 <p>2、下载完成后，在<strong>站点配置文件</strong>~/HexoBlog/_config.yml文件中，找到theme字段，将landscape修改为 next。然后在终端输入：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean   //清除缓存</span><br><span class="line">$ hexo g       //重新生成代码</span><br><span class="line">$ hexo s       //部署到本地</span><br></pre></td></tr></table></figure>
 <p>3、选择scheme（参考<a target="_blank" rel="noopener" href="https://theme-next.iissnan.com/getting-started.html">Next</a>文档）</p>
@@ -339,8 +332,6 @@
 <p>Scheme 的切换通过更改 <strong>主题配置文件</strong>，搜索 scheme 关键字。 你会看到有三行 scheme 的配置，将你需用启用的 scheme 前面注释 <code>#</code> 去除即可。</p>
 <p>选择 Pisces Scheme</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#scheme: Muse</span><br><span class="line">#scheme: Mist</span><br><span class="line">scheme: Pisces</span><br></pre></td></tr></table></figure>
-
-
 <h2 id="发布至Github，使得外网可以访问文章"><a href="#发布至Github，使得外网可以访问文章" class="headerlink" title="发布至Github，使得外网可以访问文章"></a>发布至Github，使得外网可以访问文章</h2><p>1、注册GitHub后，新建一个Repository，项目名必须遵守格式：账户名.github.io，并在Initialize this repository with栏目中勾选Add a README file，保存。</p>
 <p>2、在项目右侧的Setting进去，下拉至GitHub Pages选择主题保存后，会发现下新建的项目已经发布至外网。</p>
 <p>3、将Hexo与Github Pages联系起来</p>
@@ -366,15 +357,11 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d</span><br></pre></td></tr></table></figure>
 <p>其中hexo clean适用于清除缓存文件（db.json）和已生成的静态文件（public），在某些情况下，尤其是更换主题后，发现对站点的更新不生效，可能需要执行该命令。</p>
 <p>3.7、Git出错</p>
-<p><img src="/2020/08/29/hexo-notes/git_fatal.png"></p>
+<p><img src="/2020/08/29/hexo-notes/git_fatal.png" alt></p>
 <p>问题原因：</p>
 <p>远程仓库的文件过大，需要设置本地仓库大小</p>
 <p>解决办法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1、首先输入如下命令：</span></span><br><span class="line">git config http.sslVerify &quot;false&quot;</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 若出现下列错误：</span></span><br><span class="line">fatal: not in a git directory</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">再继续执行 git config --global http.sslVerify <span class="string">&quot;false&quot;</span> 问题解决</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2、文件大小的上限设置：</span></span><br><span class="line">git config --global http.postBuffer 524288000</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 3、如果还是git代码还是下载失败，则需要继续修改git缓存的大小</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 参考链接：https://www.jianshu.com/p/fb2b6a19436a</span></span><br></pre></td></tr></table></figure>
-
-
-
-
 <h2 id="添加阅读统计代码"><a href="#添加阅读统计代码" class="headerlink" title="添加阅读统计代码"></a>添加阅读统计代码</h2><p>1、打开next主题配置文件\themes\next\_config.yml，搜索找到<strong>busuanzi_count</strong>，把enable设置为true。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Show Views / Visitors of the website / page with busuanzi.</span></span><br><span class="line"><span class="comment"># Get more information on http://ibruce.info/2015/04/04/busuanzi</span></span><br><span class="line">busuanzi_count:</span><br><span class="line">  <span class="built_in">enable</span>: <span class="literal">true</span></span><br><span class="line">  total_visitors: <span class="literal">true</span>   <span class="comment">#统计访客数</span></span><br><span class="line">  total_visitors_icon: user</span><br><span class="line">  total_views: <span class="literal">true</span>    <span class="comment">#统计访问数</span></span><br><span class="line">  total_views_icon: eye</span><br><span class="line">  <span class="comment">#post_views: true   #统计文章阅读数,如果有重复阅读次数，请注释这段代码</span></span><br><span class="line">  <span class="comment">#post_views_icon: eye</span></span><br></pre></td></tr></table></figure>
 <p>2、同样是在next主题配置文件\themes\next\_config.yml下，搜索<strong>footer</strong>，在它底下添加counter，设值为true。</p>
@@ -438,7 +425,7 @@
 <h4 id="创建-Github-Application"><a href="#创建-Github-Application" class="headerlink" title="创建 Github Application"></a>创建 Github Application</h4><ul>
 <li><p>需要创建一个 <code>Github Application</code> 用来授权登录，如果没有 <a target="_blank" rel="noopener" href="https://github.com/settings/applications/new">点击这里申请</a>，<code>Authorization callback URL</code> 填写你主页地址，比如我的就是 <code>https://[yourname].github.io/</code>，其他都随意填。</p>
 </li>
-<li><p>授权路径：Github首页–IconLogo–Setting–Developer setting–OAuth Apps–New OAuth Apps。Authorization callback URL和Homepage URL写得一样。</p>
+<li><p>授权路径：Github首页—IconLogo—Setting—Developer setting—OAuth Apps—New OAuth Apps。Authorization callback URL和Homepage URL写得一样。</p>
 </li>
 </ul>
 <h4 id="为-Next-主题添加-Gitalk-支持"><a href="#为-Next-主题添加-Gitalk-支持" class="headerlink" title="为 Next 主题添加 Gitalk 支持"></a>为 Next 主题添加 Gitalk 支持</h4><ul>
@@ -454,8 +441,7 @@
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% elseif theme.gitalk.enable %&#125;</span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;gitalk-container&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure></li>
 <li><p>在 <code>themes/next/_config.yml</code> 文件中添加 <code>Gitalk</code> 的配置。</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Gitalk</span></span><br><span class="line"><span class="comment"># For more information: https://gitalk.github.io, https://github.com/gitalk/gitalk</span></span><br><span class="line"><span class="attr">gitalk:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">github_id:</span> [<span class="string">yourname</span>] <span class="comment"># GitHub repo owner</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">hexo_comments</span> <span class="comment"># Repository name to store issues</span></span><br><span class="line">  <span class="attr">client_id:</span> <span class="string">xxxxxxxxxxxx</span> <span class="comment"># GitHub Application Client ID</span></span><br><span class="line">  <span class="attr">client_secret:</span> <span class="string">xxxxxxxxxxxxxxxx</span> <span class="comment"># GitHub Application Client Secret</span></span><br><span class="line">  <span class="attr">admin_user:</span> [<span class="string">yourname</span>] <span class="comment"># GitHub repo owner and collaborators, only these guys can initialize gitHub issues</span></span><br><span class="line">  <span class="attr">distraction_free_mode:</span> <span class="literal">false</span> <span class="comment"># Facebook-like distraction free mode</span></span><br><span class="line">  <span class="comment"># Gitalk&#x27;s display language depends on user&#x27;s browser or system environment</span></span><br><span class="line">  <span class="comment"># If you want everyone visiting your site to see a uniform language, you can set a force language value</span></span><br><span class="line">  <span class="comment"># Available values: en | es-ES | fr | ru | zh-CN | zh-TW</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">en</span></span><br></pre></td></tr></table></figure></li>
-<li><p>最后执行 <code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code> 重新发布博客即可。</p>
-</li>
+<li>最后执行 <code>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d</code> 重新发布博客即可。</li>
 </ul>
 <p><strong>附加内容：</strong></p>
 <p>由于国内网络原因，gitlab会有时出现Error: Network Error的错误导致登录状态异常，或者是不能登录。因此本文在Github Pages页面上添加了Valine的评论系统，主要过程如下：</p>
@@ -507,13 +493,8 @@
 <h2 id="阅读更多"><a href="#阅读更多" class="headerlink" title="阅读更多"></a>阅读更多</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-excerpt --save</span><br></pre></td></tr></table></figure>
 <p>在站点配置文件中配置：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">excerpt:</span><br><span class="line">  depth: 5</span><br><span class="line">  excerpt_excludes: []</span><br><span class="line">  more_excludes: []</span><br><span class="line">  hideWholePostExcerpts: true</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-<h2 id="国内网络访问失败"><a href="#国内网络访问失败" class="headerlink" title="国内网络访问失败"></a>国内网络访问失败</h2><p>在网络和共享中心–属性–IPv4–DNS服务器地址。将DNS服务器地址改为：</p>
+<h2 id="国内网络访问失败"><a href="#国内网络访问失败" class="headerlink" title="国内网络访问失败"></a>国内网络访问失败</h2><p>在网络和共享中心—属性—IPv4—DNS服务器地址。将DNS服务器地址改为：</p>
+<div class="table-container">
 <table>
 <thead>
 <tr>
@@ -521,15 +502,18 @@
 <th>备选DNS服务器</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>223.5.5.5</td>
 <td>223.6.6.6</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
+</div>
 <p>然后再刷新github.io网页即可。</p>
 <p><strong>Reference：</strong></p>
 <p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/baidu_34310405/article/details/102665373">Hexo Next主题添加访客统计、访问次数统计、文章阅读次数统计</a></p>
-<p>2、<a href="%5Bhttps://linlif.github.io/2017/05/27/Hexo%E4%BD%BF%E7%94%A8%E6%94%BB%E7%95%A5-%E6%B7%BB%E5%8A%A0%E5%88%86%E7%B1%BB%E5%8F%8A%E6%A0%87%E7%AD%BE/%5D(https://linlif.github.io/2017/05/27/Hexo%E4%BD%BF%E7%94%A8%E6%94%BB%E7%95%A5-%E6%B7%BB%E5%8A%A0%E5%88%86%E7%B1%BB%E5%8F%8A%E6%A0%87%E7%AD%BE/)">Hexo使用攻略-添加分类及标签</a></p>
+<p>2、<a href="[https://linlif.github.io/2017/05/27/Hexo%E4%BD%BF%E7%94%A8%E6%94%BB%E7%95%A5-%E6%B7%BB%E5%8A%A0%E5%88%86%E7%B1%BB%E5%8F%8A%E6%A0%87%E7%AD%BE/](https://linlif.github.io/2017/05/27/Hexo使用攻略-添加分类及标签/">Hexo使用攻略-添加分类及标签</a>)</p>
 <p>3、<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000017986794"><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000017986794">超详细Hexo+Github Page搭建技术博客教程</a></a></p>
 <p>4、<a target="_blank" rel="noopener" href="https://liujunzhou.top/2018/8/10/gitalk-error/#%E4%BD%BF%E7%94%A8Github%E8%B4%A6%E6%88%B7%E7%99%BB%E9%99%86%E8%AF%84%E8%AE%BA%E5%8C%BA%E6%97%B6401%E6%8A%A5%E9%94%99">【已解决】Hexo NexT使用Gitalk未找到相关的Issues进行评论Error:Validation Failed</a></p>
 <p>5、<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/b5f509f25872">为 Hexo 的 Next 主题添加 Gitalk 评论</a></p>
@@ -800,13 +784,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">142k</span>
+    <span title="站点总字数">141k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:09</span>
+    <span title="站点阅读时长">2:08</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
