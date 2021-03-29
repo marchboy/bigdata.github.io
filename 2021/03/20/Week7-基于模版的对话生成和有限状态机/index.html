@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Model-based Dialogue PolicyMarkov Chain - 马尔科夫链马尔科夫链，它是假设某一时刻状态转移的概率只依赖于它的前一个状态。 举个形象的比喻，假如每天的天气是一个状态的话，那个今天是不是晴天只依赖于昨天的天气，而和前天的天气没有任何关系。当然这么说可能有些武断，但是这样做可以大大简化模型的复杂度，因此马尔科夫链在很多时间序列模型中得到广泛的应用，比如循环神经网络">
+<meta property="og:type" content="article">
+<meta property="og:title" content="week7-Model-based-DP-and-Template-based-NLG">
+<meta property="og:url" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/index.html">
+<meta property="og:site_name" content="ComputerScience">
+<meta property="og:description" content="Model-based Dialogue PolicyMarkov Chain - 马尔科夫链马尔科夫链，它是假设某一时刻状态转移的概率只依赖于它的前一个状态。 举个形象的比喻，假如每天的天气是一个状态的话，那个今天是不是晴天只依赖于昨天的天气，而和前天的天气没有任何关系。当然这么说可能有些武断，但是这样做可以大大简化模型的复杂度，因此马尔科夫链在很多时间序列模型中得到广泛的应用，比如循环神经网络">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/markov-chain.png">
+<meta property="og:image" content="https://res.cloudinary.com/ulsonhu/image/upload/v1523585401/2018_04_10-4.png">
+<meta property="og:image" content="https://res.cloudinary.com/ulsonhu/image/upload/v1523584361/2018_04_10-1.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/markov-chain-turns.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/Random_process.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/ReinforceLearningonDP.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/Template.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/pizza-bot.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/config.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/dialogue-faq.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/text_represenation.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet-certain-setting.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/The%20Decoder%20Block.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/The%20Decoder-Only%20Block.png">
+<meta property="article:published_time" content="2021-03-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-29T14:23:29.815Z">
+<meta property="article:author" content="进军要努力呀">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/markov-chain.png">
+
+<link rel="canonical" href="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>week7-Model-based-DP-and-Template-based-NLG | ComputerScience</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74793810-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74793810-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a5f7448ac0b523badc121b2d870f1b0c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ComputerScience</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">温故而知新</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          week7-Model-based-DP-and-Template-based-NLG
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-20 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-20T00:00:00+08:00">2021-03-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-29 22:23:29" itemprop="dateModified" datetime="2021-03-29T22:23:29+08:00">2021-03-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" class="post-meta-item leancloud_visitors" data-flag-title="week7-Model-based-DP-and-Template-based-NLG" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Model-based-Dialogue-Policy"><a href="#Model-based-Dialogue-Policy" class="headerlink" title="Model-based Dialogue Policy"></a>Model-based Dialogue Policy</h2><h3 id="Markov-Chain-马尔科夫链"><a href="#Markov-Chain-马尔科夫链" class="headerlink" title="Markov Chain - 马尔科夫链"></a>Markov Chain - 马尔科夫链</h3><p>马尔科夫链，它是假设某一时刻状态转移的概率只依赖于它的前一个状态。</p>
+<p>举个形象的比喻，假如每天的天气是一个状态的话，那个今天是不是晴天只依赖于昨天的天气，而和前天的天气没有任何关系。当然这么说可能有些武断，但是这样做可以大大简化模型的复杂度，因此马尔科夫链在很多时间序列模型中得到广泛的应用，比如循环神经网络RNN，隐式马尔科夫模型HMM等，当然MC也需要它。</p>
+<p>如果用精确的数学定义来描述，则假设我们的序列状态是$…X<em>{t-2}, X</em>{t-1}, X<em>{t}, X</em>{t+1},…$，那么我们的在时刻$X<em>{t+1}$的状态的条件概率仅仅依赖于时刻$X</em>{t}$，即：<script type="math/tex">P(X_{t+1} |...X_{t-2}, X_{t-1}, X_{t} ) = P(X_{t+1} | X_{t})</script></p>
+<p>既然某一时刻状态转移的概率只依赖于它的前一个状态，那么我们只要能求出系统中任意两个状态之间的转换概率，这个马尔科夫链的模型就定了。我们来看看下图这个马尔科夫链模型的具体的例子(来源于维基百科)。</p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/markov-chain.png" alt="img"></p>
+<p>这个马尔科夫链是表示股市模型的，共有三种状态：牛市（Bull market）, 熊市（Bear market）和横盘（Stagnant market）。每一个状态都以一定的概率转化到下一个状态。比如，牛市以0.025的概率转化到横盘的状态。这个状态概率转化图可以以矩阵的形式表示。如果我们定义矩阵阵$P$某一位置$P(i,j)$的值为$P(j|i)$,即从状态i转化到状态j的概率，并定义牛市为状态0， 熊市为状态1, 横盘为状态2. 这样我们得到了马尔科夫链模型的状态转移矩阵为：</p>
+<p>$ P=\left( \begin{array}{ccc} 0.9&amp;0.075&amp;0.025 \ 0.15&amp;0.8&amp; 0.05 \ 0.25&amp;0.25&amp;0.5 \end{array} \right) $</p>
+<h3 id="HMM-隐马尔可夫模型"><a href="#HMM-隐马尔可夫模型" class="headerlink" title="HMM-隐马尔可夫模型"></a>HMM-隐马尔可夫模型</h3><h4 id="HMM-形象的例子描述"><a href="#HMM-形象的例子描述" class="headerlink" title="HMM 形象的例子描述"></a>HMM 形象的例子描述</h4><p>在引入HMM的公式化描述之前，为了更好的理解 HMM 模型，我们先用一个掷骰子的例子来形象的描述HMM模型。</p>
+<p>模型描述 假设我手里有三个不同的骰子。</p>
+<ul>
+<li>第一个骰子是我们平常见的骰子（称这个骰子为D6），6个面，每个面（1，2，3，4，5，6）出现的概率是1/6。</li>
+<li>第二个骰子是个四面体（称这个骰子为D4），每个面（1，2，3，4）出现的概率是1/4。</li>
+<li>第三个骰子有八个面（称这个骰子为D8），每个面（1，2，3，4，5，6，7，8）出现的概率是1/8。</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="https://res.cloudinary.com/ulsonhu/image/upload/v1523585401/2018_04_10-4.png"><img src="https://res.cloudinary.com/ulsonhu/image/upload/v1523585401/2018_04_10-4.png" alt="img"></a></p>
+<p>假设我们开始掷骰子，我们先从三个骰子里挑一个，挑到每一个骰子的概率都是1/3。 然后我们掷骰子，得到一个数字，1，2，3，4，5，6，7，8中的一个。 不停的重复上述过程，我们会得到一串数字，每个数字都是1，2，3，4，5，6，7，8中的一个。 例如我们可能得到这么一串数字（掷骰子10次）：1635273524</p>
+<p>这串数字叫做<strong>可见状态链</strong>。但是在隐马尔可夫模型中，我们不仅仅有这么一串可见状态链，还有一串<strong>隐含状态链</strong>。在这个例子里，这串隐含状态链就是你用的骰子的序列。比如，隐含状态链有可能是：D6 D8 D8 D6 D4 D8 D6 D6 D4 D8</p>
+<p>一般来说，HMMHMM中说到的马尔可夫链其实是指隐含状态链，因为隐含状态（骰子）之间存在转换概率（transition probability）。在我们这个例子里，D6的下一个状态是D4，D6，D8的概率都是1/3。D4，D8的下一个状态是D4，D6，D8的转换概率也都一样是1/3。这样设定是为了最开始容易说清楚，但是我们其实是可以随意设定转换概率的。比如，我们可以这样定义，D6后面不能接D4，D6后面是D6的概率是0.9，是D8的概率是0.1。这样就是一个新的HMM。</p>
+<p>同样的，尽管可见状态之间没有转换概率，但是隐含状态和可见状态之间有一个概率叫做<strong>输出概率</strong>（emission probability）。就我们的例子来说，六面骰（D6）产生1的输出概率是1/6。产生2，3，4，5，6的概率也都是1/6。我们同样可以对输出概率进行其他定义。比如，我有一个被赌场动过手脚的六面骰子，掷出来是1的概率更大，是1/2，掷出来是2，3，4，5，6的概率是1/10。</p>
+<p><img src="https://res.cloudinary.com/ulsonhu/image/upload/v1523584361/2018_04_10-1.png" alt="img"></p>
+<p><strong>隐马尔可夫示意图</strong></p>
+<p>其实对于 HMM来说，如果提前知道所有隐含状态之间的转换概率和所有隐含状态到所有可见状态之间的输出概率，做模拟是相当容易的。</p>
+<p>但是应用HMM模型时候呢，往往是缺失了一部分信息的，有时候你知道骰子有几种，每种骰子是什么，但是不知道掷出来的骰子序列；有时候你只是看到了很多次掷骰子的结果，剩下的什么都不知道。如果应用算法去估计这些缺失的信息，就成了一个很重要的问题。</p>
+<h3 id="Markov-Chain"><a href="#Markov-Chain" class="headerlink" title="Markov-Chain"></a>Markov-Chain</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/markov-chain-turns.png" alt></p>
+<h3 id="随机过程"><a href="#随机过程" class="headerlink" title="随机过程"></a>随机过程</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/Random_process.png" alt></p>
+<h3 id="强化学习在Dialogue-Policy的应用"><a href="#强化学习在Dialogue-Policy的应用" class="headerlink" title="强化学习在Dialogue Policy的应用"></a>强化学习在Dialogue Policy的应用</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/ReinforceLearningonDP.png" alt></p>
+<h3 id="一些技巧"><a href="#一些技巧" class="headerlink" title="一些技巧"></a>一些技巧</h3><p>关注对话轮次、对话时间、对话情感变化。</p>
+<h2 id="Template-based-Natural-Language-Generation"><a href="#Template-based-Natural-Language-Generation" class="headerlink" title="Template-based Natural Language Generation"></a>Template-based Natural Language Generation</h2><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/Template.png" alt></p>
+<h2 id="Rasa-Response-Selector"><a href="#Rasa-Response-Selector" class="headerlink" title="Rasa Response Selector"></a>Rasa Response Selector</h2><h3 id="参考老师第九周课件"><a href="#参考老师第九周课件" class="headerlink" title="参考老师第九周课件"></a>参考老师第九周课件</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/pizza-bot.png" alt></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/config.png" alt></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/dialogue-faq.png" alt></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/text_represenation.png" alt></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet.png" alt></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet-certain-setting.png" alt></p>
+<h2 id="End2End-Conversational-AI"><a href="#End2End-Conversational-AI" class="headerlink" title="End2End Conversational AI"></a>End2End Conversational AI</h2><h3 id="The-Decoder-Block"><a href="#The-Decoder-Block" class="headerlink" title="The Decoder Block"></a>The Decoder Block</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/The Decoder Block.png" alt></p>
+<h3 id="The-Decoder-Only-Block"><a href="#The-Decoder-Only-Block" class="headerlink" title="The Decoder-Only Block"></a>The Decoder-Only Block</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/The Decoder-Only Block.png" alt></p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p>1、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/cmt/p/14553189.html">马尔科夫链</a></p>
+<p>2、<a target="_blank" rel="noopener" href="http://ulsonhu.cn/HMM-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B.html">HMM-隐马尔可夫模型</a></p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;"> ------ 本文结束------</div>
+    
+</div>
+        <div class="reward-container">
+  <div>Donate comment here.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="进军要努力呀 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="进军要努力呀 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>进军要努力呀
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" title="week7-Model-based-DP-and-Template-based-NLG">https://marchboy.github.io/2021/03/20/Week7-基于模版的对话生成和有限状态机/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/16/data-warehouse/" rel="prev" title="数据仓库的基础知识">
+      <i class="fa fa-chevron-left"></i> 数据仓库的基础知识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" rel="next" title="week8-Conversational-AI-in-Industry-and-Interview">
+      week8-Conversational-AI-in-Industry-and-Interview <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Model-based-Dialogue-Policy"><span class="nav-number">1.</span> <span class="nav-text">Model-based Dialogue Policy</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Markov-Chain-%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E9%93%BE"><span class="nav-number">1.1.</span> <span class="nav-text">Markov Chain - 马尔科夫链</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HMM-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">HMM-隐马尔可夫模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HMM-%E5%BD%A2%E8%B1%A1%E7%9A%84%E4%BE%8B%E5%AD%90%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">HMM 形象的例子描述</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Markov-Chain"><span class="nav-number">1.3.</span> <span class="nav-text">Markov-Chain</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E8%BF%87%E7%A8%8B"><span class="nav-number">1.4.</span> <span class="nav-text">随机过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%9C%A8Dialogue-Policy%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">强化学习在Dialogue Policy的应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E6%8A%80%E5%B7%A7"><span class="nav-number">1.6.</span> <span class="nav-text">一些技巧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Template-based-Natural-Language-Generation"><span class="nav-number">2.</span> <span class="nav-text">Template-based Natural Language Generation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rasa-Response-Selector"><span class="nav-number">3.</span> <span class="nav-text">Rasa Response Selector</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%80%81%E5%B8%88%E7%AC%AC%E4%B9%9D%E5%91%A8%E8%AF%BE%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">参考老师第九周课件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#End2End-Conversational-AI"><span class="nav-number">4.</span> <span class="nav-text">End2End Conversational AI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Decoder-Block"><span class="nav-number">4.1.</span> <span class="nav-text">The Decoder Block</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#The-Decoder-Only-Block"><span class="nav-number">4.2.</span> <span class="nav-text">The Decoder-Only Block</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">5.</span> <span class="nav-text">reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="进军要努力呀"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">进军要努力呀</p>
+  <div class="site-description" itemprop="description">可怕的是自己内心的堕落</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/marchboy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;marchboy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jjgdut@gmail.com" title="E-Mail → mailto:jjgdut@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/yourname" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://youtube.com/yourname" title="YouTube → https:&#x2F;&#x2F;youtube.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/pinard" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard" rel="noopener" target="_blank">刘建平Pinard</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://vel.life/" title="https:&#x2F;&#x2F;vel.life&#x2F;" rel="noopener" target="_blank">思维之海</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wulc.me/" title="https:&#x2F;&#x2F;wulc.me&#x2F;" rel="noopener" target="_blank">吴良超的学习笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/IT_job" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;IT_job" rel="noopener" target="_blank">IT_job的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zdaiot.com/categories/" title="https:&#x2F;&#x2F;www.zdaiot.com&#x2F;categories&#x2F;" rel="noopener" target="_blank">zdaiot</a>
+        </li>
+    </ul>
+  </div>
+
+
+      </div>
+	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 
+	 src="//music.163.com/outchain/player?type=2&id=463352828&auto=0&height=66">
+		    </iframe>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">进军要努力呀</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">141k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:08</span>
+</div><!-- ����ҳ�ײ�������վ����ʱ�� -->
+<span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/01/2020 00:00:00");//�˴��޸���Ľ�վʱ�������վ����ʱ��
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9de70fca612487225ccc',
+      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
+      repo        : 'marchboy.github.io',
+      owner       : 'marchboy',
+      admin       : ['marchboy'],
+      id          : 'fa8fbb397d179aa1d13d9b6cab97749e',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'qAoqMWohGTiECb1RgaNqvgNB-MdYXbMMI',
+      appKey     : 'ISI8QFSo7GcRyExPHSjMkz7R',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

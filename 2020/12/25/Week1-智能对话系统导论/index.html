@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="对话系统导论学习分享一、对话系统的分类1、模块化对话系统，即分模块串行处理对话任务，每个模块负责特定的任务，并将结果传递给下一个模块。在具体的实现上，可以针对任一模块采用基于规则的人工设计方式，或者基于数据驱动的模型方式。 2、端到端的对话系统，由输入直接到输出的端到端对话系统，忽略中间过程，采用数据驱动的模型实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="week1-对话系统导论">
+<meta property="og:url" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/index.html">
+<meta property="og:site_name" content="ComputerScience">
+<meta property="og:description" content="对话系统导论学习分享一、对话系统的分类1、模块化对话系统，即分模块串行处理对话任务，每个模块负责特定的任务，并将结果传递给下一个模块。在具体的实现上，可以针对任一模块采用基于规则的人工设计方式，或者基于数据驱动的模型方式。 2、端到端的对话系统，由输入直接到输出的端到端对话系统，忽略中间过程，采用数据驱动的模型实现。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/Architecture.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/面向任务的对话系统的主要模块.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/NLU.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/意图与槽位的定义.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/意图与槽位的定义2.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228182151761.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228182339504.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/DST.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/DPL.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/NLG.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/NLG模块仍广泛采用传统的基于规则的方法.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228220532162.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228220555871.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228200737059.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228200913207.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228201042585.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228202302119.png">
+<meta property="article:published_time" content="2020-12-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-29T14:12:24.818Z">
+<meta property="article:author" content="进军要努力呀">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/Architecture.png">
+
+<link rel="canonical" href="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>week1-对话系统导论 | ComputerScience</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74793810-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74793810-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a5f7448ac0b523badc121b2d870f1b0c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ComputerScience</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">温故而知新</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          week1-对话系统导论
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-25 00:00:00" itemprop="dateCreated datePublished" datetime="2020-12-25T00:00:00+08:00">2020-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-29 22:12:24" itemprop="dateModified" datetime="2021-03-29T22:12:24+08:00">2021-03-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/" class="post-meta-item leancloud_visitors" data-flag-title="week1-对话系统导论" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="对话系统导论学习分享"><a href="#对话系统导论学习分享" class="headerlink" title="对话系统导论学习分享"></a>对话系统导论学习分享</h2><h3 id="一、对话系统的分类"><a href="#一、对话系统的分类" class="headerlink" title="一、对话系统的分类"></a>一、对话系统的分类</h3><p>1、模块化对话系统，即分模块串行处理对话任务，每个模块负责特定的任务，并将结果传递给下一个模块。在具体的实现上，可以针对任一模块采用基于规则的人工设计方式，或者基于数据驱动的模型方式。</p>
+<p>2、端到端的对话系统，由输入直接到输出的端到端对话系统，忽略中间过程，采用数据驱动的模型实现。</p>
+<p>Task Type</p>
+<blockquote>
+<p>1、Task-Oriented/Task-completed Bot</p>
+<p>2、QA(Question Answering) Bot</p>
+<p>3、Chatbot/Chitchat/Social Chat</p>
+</blockquote>
+<p>Methodology of Building bots （机器人程序的方法论）</p>
+<p><strong>Categories of Conversational AI （AI会话的分类）</strong></p>
+<blockquote>
+<p><strong>1、Chatbot（闲聊型对话，微软小冰）</strong></p>
+<p>闲聊型对话大多为开放域的对话，主要以满足用户的情感需求为主，通过产生有趣、富有个性化的答复内容，与用户进行互动。</p>
+<p><strong>2、QA Bot（问答型对话， 搜索）</strong></p>
+<p>主要为一问一答的形式，机器人对用户提出的问题进行解析，在知识库已有的内容中查找并返回正确答案。对于机器人而言，每次问答均是独立的，与上下文信息无关。</p>
+<p><strong>3、Task-oriented Bot （面向任务的机器人，多伦对话系统）</strong></p>
+<p>主要指机器人为满足用户某一需求（带有明确目的）而产生的多轮对话（如查流量，查话费，订餐，订票，咨询等任务型场景），机器人通过理解、澄清等方式确定用户意图，继而通过答复、调用API等方式完成该任务。在该任务内，机器人需要理解上下文信息并作出下一步的动作。</p>
+<p>由于用户的需求较为复杂，通常情况下需<strong>分多轮互动</strong>，用户也可能在对话过程中不断修改与完善自己的需求，任务型机器人需要通过询问、澄清和确认来帮助用户明确目的。</p>
+<p>任务型对话系统也常被称为<strong>多轮对话系统</strong>，目前工业界有两种实现方式，一种是基于<strong>规则</strong>的实现方式，另一种则是基于<strong>End-to-End</strong>的实现方式。基于End-to-End的实现方式试图训练一个从用户端自然语言输入到机器端自然语言输出的整体映射关系，从而提高系统的灵活性与可拓展性，但该模型对数据的质量和数量要求非常高，并且存在不可解释性，因此，<strong>目前工业界大多采用基于规则的实现方式</strong>。本文以下内容中所提到的任务型对话系统也是基于规则的实现方式。</p>
+</blockquote>
+<p>Category of QA</p>
+<blockquote>
+<p>KB-QA</p>
+<blockquote>
+<p>KB(Knowledge Base)</p>
+<p>KG(Knowledge Graph)</p>
+</blockquote>
+<p>Text-QA</p>
+</blockquote>
+<p>Methodology on KB</p>
+<blockquote>
+<p>Semantic Parsing （语义解析）</p>
+<p>Information Extraction （信息提取）</p>
+<p>Embedding-based Methods （基于嵌入的方法）</p>
+<p>Neural Methods （神经网络方法）</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://coffee.pmcaff.com/article/971158746030208/pmcaff">Dialogue Action</a></p>
+<blockquote>
+<p>System Action</p>
+<p>User Action</p>
+</blockquote>
+<p>State</p>
+<blockquote>
+<p>User State</p>
+<p>System State</p>
+</blockquote>
+<p>NLG </p>
+<blockquote>
+<p>Template-based</p>
+<p>Model-based</p>
+</blockquote>
+<h3 id="二、Modular-Pipeline-Approach-Architecture【模块化-管道方法架构】"><a href="#二、Modular-Pipeline-Approach-Architecture【模块化-管道方法架构】" class="headerlink" title="二、Modular/Pipeline Approach Architecture【模块化/管道方法架构】"></a>二、Modular/Pipeline Approach Architecture【模块化/管道方法架构】</h3><p>主要组成部分【参考PPT第34页】</p>
+<p>Dialogue Input(对话输入) —&gt; </p>
+<blockquote>
+<p><strong>Natural Language Understanding(NLU) —&gt;</strong> </p>
+<p><strong>Dialogue Manager（DM）</strong></p>
+<blockquote>
+<p><strong>Dialogue State Tracking(DST)—&gt;</strong>  </p>
+<p><strong>Action Generation(Dialogue Policy) —&gt;</strong> </p>
+</blockquote>
+<p><strong>Natural Language Generation(NLG) —&gt;</strong> </p>
+</blockquote>
+<p>Dialogue Output(对话输出)</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/Architecture.png" alt></p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/面向任务的对话系统的主要模块.png" alt="image-20201228182151761"></p>
+<h4 id="2-1-NLU（Natural-Language-Understanding）自然语言理解"><a href="#2-1-NLU（Natural-Language-Understanding）自然语言理解" class="headerlink" title="2.1 NLU（Natural Language Understanding）自然语言理解"></a>2.1 NLU（Natural Language Understanding）自然语言理解</h4><h5 id="什么是NLU"><a href="#什么是NLU" class="headerlink" title="什么是NLU"></a>什么是NLU</h5><p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/NLU.png" alt></p>
+<p>NLU是将用户输入的自然语言语句映射为机器可读的结构化语义表述，这种结构化语义一般由两部分构成，分别是<strong>用户意图</strong>（user intention）和<strong>槽值</strong>（slot-value）。</p>
+<p>对面向任务的对话系统来说，NLU模块的主要任务是将用户输入的自然语言映射为用户的意图和相应的槽位值。因此，NLU模块的输入是讲用户对话语句$X_n$，输出是解析$X_n$后得到的用户动作$U_n$，该模块涉及的主要技术是<strong>意图识别和槽位填充</strong>，这两种技术分别对应用户动作的两项结构化参数，即意图和槽位。</p>
+<p>【做好NLU需要掌握两项关键技能：意图识别和实体提取】</p>
+<p>下面主要讨论如何针对面向任务的对话系统设计NLU模块，包括针对特定任务定义意图和相应的槽位，以及后续从用户的输入中获取任务目标的意图识别方法和对应的槽位填充方法。</p>
+<p><strong>（1）意图和槽位的定义</strong></p>
+<p>意图和槽位共同构成了“用户动作”，机器是无法直接理解自然语言的，因此用户动作的作用便是将自然语言映射为机器能够理解的结构化语义表示。</p>
+<p>意图识别，也被称为SUC（Spoken Utterance Classification），顾名思义，是将用户输入的自然语言会话进行划分，类别（classification）对应的就是用户意图。例如“今天天气如何”，其意图为“询问天气”。自然地，可以将意图识别看作一个典型的分类问题。意图的分类和定义可参考ISO-24617-2标准，其中共有56种详细的定义。面向任务的对话系统中的意图识别通常可以视为文本分类任务。同时，意图的定义与对话系统自身的定位和所具有的知识库有很大关系，即意图的定义具有非常强的领域相关性。</p>
+<p>槽位，即意图所带的参数。一个意图可能对应若干个槽位，例如询问公交车路线时，需要给出出发地、目的地、时间等必要参数。以上参数即“询问公交车路线”这一意图对应的槽位。语义槽位填充任务的主要目标是在已知特定领域或特定意图的语义框架（semantic frame）的前提下，从输入语句中抽取该语义框架中预先定义好的语义槽的值。语义槽位填充任务可以转化为序列标注任务，即运用经典的IOB标记法，标记某一个词是某一语义槽的开始（begin）、延续（inside），或是非语义槽（outside）。</p>
+<p>要使一个面向任务的对话系统能正常工作，首先要设计意图和槽位。意图和槽位能够让系统知道该执行哪项特定任务，并且给出执行该任务时需要的参数类型。为了方便与问答系统做异同对比，我们依然以一个具体的“询问天气”的需求为例，介绍面向任务的对话系统中对意图和槽位的设计。</p>
+<p><strong>用户输入示例</strong>：“今天上海天气怎么样”</p>
+<p><strong>用户意图定义</strong>：询问天气，Ask_Weather</p>
+<p><strong>槽位定义</strong></p>
+<p>槽位一：时间，Date</p>
+<p>槽位二：地点，Location</p>
+<p>“询问天气”的需求对应的意图和槽位如下图所示。</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/意图与槽位的定义.png" alt="image-20201228182151761"></p>
+<p>在上述示例中，针对“询问天气”任务定义了两个必要的槽位，它们分别是“时间”和“地点”。</p>
+<p>对于一个单一的任务，上述定义便可解决任务需求。但在真实的业务环境下，一个面向任务的对话系统往往需要能够同时处理若干个任务，例如气象台除了能够回答“询问天气”的问题，也应该能够回答“询问温度”的问题。</p>
+<p>对于同一系统处理多种任务的复杂情况，一种优化的策略是定义更上层的领域，如将“询问天气”意图和“询问温度”意图均归属于“天气”领域。在这种情况下，可以简单地将领域理解为意图的集合。定义领域并先进行领域识别的优点是可以约束领域知识范围，减少后续意图识别和槽位填充的搜索空间。此外，对于每一个领域进行更深入的理解，利用好任务及领域相关的特定知识和特征，往往能够显著地提升NLU模块的效果。据此，对图2的示例进行改进，加入“天气”领域。</p>
+<p><strong>用户输入示例</strong></p>
+<p>1、“今天上海天气怎么样”</p>
+<p>2、“上海现在气温多少度”</p>
+<p><strong>领域定义</strong>：天气，Weather</p>
+<p><strong>用户意图定义</strong></p>
+<p>1、询问天气，Ask_Weather</p>
+<p>2、询问温度，Ask_Temperature</p>
+<p><strong>槽位定义</strong></p>
+<p>槽位一：时间，Date</p>
+<p>槽位二：地点，Location</p>
+<p>改进后的“询问天气”的需求对应的意图和槽位如下图所示。</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/意图与槽位的定义2.png" alt="image-20201228182151761"></p>
+<p><strong>（2）意图识别和槽位填充</strong></p>
+<p>做好意图和槽位的定义后，需要从用户输入中提取用户意图和相应槽对应的槽值。意图识别的目标是从用户输入的语句中提取用户意图，单一任务可以简单地建模为一个二分类问题，如“询问天气”意图，在意图识别时可以被建模为“是询问天气”或者“不是询问天气”二分类问题。当涉及需要对话系统处理多种任务时，系统需要能够判别各个意图，在这种情况下，二分类问题就转化成了多分类问题。</p>
+<p>槽位填充的任务是从自然语言中提取信息并填充到事先定义好的槽位中，例如在图2中已经定义好了意图和相应的槽位，对于用户输入“今天上海天气怎么样”系统应当能够提取出“今天”和“上海”并分别将其填充到“时间”和“地点”槽位。基于特征提取的传统机器学习模型已经在槽位填充任务上得到了广泛应用。近年来，随着深度学习技术在自然语言处理领域的发展，基于深度学习的方法也逐渐被应用于槽位填充任务。相比于传统的机器学习方法，深度学习模型能够自动学习输入数据的隐含特征。例如，将可以利用更多上下文特征的最大熵马尔可夫模型引入槽位填充的过程中[8]，类似地，也有研究将条件随机场模型引入槽位填充。</p>
+<p>例子：在生活中，如果想要订机票，人们会有很多种自然的表达：</p>
+<blockquote>
+<p>“订机票”；</p>
+<p>“有去上海的航班么？”；</p>
+<p>“看看航班，下周二出发去纽约的”；</p>
+<p>“要出差，帮我查下机票”；</p>
+<p>等等等等</p>
+</blockquote>
+<p>“自然的表达” 有无穷多的组合（自然语言）都是在代表 “订机票” 这个意图的。而听到这些表达的人，可以准确理解这些表达指的是“订机票”这件事。</p>
+<p>而要理解这么多种不同的表达，对机器是个挑战。在过去，机器只能处理“结构化的数据”（比如关键词），也就是说如果要听懂人在讲什么，必须要用户输入精确的指令。</p>
+<p>所以，无论你说“我要出差”还是“帮我看看去北京的航班”，<strong>只要这些字里面没有包含提前设定好的关键词“订机票”，系统都无法处理</strong>。而且，只要出现了关键词，比如“我要退订机票”里也有这三个字，也会被处理成用户想要订机票。</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228182151761.png" alt="image-20201228182151761"></p>
+<p>自然语言理解这个技能出现后，可以让机器从各种自然语言的表达中，区分出来，哪些话归属于这个意图；而那些表达不是归于这一类的，而不再依赖那么死板的关键词。比如经过训练后，机器能够识别“帮我推荐一家附近的餐厅”，就不属于“订机票”这个意图的表达。</p>
+<p>并且，通过训练，机器还能够在句子当中自动提取出来“上海”，这两个字指的是目的地这个概念（即实体）；“下周二”指的是出发时间。</p>
+<p>这样一来，看上去“机器就能听懂人话啦！”。</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228182339504.png" alt="image-20201228182339504"></p>
+<h5 id="NLU的应用场景"><a href="#NLU的应用场景" class="headerlink" title="NLU的应用场景"></a>NLU的应用场景</h5><p>几乎所有跟文字语言和语音相关的应用都会用到 NLU，如机器翻译、机器客服、智能音箱。</p>
+<p>例：</p>
+<blockquote>
+<p>“我冷了”</p>
+<p>机器：帮您把空调调高1度</p>
+</blockquote>
+<p>用户并没有提到空调，但是机器需要知道用户的意图——空调有点冷，需要把温度调高。</p>
+<h5 id="NLU的难点"><a href="#NLU的难点" class="headerlink" title="NLU的难点"></a>NLU的难点</h5><p><strong>语言的多样性</strong>：组合方式非常灵活，字、词、短语、句子、段落…不同的组合可以表达出很多的含义</p>
+<blockquote>
+<p>给唱一首大王叫我来巡山；</p>
+<p>放音乐大王叫我来巡山；</p>
+</blockquote>
+<p><strong>语言的歧义性</strong>：如果不联系上下文，缺少环境的约束，语言有很大的歧义性</p>
+<blockquote>
+<p>我要去拉萨</p>
+</blockquote>
+<ul>
+<li>需要火车票？</li>
+<li>需要飞机票？</li>
+<li>想听音乐？</li>
+<li>还是想查找景点？</li>
+</ul>
+<p><strong>语言的鲁棒性</strong>：自然语言在输入的过程中，尤其是通过语音识别获得的文本，会存在多字、少字、错字、噪音等问题。例如：</p>
+<blockquote>
+<p>大王叫我来新山</p>
+<p>大王叫让我来巡山</p>
+<p>大王叫我巡山</p>
+</blockquote>
+<p><strong>语言的知识依赖</strong>：语言是对世界的符号化描述，语言天然连接着世界知识，例如：</p>
+<blockquote>
+<p>苹果</p>
+</blockquote>
+<p>除了表示水果，还可以表示科技公司</p>
+<blockquote>
+<p>7天</p>
+</blockquote>
+<p>可以表示时间，也可以表示酒店名</p>
+<blockquote>
+<p>晚安</p>
+</blockquote>
+<p>有一首歌也叫《晚安》</p>
+<p><strong>语言的上下文</strong>：上下文的概念包括很多种：对话的上下文、设备的上下文、应用的上下文、用户画像…</p>
+<blockquote>
+<p>U：买张火车票</p>
+<p>A：请问你要去哪里？</p>
+<p>U：宁夏</p>
+<p>U：来首歌听</p>
+<p>A：请问你想听什么歌？</p>
+<p>U：宁夏</p>
+</blockquote>
+<h5 id="NLU-的实现方式"><a href="#NLU-的实现方式" class="headerlink" title="NLU 的实现方式"></a>NLU 的实现方式</h5><p>1、基于规则的方法</p>
+<p>早期大家通过总结规律来判断自然语言的意图，常见的方法有：CFG、JSGF等。</p>
+<p>2、基于统计的方法</p>
+<p>后来出现了基于统计学的 NLU 方式，常见的方法有：<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/svm/">SVM</a>、ME等。</p>
+<p>3、基于深度学习的方法</p>
+<p>随着深度学习的爆发，<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/cnn/">CNN</a>、<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/rnn/">RNN</a>、<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/lstm/">LSTM</a> 都成为了最新的”统治者”。到了2019年，<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/bert/">BERT</a> 和 GPT-2 的表现震惊了业界，他们都是用了 <a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/transformer/">Transformer</a>，Transformer是目前「最先进」的方法。</p>
+<h4 id="2-2-Dialogue-State-Tracking"><a href="#2-2-Dialogue-State-Tracking" class="headerlink" title="2.2 Dialogue State Tracking"></a>2.2 Dialogue State Tracking</h4><p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/DST.png" alt></p>
+<p><strong>DST</strong>：这一模块的目标是追踪用户需求并判断当前的对话状态。该模块以<strong>多轮对话</strong>历史、当前的用户动作为输入，通过总结和推理理解在上下文的环境下用户当前输入自然语言的具体含义。对于对话系统来说，这一模块有着重大意义，很多时候需要综合考虑用户的多轮输入才能让对话系统理解用户的真正需求。</p>
+<p>DST模块以当前的用户动作$U_n$、$n-1$前轮的对话状态和相应的系统动作作为输入，输出是DST模块判定得到的当前对话状态$S_n$。</p>
+<p>对话状态的表示（DST-State Representation）通常由以下3部分构成。</p>
+<p>（1）目前为止的槽位填充情况。</p>
+<p>（2）本轮对话过程中的用户动作。</p>
+<p>（3）对话历史。</p>
+<p>其中，槽位的填充情况通常是最重要的状态表示指标。</p>
+<h4 id="2-3-Action-Generation-Dialogue-Policy"><a href="#2-3-Action-Generation-Dialogue-Policy" class="headerlink" title="2.3 Action Generation(Dialogue Policy)"></a>2.3 Action Generation(Dialogue Policy)</h4><p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/DPL.png" alt></p>
+<p><strong>DPL</strong>：也被称为对话策略优化（optimization），根据当前的对话状态，对话策略决定下一步执行什么系统动作。系统行动与用户意图类似，也由意图和槽位构成。</p>
+<p>DPL模块的输入是DST模块输出的当前对话状态$S_n$，通过预设的对话策略，选择系统动作$a_n$作为输出。下面结合具体案例介绍基于规则的DPL方法，也就是通过人工设计有限状态自动机的方法实现DPL。</p>
+<p><strong>案例：询问天气</strong></p>
+<p>以有限状态自动机的方法进行规则的设计，有两种不同的方案：一种以点表示数据，以边表示操作；另一种以点表示操作，以边表示数据，这两种方案各有优点，在具体实现时可以根据实际情况进行选择。</p>
+<h4 id="2-4-NLG（Natural-Language-Generating）自然语言生成"><a href="#2-4-NLG（Natural-Language-Generating）自然语言生成" class="headerlink" title="2.4 NLG（Natural Language Generating）自然语言生成"></a>2.4 NLG（Natural Language Generating）自然语言生成</h4><p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/NLG.png" alt></p>
+<p>NLG模块的输入是DPL模块输出的系统动作$a_n$，输出是系统对用户输入$X_n$的回复$Y_n$。</p>
+<p>目前，NLG模块仍广泛采用传统的基于规则的方法，下表给出了3个示例规则的定义。根据规则可以将各个系统动作映射成自然语言表达。</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/NLG模块仍广泛采用传统的基于规则的方法.png" alt></p>
+<p>对于NLG，则是将对话策略模块选择的系统动作（非语言格式的数据）转换成人类可以理解的语言格式，如文章，报告等。</p>
+<h5 id="什么是NLG"><a href="#什么是NLG" class="headerlink" title="什么是NLG"></a>什么是NLG</h5><p>NLG 是为了跨越人类和机器之间的沟通鸿沟，将非语言格式的数据转换成人类可以理解的语言格式，如文章、报告等。</p>
+<h5 id="NLG的2种方式"><a href="#NLG的2种方式" class="headerlink" title="NLG的2种方式"></a>NLG的2种方式</h5><p>text – to – text：文本到语言的生成</p>
+<p>data – to – text ：数据到语言的生成</p>
+<h5 id="NLG的3个Level"><a href="#NLG的3个Level" class="headerlink" title="NLG的3个Level"></a>NLG的3个Level</h5><p><strong>简单的数据合并：</strong>自然语言处理的简化形式，这将允许将数据转换为文本（通过类似Excel的函数）。为了关联，以<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/邮件合并/7804213?fr=aladdin">邮件合并</a>（MS Word mailmerge）为例，其中间隙填充了一些数据，这些数据是从另一个源（例如MS Excel中的表格）中检索的。</p>
+<p><strong>模板化的 NLG</strong> ：这种形式的NLG使用模板驱动模式来显示输出。以足球比赛得分板为例。数据动态地保持更改，并由预定义的业务规则集（如if / else循环语句）生成。</p>
+<p><strong>高级 NLG</strong> ：这种形式的自然语言生成就像人类一样。它理解意图，添加智能，考虑上下文，并将结果呈现在用户可以轻松阅读和理解的富有洞察力的叙述中。</p>
+<h5 id="NLG的6个步骤"><a href="#NLG的6个步骤" class="headerlink" title="NLG的6个步骤"></a>NLG的6个步骤</h5><p><strong>第一步：内容确定 – Content Determination</strong></p>
+<p>作为第一步，NLG 系统需要决定哪些信息应该包含在正在构建的文本中，哪些不应该包含。通常数据中包含的信息比最终传达的信息要多。</p>
+<p><strong>第二步：文本结构 – Text Structuring</strong></p>
+<p>确定需要传达哪些信息后，NLG 系统需要合理的组织文本的顺序。例如在报道一场篮球比赛时，会优先表达「什么时间」「什么地点」「哪2支球队」，然后再表达「比赛的概况」，最后表达「比赛的结局」。</p>
+<p><strong>第三步：句子聚合 – Sentence Aggregation</strong></p>
+<p>不是每一条信息都需要一个独立的句子来表达，将多个信息合并到一个句子里表达可能会更加流畅，也更易于阅读。</p>
+<p><strong>第四步：语法化 – Lexicalisation</strong></p>
+<p>当每一句的内容确定下来后，就可以将这些信息组织成自然语言了。这个步骤会在各种信息之间加一些连接词，看起来更像是一个完整的句子。</p>
+<p><strong>第五步：参考表达式生成 – Referring Expression Generation|REG</strong></p>
+<p>这个步骤跟语法化很相似，都是选择一些单词和短语来构成一个完整的句子。不过他跟语法化的本质区别在于“REG需要识别出内容的领域，然后使用该领域（而不是其他领域）的词汇”。</p>
+<p><strong>第六步：语言实现 – Linguistic Realisation</strong></p>
+<p>最后，当所有相关的单词和短语都已经确定时，需要将它们组合起来形成一个结构良好的完整句子。</p>
+<h5 id="NLG-的3种典型应用"><a href="#NLG-的3种典型应用" class="headerlink" title="NLG 的3种典型应用"></a>NLG 的3种典型应用</h5><p>NLG 的不管如何应用，大部分都是下面的3种目的：</p>
+<ol>
+<li>能够大规模的产生个性化内容</li>
+<li>帮助人类洞察数据，让数据更容易理解</li>
+<li>加速内容生产</li>
+</ol>
+<h3 id="三、Single-Turn-Question-Answering-Systems"><a href="#三、Single-Turn-Question-Answering-Systems" class="headerlink" title="三、Single-Turn Question Answering Systems"></a>三、Single-Turn Question Answering Systems</h3><p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228220532162.png" alt="image-20201228220532162"></p>
+<h3 id="四、Multi-Turn-Question-Answering"><a href="#四、Multi-Turn-Question-Answering" class="headerlink" title="四、Multi-Turn Question Answering"></a>四、Multi-Turn Question Answering</h3><p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228220555871.png" alt="image-20201228220555871"></p>
+<h3 id="五、其他补充要点"><a href="#五、其他补充要点" class="headerlink" title="五、其他补充要点"></a>五、其他补充要点</h3><p>关于Transformer：</p>
+<p>《<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54356280">BERT大火却不懂Transformer？读这一篇就够了</a>》</p>
+<p>《<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1808.08946">why Self-Attention？A Targeted Evaluation of Neural Machine Translation Architectures</a>》</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228200737059.png" alt="image-20201228200737059"></p>
+<p>从语义特征提取能力来说，Transformer在这方面的能力非常显著地超过RNN和CNN（在考察语义类能力的任务WSD中，Transformer超过RNN和CNN大约4-8个绝对百分点），RNN和CNN两者能力差不太多。</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228200913207.png" alt="image-20201228200913207"></p>
+<p>原生CNN特征抽取器在这方面极为显著地弱于RNN和Transformer，Transformer微弱优于RNN模型(尤其在主语谓语距离小于13时)，能力由强到弱排序为Transformer &gt; RNN &gt;&gt; CNN; 但在比较远的距离上（主语谓语距离大于13），RNN微弱优于Transformer，所以综合看，可以认为Transformer和RNN在这方面能力差不太多，而CNN则显著弱于前两者。</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228201042585.png" alt="image-20201228201042585"></p>
+<p>Transformer综合能力要明显强于RNN和CNN（技术发展到现在阶段，BLEU绝对值提升1个点是很难的事情），而RNN和CNN看上去表现基本相当，貌似CNN表现略好一些。</p>
+<p><img src="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/image-20201228202302119.png" alt="image-20201228202302119"></p>
+<p>Transformer Base最快，CNN次之，再次Transformer Big，最慢的是RNN。RNN比前两者慢了3倍到几十倍之间。</p>
+<p><strong>Reference</strong></p>
+<p>1、开课吧—人工智能对话系统week 1课件</p>
+<p>2、<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/nlu/">自然语言理解 – NLU</a></p>
+<p>3、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/51476362">一文看懂任务型对话系统中的状态追踪（DST）</a></p>
+<p>3、<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/nlg/">自然语言生成 – NLG</a></p>
+<p>4、<a target="_blank" rel="noopener" href="https://www.pianshen.com/article/7389296829/">NLP实践：对话系统技术原理和应用</a></p>
+<p>5、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/115019681">一起来看看最新的对话状态追踪(DST)模型</a></p>
+<p>6、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/143221527">自然语言理解（NLU）是啥？</a></p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;"> ------ 本文结束------</div>
+    
+</div>
+        <div class="reward-container">
+  <div>Donate comment here.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="进军要努力呀 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="进军要努力呀 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>进军要努力呀
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/" title="week1-对话系统导论">https://marchboy.github.io/2020/12/25/Week1-智能对话系统导论/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/21/Spark%E7%AC%94%E8%AE%B0-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/" rel="prev" title="Spark集群的搭建">
+      <i class="fa fa-chevron-left"></i> Spark集群的搭建
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/01/04/Week2-%E4%BD%BF%E7%94%A8RASA%E5%88%B6%E4%BD%9C%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/" rel="next" title="week2-使用RASA制作你的第一个对话机器人">
+      week2-使用RASA制作你的第一个对话机器人 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA%E5%AD%A6%E4%B9%A0%E5%88%86%E4%BA%AB"><span class="nav-number">1.</span> <span class="nav-text">对话系统导论学习分享</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.</span> <span class="nav-text">一、对话系统的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Modular-Pipeline-Approach-Architecture%E3%80%90%E6%A8%A1%E5%9D%97%E5%8C%96-%E7%AE%A1%E9%81%93%E6%96%B9%E6%B3%95%E6%9E%B6%E6%9E%84%E3%80%91"><span class="nav-number">1.2.</span> <span class="nav-text">二、Modular&#x2F;Pipeline Approach Architecture【模块化&#x2F;管道方法架构】</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-NLU%EF%BC%88Natural-Language-Understanding%EF%BC%89%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3"><span class="nav-number">1.2.1.</span> <span class="nav-text">2.1 NLU（Natural Language Understanding）自然语言理解</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFNLU"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">什么是NLU</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NLU%E7%9A%84%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">NLU的应用场景</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NLU%E7%9A%84%E9%9A%BE%E7%82%B9"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">NLU的难点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NLU-%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">NLU 的实现方式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-Dialogue-State-Tracking"><span class="nav-number">1.2.2.</span> <span class="nav-text">2.2 Dialogue State Tracking</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-Action-Generation-Dialogue-Policy"><span class="nav-number">1.2.3.</span> <span class="nav-text">2.3 Action Generation(Dialogue Policy)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-4-NLG%EF%BC%88Natural-Language-Generating%EF%BC%89%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%94%9F%E6%88%90"><span class="nav-number">1.2.4.</span> <span class="nav-text">2.4 NLG（Natural Language Generating）自然语言生成</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFNLG"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">什么是NLG</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NLG%E7%9A%842%E7%A7%8D%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">NLG的2种方式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NLG%E7%9A%843%E4%B8%AALevel"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">NLG的3个Level</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NLG%E7%9A%846%E4%B8%AA%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">NLG的6个步骤</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#NLG-%E7%9A%843%E7%A7%8D%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">NLG 的3种典型应用</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81Single-Turn-Question-Answering-Systems"><span class="nav-number">1.3.</span> <span class="nav-text">三、Single-Turn Question Answering Systems</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81Multi-Turn-Question-Answering"><span class="nav-number">1.4.</span> <span class="nav-text">四、Multi-Turn Question Answering</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%85%B6%E4%BB%96%E8%A1%A5%E5%85%85%E8%A6%81%E7%82%B9"><span class="nav-number">1.5.</span> <span class="nav-text">五、其他补充要点</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="进军要努力呀"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">进军要努力呀</p>
+  <div class="site-description" itemprop="description">可怕的是自己内心的堕落</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/marchboy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;marchboy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jjgdut@gmail.com" title="E-Mail → mailto:jjgdut@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/yourname" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://youtube.com/yourname" title="YouTube → https:&#x2F;&#x2F;youtube.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/pinard" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard" rel="noopener" target="_blank">刘建平Pinard</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://vel.life/" title="https:&#x2F;&#x2F;vel.life&#x2F;" rel="noopener" target="_blank">思维之海</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wulc.me/" title="https:&#x2F;&#x2F;wulc.me&#x2F;" rel="noopener" target="_blank">吴良超的学习笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/IT_job" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;IT_job" rel="noopener" target="_blank">IT_job的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zdaiot.com/categories/" title="https:&#x2F;&#x2F;www.zdaiot.com&#x2F;categories&#x2F;" rel="noopener" target="_blank">zdaiot</a>
+        </li>
+    </ul>
+  </div>
+
+
+      </div>
+	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 
+	 src="//music.163.com/outchain/player?type=2&id=463352828&auto=0&height=66">
+		    </iframe>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">进军要努力呀</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">141k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:08</span>
+</div><!-- ����ҳ�ײ�������վ����ʱ�� -->
+<span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/01/2020 00:00:00");//�˴��޸���Ľ�վʱ�������վ����ʱ��
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9de70fca612487225ccc',
+      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
+      repo        : 'marchboy.github.io',
+      owner       : 'marchboy',
+      admin       : ['marchboy'],
+      id          : '6c3270b982859c6be7a982534aae23cf',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'qAoqMWohGTiECb1RgaNqvgNB-MdYXbMMI',
+      appKey     : 'ISI8QFSo7GcRyExPHSjMkz7R',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Conversational AI in Industry智变中的美团客服客服系统的演变历史">
+<meta property="og:type" content="article">
+<meta property="og:title" content="week8-Conversational-AI-in-Industry-and-Interview">
+<meta property="og:url" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="ComputerScience">
+<meta property="og:description" content="Conversational AI in Industry智变中的美团客服客服系统的演变历史">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话系统的类别.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话系统的类别.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/智能客服机器人.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/zhibianzhilu.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/智变基础.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/语义识别流程.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/DSSM.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/Seq2Seq.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/北京.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/背景2.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话机器人的核心概念.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话机器人的经典流程.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/技术选型.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/技术选型的模板.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/技术选型-搜索-算法.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/技术选型-知识库.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/不只是客服系统.png">
+<meta property="article:published_time" content="2021-03-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-03-29T14:21:52.071Z">
+<meta property="article:author" content="进军要努力呀">
+<meta property="article:tag" content="NLP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话系统的类别.png">
+
+<link rel="canonical" href="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>week8-Conversational-AI-in-Industry-and-Interview | ComputerScience</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74793810-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74793810-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a5f7448ac0b523badc121b2d870f1b0c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ComputerScience</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">温故而知新</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          week8-Conversational-AI-in-Industry-and-Interview
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-03-27 00:00:00" itemprop="dateCreated datePublished" datetime="2021-03-27T00:00:00+08:00">2021-03-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-03-29 22:21:52" itemprop="dateModified" datetime="2021-03-29T22:21:52+08:00">2021-03-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" class="post-meta-item leancloud_visitors" data-flag-title="week8-Conversational-AI-in-Industry-and-Interview" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Conversational-AI-in-Industry"><a href="#Conversational-AI-in-Industry" class="headerlink" title="Conversational AI in Industry"></a>Conversational AI in Industry</h2><h3 id="智变中的美团客服"><a href="#智变中的美团客服" class="headerlink" title="智变中的美团客服"></a>智变中的美团客服</h3><h4 id="客服系统的演变历史"><a href="#客服系统的演变历史" class="headerlink" title="客服系统的演变历史"></a>客服系统的演变历史</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话系统的类别.png" alt></p>
+<p>第一阶段是语音呼叫中心，这种客服系统纯靠人工服务，且支持语音电话，效率低成本高。</p>
+<p>第二阶段进化到了网页在线客服，这种客服系统基于网页会话，服务形式支持文本和语音，同时还利于对流量数据进行挖掘。</p>
+<p>第三阶段是SaaS客服系统，这种客服系统支持多渠道接入，有了丰富的辅助功能和知识库管理。</p>
+<p>如今客服系统进化到了智能客服，它最大的特点就是人机协同，许多简单问题都可以由机器自主解决，这个系统可以自主学习不断进化。回顾客服系统的演变历史可以发现，智能化是客服系统的一个演变趋势。</p>
+<h4 id="对话系统的分类"><a href="#对话系统的分类" class="headerlink" title="对话系统的分类"></a>对话系统的分类</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话系统的类别.png" alt></p>
+<p>对话系统主要包括四类：问答型对话、任务型对话、闲聊型对话、图谱型对话。在问答型对话中，我们使用QABot机器人完成简单任务，这种对话通常是与上下文无关的单轮对话。在任务型对话中，TaskBot机器人完成特定场景下的复杂任务。另外还有ChatBot闲聊型机器人，这种对话通常不以解决实际问题为目的，我们的客服系统也有用到这种机器人。最后是图谱型机器人KBQA，这种机器人可能更多地用在金融、医疗等领域。</p>
+<h4 id="智能客服机器人的智能水平"><a href="#智能客服机器人的智能水平" class="headerlink" title="智能客服机器人的智能水平"></a>智能客服机器人的智能水平</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/智能客服机器人.png" alt></p>
+<p>分为四个档次：简单检索机器人、语义识别机器人、场景导向机器人、智慧机器人。简单检索机器人只支持特定类型的检索，只要说法稍微一变可能就不能正确识别，匹配性较差。语义识别机器人基于知识库，可以更智能地理解所检索的问题。场景导向机器人根据不同场景量身定制机器人，机器人的聪明程度与场景有关。智慧机器人是智能程度最高的机器人，甚至可以达到拟人的程度。现在来看，大多数机器人还只是停留在第二个阶段，能达到第三个阶段的还是少数。</p>
+<h4 id="智变之路"><a href="#智变之路" class="headerlink" title="智变之路"></a>智变之路</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/zhibianzhilu.png" alt></p>
+<p>原来的客服系统系统中客户将请求传送到客服服务器，然后客服操作平台就会分配相应的人工客服处理相应的客户请求，客服操作平台只具备简单的知识管理功能。这种客服系统最大的问题就是效率低，需要的人力成本高。对于这样的客服系统来说，实际上需要的人工客服数目和订单数目是成正比的。美团现在的业务正处于飞速的发展过程中，现在就有近万名客服人员，如果不对客服系统进行改进，可以想象未来这个队伍还会扩充很多倍。基于原来客服系统的这些缺点，我们对这个架构进行了改进，增添了会话管理服务，后面连接着QABot、TakBot、ChatBot等机器人以及人工服务，有一个专门的知识管理平台来支撑QABot、TakBot、ChatBot，AI训练师对知识管理平台设计离线学习和自动训练的算法。除此之外我们还设计了话术提醒、舆情监控、转接提示等模块来辅助人工客服。</p>
+<p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/智变基础.png" alt></p>
+<p>要做好一个AI系统必须满足这样的条件：要有大量业务专家、要有强大算法团队、要有大规模GPU计算引擎、要有海量场景数据，这些条件在美团都是满足的，这无疑给了我们使智能客服系统落地的信心。</p>
+<h4 id="语义识别流程"><a href="#语义识别流程" class="headerlink" title="语义识别流程"></a>语义识别流程</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/语义识别流程.png" alt></p>
+<p>语义识别的流程模拟了人解决问题的思路。人类在解决一个问题的时候会首先考虑以前有没有类似的问题，对应于语义识别中我们也首先采用搜索检索的方法。在找寻相似问题的过程中，人类通常会考虑：“我们要找的到底是哪些问题呢？”，对应于语义识别中，这是一个对问题进行候选筛选的过程。当人类发现一些问题明显和意图无关，通常要把他们去掉，对应于语义识别中，这就是要进行意图识别从而筛选问题。面临最后挑选出的几个问题，人类通常要对其进行优先级排序，对应于语义识别中，这就是Rank的过程。最后人类可能还会对结果进行检查：“问的确实是这个问题嘛？”，这就是语义识别中的语义完整性检查。这整个过程中运用了各种各样的模型来达成语义识别的目的。</p>
+<h4 id="基于深度模型的识别—DSSM"><a href="#基于深度模型的识别—DSSM" class="headerlink" title="基于深度模型的识别—DSSM"></a>基于深度模型的识别—DSSM</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/DSSM.png" alt></p>
+<p>DSSM模型是一个双塔模型，它在句子embedding上效果很好，因此我们也借鉴了这一模型。我们把标准问与拓展问语义相同的句子对作为正例，把标准问与拓展问语义不同的句子对作为反例，训练了DSSM模型。模型训练后，对于任给的一个问题，可以得到它的embedding结果，和其他标准问embedding结果相对比就可以算出相似度。比如拓展问“我的外卖怎么还没到”可以计算出一个Sentence Vector，而标准问“配送超时催单”和“餐品有质量问题”分别有一个Sentence Vector，通过计算可得，“我的外卖怎么还没到”和“配送超时催单”的相似度为0.98，我的外卖怎么还没到”和“餐品有质量问题”的相似度是0.62，所以可以把“我的外卖怎么还没到”的语义识别为“配送超时催单”</p>
+<h4 id="基于深度学习的识别—Seq2Seq"><a href="#基于深度学习的识别—Seq2Seq" class="headerlink" title="基于深度学习的识别—Seq2Seq"></a>基于深度学习的识别—Seq2Seq</h4><p> <img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/Seq2Seq.png" alt></p>
+<p>Seq2seq模型本身是一个生成模型，但是我们把它用来计算句子之间的相似度，我们把它encoder和attention的结果和不同的候选做loss计算，把loss作为一种度量结果，Loss越小代表输入和候选越接近。以上两个深度模型是我们尝试过的深度模型中效果最好的两个</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>智能化是客服系统发展的趋势，是解决有限的客服资源与不断增长的海量用户服务请求矛盾的唯一选择。实践证明，智能化客服确实可以大量消除人的重复劳动，业务专家也可以从繁杂中解脱出来，可以有更多的时间进行方案优化。最重要的一点，智能化客服系统不是一个纯人的系统，也不是一个纯算法的系统，也不是一个静态的系统，它需要人机协同，自主学习不断进化。</p>
+<h3 id="对话机器人在瓜子的实践"><a href="#对话机器人在瓜子的实践" class="headerlink" title="对话机器人在瓜子的实践"></a>对话机器人在瓜子的实践</h3><h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/北京.png" alt></p>
+<p>目前对话机器人很火，是有多方面原因的：第一，图灵在定义智能时就将对话机器人作为人工智能的一个标志；第二，深度学习技术越来越成熟，对话机器人在工业界已经达到一定水平；第三，对话机器人由于有智能客服的积累，有很多公司在做这方面的东西。上面是一个智能客服设计图，左边是接入渠道，登录进来，会提供一些客服产品，如机器人客服、人工在线客服、云呼叫中心，以及用户依据产品做一些自助服务。聊天过程中用户会将其数据留下来（反馈数据、对话数据、人工客服数据），利用这些数据就可以做分析，如客服数据可以做质检，用户数据可以做营销工作，与CRM接入打通。</p>
+<p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/背景2.png" alt></p>
+<p>数字化就是将用户和企业交互的数据都记录下来，将数据结构化，做成算法可用的数据叫数据化，有了数据化就可以用建模等一系列智能化手段做一些智能化提升。在线化做后可以做到整个沟通可追踪、提供可优化、差异化的服务以及精细化运营，最终推动企业在线化。</p>
+<h4 id="什么是对话机器人"><a href="#什么是对话机器人" class="headerlink" title="什么是对话机器人"></a>什么是对话机器人</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话机器人的核心概念.png" alt></p>
+<h4 id="对话机器人的经典流程"><a href="#对话机器人的经典流程" class="headerlink" title="对话机器人的经典流程"></a>对话机器人的经典流程</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话机器人的经典流程.png" alt></p>
+<h4 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/技术选型.png" alt></p>
+<p>对话机器人开始是基于关键词，然后就是模板技术，目前很多公司还在使用，优点是质量可控、准确率高，其缺点就是泛化能力比较弱。随着功能不断迭代，模板很大程度依赖于人工，不能自主提升自己的泛化能力。然后有了基于搜索的对话机器人，有很强的业务适应能力，其缺点就是准确率低。最近几年深度学习火起来后，利用深度学习替换原来的模型进行意图识别，意图识别相对传统方法准确率提升很大，但是缺点就是对数据质量要求较高。</p>
+<p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/技术选型的模板.png" alt></p>
+<p>维护问题到模板以及模板到回答的映射关系，人工需要做很多审核以及一些校对的工作。而搜索方案，将query经过预处理打散成terms，进入搜索系统，如果按照原始结果会得到一个排序“泉州到厦门过户问题，泉州到厦门远吗，泉州到厦门怎么坐车，泉州到福州过户问题，泉州到厦门过户问题”，最后得出结果与查询一致，将最相近的query回答返回。而解决排序不正确的方法就是需要海量数据。</p>
+<p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/技术选型-搜索-算法.png" alt></p>
+<p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/技术选型-知识库.png" alt></p>
+<p>多轮是一个更偏工程的过程。里面更多的算法是在做槽位解析，需要做好三件事，第一个就是填槽，如果对话过程中槽位未补全，在下轮对话过程中引导用户补全槽位信息。再者就是场景管理，需要维护海量用户的聊天信息。第三点就是可配置，多轮最后面都是一个业务问题，开发一个可配置的界面，让运营自行配置其需要的对话。多轮的逻辑是在知识库里配置的，DM是和业务无关的，只需要按配置的解析结果执行即可。</p>
+<p>按照上面设计还是会出现风险，常见的五个风险有：任何算法的选择都只是满足当前的需求，数据是历史数据，算法是当前反馈，业务演化过程不可知； 模型互搏，各种模型都要去做A/BTest确定哪种好那种坏，之前更多的判断是从原理上判断；意图爆炸，目前知识库是基于意图回答一对一关系，业务相对收敛，但是未来发展速度可能导致意图不可收敛； 主观标准的反复，很多过程都由人工参与，每个人评判标准不一；模型更新滞后于业务发展，技术发展较快。解决方案就是永远保持主动，提前应对。</p>
+<p>系统架构：前端有一个对话框和消息服务器，类似于IM基本架构，消息服务器会将消息路由到对话管理模块（中控）。用户聊天文本会在中控识别意图和槽位，通过意图在知识库中获取对应的话术。知识库有一个控制台，与外部交互的界面，对话管理也会访问后端云服务，比如通过ip地址获取其属于哪个城市，除此外还有语义理解、CRM服务等。</p>
+<p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/不只是客服系统.png" alt></p>
+<p>可以利用数据做商业智能，覆盖售前、售中、售后所有场景，用户沟通可追踪可优化，精准营销，从客服转化为专家顾问，实现用户服务在线化和企业在线化，最终实现整个企业的智能化。</p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;"> ------ 本文结束------</div>
+    
+</div>
+        <div class="reward-container">
+  <div>Donate comment here.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="进军要努力呀 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="进军要努力呀 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>进军要努力呀
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://marchboy.github.io/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/" title="week8-Conversational-AI-in-Industry-and-Interview">https://marchboy.github.io/2021/03/27/Week8-端到端的对话系统和智能对话系统在工业中的应用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/" rel="prev" title="week7-Model-based-DP-and-Template-based-NLG">
+      <i class="fa fa-chevron-left"></i> week7-Model-based-DP-and-Template-based-NLG
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Conversational-AI-in-Industry"><span class="nav-number">1.</span> <span class="nav-text">Conversational AI in Industry</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E5%8F%98%E4%B8%AD%E7%9A%84%E7%BE%8E%E5%9B%A2%E5%AE%A2%E6%9C%8D"><span class="nav-number">1.1.</span> <span class="nav-text">智变中的美团客服</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%A2%E6%9C%8D%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%BC%94%E5%8F%98%E5%8E%86%E5%8F%B2"><span class="nav-number">1.1.1.</span> <span class="nav-text">客服系统的演变历史</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.2.</span> <span class="nav-text">对话系统的分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E5%AE%A2%E6%9C%8D%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E6%99%BA%E8%83%BD%E6%B0%B4%E5%B9%B3"><span class="nav-number">1.1.3.</span> <span class="nav-text">智能客服机器人的智能水平</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%99%BA%E5%8F%98%E4%B9%8B%E8%B7%AF"><span class="nav-number">1.1.4.</span> <span class="nav-text">智变之路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AD%E4%B9%89%E8%AF%86%E5%88%AB%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.5.</span> <span class="nav-text">语义识别流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E6%A8%A1%E5%9E%8B%E7%9A%84%E8%AF%86%E5%88%AB%E2%80%94DSSM"><span class="nav-number">1.1.6.</span> <span class="nav-text">基于深度模型的识别—DSSM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E8%AF%86%E5%88%AB%E2%80%94Seq2Seq"><span class="nav-number">1.1.7.</span> <span class="nav-text">基于深度学习的识别—Seq2Seq</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.8.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA%E5%9C%A8%E7%93%9C%E5%AD%90%E7%9A%84%E5%AE%9E%E8%B7%B5"><span class="nav-number">1.2.</span> <span class="nav-text">对话机器人在瓜子的实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.2.1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA"><span class="nav-number">1.2.2.</span> <span class="nav-text">什么是对话机器人</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA%E7%9A%84%E7%BB%8F%E5%85%B8%E6%B5%81%E7%A8%8B"><span class="nav-number">1.2.3.</span> <span class="nav-text">对话机器人的经典流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B"><span class="nav-number">1.2.4.</span> <span class="nav-text">技术选型</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="进军要努力呀"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">进军要努力呀</p>
+  <div class="site-description" itemprop="description">可怕的是自己内心的堕落</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/marchboy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;marchboy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jjgdut@gmail.com" title="E-Mail → mailto:jjgdut@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/yourname" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://youtube.com/yourname" title="YouTube → https:&#x2F;&#x2F;youtube.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/pinard" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard" rel="noopener" target="_blank">刘建平Pinard</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://vel.life/" title="https:&#x2F;&#x2F;vel.life&#x2F;" rel="noopener" target="_blank">思维之海</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wulc.me/" title="https:&#x2F;&#x2F;wulc.me&#x2F;" rel="noopener" target="_blank">吴良超的学习笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/IT_job" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;IT_job" rel="noopener" target="_blank">IT_job的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zdaiot.com/categories/" title="https:&#x2F;&#x2F;www.zdaiot.com&#x2F;categories&#x2F;" rel="noopener" target="_blank">zdaiot</a>
+        </li>
+    </ul>
+  </div>
+
+
+      </div>
+	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 
+	 src="//music.163.com/outchain/player?type=2&id=463352828&auto=0&height=66">
+		    </iframe>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">进军要努力呀</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">141k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:08</span>
+</div><!-- ����ҳ�ײ�������վ����ʱ�� -->
+<span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/01/2020 00:00:00");//�˴��޸���Ľ�վʱ�������վ����ʱ��
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9de70fca612487225ccc',
+      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
+      repo        : 'marchboy.github.io',
+      owner       : 'marchboy',
+      admin       : ['marchboy'],
+      id          : '92d8bb306306c3e5ef57641ee6ceea79',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'qAoqMWohGTiECb1RgaNqvgNB-MdYXbMMI',
+      appKey     : 'ISI8QFSo7GcRyExPHSjMkz7R',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
