@@ -21,23 +21,23 @@
     var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="一、第一范式1NF是对属性的**原子性**，要求属性具有原子性，不可再分解；  表：字段1、 字段2(字段2.1、字段2.2)、字段3 ……  如学生（学号，姓名，性别，出生年月日），如果认为最后一列还可以再分成（出生年，出生月，出生日），它就不是一范式了，否则就是；">
+  <meta name="description" content="一、第一范式1NF是对属性的原子性，要求属性具有原子性，不可再分解；  表：字段1、 字段2(字段2.1、字段2.2)、字段3 ……  如学生（学号，姓名，性别，出生年月日），如果认为最后一列还可以再分成（出生年，出生月，出生日），它就不是一范式了，否则就是；">
 <meta property="og:type" content="article">
 <meta property="og:title" content="数据库逻辑设计三范式">
 <meta property="og:url" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/index.html">
 <meta property="og:site_name" content="ComputerScience">
-<meta property="og:description" content="一、第一范式1NF是对属性的**原子性**，要求属性具有原子性，不可再分解；  表：字段1、 字段2(字段2.1、字段2.2)、字段3 ……  如学生（学号，姓名，性别，出生年月日），如果认为最后一列还可以再分成（出生年，出生月，出生日），它就不是一范式了，否则就是；">
+<meta property="og:description" content="一、第一范式1NF是对属性的原子性，要求属性具有原子性，不可再分解；  表：字段1、 字段2(字段2.1、字段2.2)、字段3 ……  如学生（学号，姓名，性别，出生年月日），如果认为最后一列还可以再分成（出生年，出生月，出生日），它就不是一范式了，否则就是；">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/%E8%8C%83%E5%BC%8F%E5%8C%96%E4%BC%98%E7%82%B9.png">
-<meta property="og:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/%E8%8C%83%E5%BC%8F%E5%8C%96%E7%BC%BA%E7%82%B9.png">
-<meta property="og:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/%E5%8F%8D%E8%8C%83%E5%BC%8F%E5%8C%96%E4%BC%98%E7%82%B9.png">
-<meta property="og:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/%E5%8F%8D%E8%8C%83%E5%BC%8F%E5%8C%96%E7%BC%BA%E7%82%B9.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/范式化优点.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/范式化缺点.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/反范式化优点.png">
+<meta property="og:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/反范式化缺点.png">
 <meta property="article:published_time" content="2020-10-30T03:06:15.000Z">
 <meta property="article:modified_time" content="2020-11-19T13:53:34.919Z">
 <meta property="article:author" content="进军要努力呀">
 <meta property="article:tag" content="数据库">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/%E8%8C%83%E5%BC%8F%E5%8C%96%E4%BC%98%E7%82%B9.png">
+<meta name="twitter:image" content="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/范式化优点.png">
 
 <link rel="canonical" href="https://marchboy.github.io/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/">
 
@@ -312,12 +312,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="一、第一范式"><a href="#一、第一范式" class="headerlink" title="一、第一范式"></a>一、第一范式</h2><p>1NF是对属性的**<code>原子性</code>**，要求属性具有原子性，不可再分解；</p>
+        <h2 id="一、第一范式"><a href="#一、第一范式" class="headerlink" title="一、第一范式"></a>一、第一范式</h2><p>1NF是对属性的<strong><code>原子性</code></strong>，要求属性具有原子性，不可再分解；</p>
 <blockquote>
 <p>表：字段1、 字段2(字段2.1、字段2.2)、字段3 ……</p>
 </blockquote>
 <p>如学生（学号，姓名，性别，出生年月日），如果认为最后一列还可以再分成（出生年，出生月，出生日），它就不是一范式了，否则就是；</p>
-<h2 id="二、第二范式"><a href="#二、第二范式" class="headerlink" title="二、第二范式"></a>二、第二范式</h2><p>2NF是对记录的**<code>惟一性</code>**，要求记录有惟一标识，即实体的惟一性，即不存在部分依赖；</p>
+<h2 id="二、第二范式"><a href="#二、第二范式" class="headerlink" title="二、第二范式"></a>二、第二范式</h2><p>2NF是对记录的<strong><code>惟一性</code></strong>，要求记录有惟一标识，即实体的惟一性，即不存在部分依赖；</p>
 <blockquote>
 <p>表：学号、课程号、姓名、学分;</p>
 </blockquote>
@@ -330,7 +330,7 @@
 <li><code>更新异常：</code>调整课程学分，所有行都调整。</li>
 </ul>
 <p><strong>正确做法:</strong><br>学生：<code>Student</code>(学号, 姓名)；<br>课程：<code>Course</code>(课程号, 学分)；<br>选课关系：<code>StudentCourse</code>(学号, 课程号, 成绩)。</p>
-<h2 id="三、第三范式"><a href="#三、第三范式" class="headerlink" title="三、第三范式"></a>三、第三范式</h2><p>3NF是对字段的**<code>冗余性</code>**，要求任何字段不能由其他字段派生出来，它要求字段没有冗余，即不存在传递依赖；</p>
+<h2 id="三、第三范式"><a href="#三、第三范式" class="headerlink" title="三、第三范式"></a>三、第三范式</h2><p>3NF是对字段的<strong><code>冗余性</code></strong>，要求任何字段不能由其他字段派生出来，它要求字段没有冗余，即不存在传递依赖；</p>
 <blockquote>
 <p>表: 学号, 姓名, 年龄, 学院名称, 学院电话</p>
 </blockquote>
@@ -344,17 +344,17 @@
 <p>学生：(学号, 姓名, 年龄, 所在学院)；</p>
 <p>学院：(学院, 电话)。</p>
 <h2 id="四、反范式化"><a href="#四、反范式化" class="headerlink" title="四、反范式化"></a>四、反范式化</h2><p><strong>一般说来，数据库只需满足第三范式（<code>3NF</code>）就行了。</strong></p>
-<p>没有冗余的数据库设计可以做到。但是，没有冗余的数据库未必是最好的数据库，有时为了提高运行效率，就必须降低范式标准，适当保留冗余数据。具体做法是：在概念数据模型设计时遵守第三范式，降低范式标准的工作放到物理数据模型设计时考虑。降低范式就是增加字段，允许冗余，**<code>达到以空间换时间的目的</code>**。</p>
+<p>没有冗余的数据库设计可以做到。但是，没有冗余的数据库未必是最好的数据库，有时为了提高运行效率，就必须降低范式标准，适当保留冗余数据。具体做法是：在概念数据模型设计时遵守第三范式，降低范式标准的工作放到物理数据模型设计时考虑。降低范式就是增加字段，允许冗余，<strong><code>达到以空间换时间的目的</code></strong>。</p>
 <p>【例】：有一张存放商品的基本表，“金额”这个字段的存在，表明该表的设计不满足第三范式，因为“金额”可以由“单价”乘以“数量”得到，说明“金额”是冗余字段。但是，增加“金额”这个冗余字段，可以提高查询统计的速度，这就是以空间换时间的作法。</p>
 <p>在<code>Rose 2002</code>中，规定列有两种类型：<strong>数据列</strong>和<strong>计算列</strong>。“金额”这样的列被称为“计算列”，而“单价”和“数量”这样的列被称为“数据列”。</p>
 <h2 id="五、范式化设计和反范式化设计的优缺点"><a href="#五、范式化设计和反范式化设计的优缺点" class="headerlink" title="五、范式化设计和反范式化设计的优缺点"></a>五、范式化设计和反范式化设计的优缺点</h2><h3 id="5-1-范式化"><a href="#5-1-范式化" class="headerlink" title="5.1 范式化"></a>5.1 范式化</h3><p><strong>优点：</strong></p>
-<p><img src="/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/%E8%8C%83%E5%BC%8F%E5%8C%96%E4%BC%98%E7%82%B9.png" alt="clipboard.png"></p>
+<p><img src="/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/范式化优点.png" alt="clipboard.png"></p>
 <p><strong>缺点：</strong></p>
-<p><img src="/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/%E8%8C%83%E5%BC%8F%E5%8C%96%E7%BC%BA%E7%82%B9.png" alt="clipboard.png"></p>
+<p><img src="/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/范式化缺点.png" alt="clipboard.png"></p>
 <h3 id="5-2-反范式化"><a href="#5-2-反范式化" class="headerlink" title="5.2 反范式化"></a>5.2 反范式化</h3><p><strong>优点：</strong></p>
-<p><img src="/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/%E5%8F%8D%E8%8C%83%E5%BC%8F%E5%8C%96%E4%BC%98%E7%82%B9.png" alt="clipboard.png"></p>
+<p><img src="/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/反范式化优点.png" alt="clipboard.png"></p>
 <p><strong>缺点：</strong></p>
-<p><img src="/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/%E5%8F%8D%E8%8C%83%E5%BC%8F%E5%8C%96%E7%BC%BA%E7%82%B9.png" alt="clipboard.png"></p>
+<p><img src="/2020/10/30/%E6%95%B0%E6%8D%AE%E5%BA%93%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1%E4%B8%89%E8%8C%83%E5%BC%8F/反范式化缺点.png" alt="clipboard.png"></p>
 <p><strong>参考资料如下：</strong></p>
 <p>1、<a target="_blank" rel="noopener" href="http://blog.csdn.net/taorui/article/details/2418761">通俗地理解数据库三个范式</a><br>2、<a target="_blank" rel="noopener" href="http://blog.csdn.net/wuyanxiaxia/article/details/22933021">数据库模型设计，第一范式、第二范式、第三范式简单例子理解</a><br>3、<a target="_blank" rel="noopener" href="http://blog.csdn.net/andywuchuanlong/article/details/25913235">数据库三大范式最简单的解释</a><br>4、<a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000013695030">数据库逻辑设计之三大范式通俗理解</a></p>
 
@@ -625,13 +625,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">144k</span>
+    <span title="站点总字数">143k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:11</span>
+    <span title="站点阅读时长">2:10</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
