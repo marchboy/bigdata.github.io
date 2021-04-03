@@ -323,25 +323,22 @@
 </ul>
 <p>是一种注意力机制，模型利用对同一样本观测到的其他部分来对数据样本的剩下部分进行预测。从概念上讲，它感觉非常类似于non-local的方式。还要注意的是，Self-attention是置换不变的；换句话说，它是对集合的一种操作。</p>
 <p>而关于attention和self-attention存在非常多的形式，最常见的Transformer是依赖于scaled-dot-product的形式，也就是：给定query矩阵Q, key矩阵K以及value矩阵V，那么我们的输出就是值向量的加权和，其中，分配给每个值槽的权重由Query与相应Key的点积确定。</p>
-<script type="math/tex; mode=display">
-Attention(Q,K,V) = software(\frac{QK^T} {\sqrt{d_k}}) V</script><p>对于一个query以及一个key向量，$q_i,k_j \in R^d$，我们计算下面的值：</p>
-<script type="math/tex; mode=display">
-a_{ij} = softmax(\frac{q_ik^Y_j}{\sqrt{d_k}}) = \frac{exp(q_ik_j^T)}{\sqrt{d_k}\sum_{r\in S_i} exp(q_ik_r^T)}</script><p>其中，$S_i$是keys的集合。</p>
+<p>$$<br>Attention(Q,K,V) = software(\frac{QK^T} {\sqrt{d_k}}) V<br>$$</p>
+<p>对于一个query以及一个key向量，$q_i,k_j \in R^d$，我们计算下面的值：</p>
+<p>$$<br>a_{ij} = softmax(\frac{q_ik^Y_j}{\sqrt{d_k}}) = \frac{exp(q_ik_j^T)}{\sqrt{d_k}\sum_{r\in S_i} exp(q_ik_r^T)}<br>$$</p>
+<p>其中，$S_i$是keys的集合。</p>
 <ul>
 <li>Multi-Head Self-Attention</li>
 </ul>
 <p>multi-head self-attention是Transformer的核心组成部分，和简单的attention不同之处在于，Multi-head机制将输入拆分为许多小的chunks，然后并行计算每个子空间的scaled dot product，最后我们将所有的attention输出进行拼接，</p>
-<script type="math/tex; mode=display">
-\begin{align}
-MultiheadAttention(X_q,X_k,X_v) & = [head_1;...,head_h]W^0head_i \\
- & = Attention(X_qW_i^q, X_kW^k_i, X_vW_i^v)
-\end{align}</script><p>其中，$[.;.]$是concate操作，$W^q_i, W_i^k \in R^{d<em>d_k/h}, W_i^v \in R^{d </em>d_v/h}$是权重矩阵，它将我们的输出embeddings(L<em>d)的映射到query,key,value矩阵，而且$W^o \in R^{d_v </em> d}$是输出的线性转化，这些权重都是在训练的时候进行训练的。</p>
-<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/640.webp" alt></p>
+<p>$$<br>\begin{align}<br>MultiheadAttention(X_q,X_k,X_v) &amp; = [head_1;…,head_h]W^0head_i \<br> &amp; = Attention(X_qW_i^q, X_kW^k_i, X_vW_i^v)<br>\end{align}<br>$$</p>
+<p>其中，$[.;.]$是concate操作，$W^q_i, W_i^k \in R^{d*d_k/h}, W_i^v \in R^{d <em>d_v/h}$是权重矩阵，它将我们的输出embeddings(L</em>d)的映射到query,key,value矩阵，而且$W^o \in R^{d_v * d}$是输出的线性转化，这些权重都是在训练的时候进行训练的。</p>
+<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/640.webp"></p>
 <p>Transformer，很多时候我们也称之为”vanilla Transformer”, 它有一个encoder-decoder的结构，decoder的Transformer可以在语言建模的时候获得非常好的效果。</p>
 <h3 id="Encoder-Decoder结构"><a href="#Encoder-Decoder结构" class="headerlink" title="Encoder-Decoder结构"></a>Encoder-Decoder结构</h3><p>Encoder生成一个基于attention的表示，能够从一个大的上下文中定位一个特定的信息片段。它由6个身份识别模块组成，每个模块包含两个子模块、一个multi-head self-attention和一个point-wise全连接前馈网络。</p>
 <p>按point-wise来说，这意味着它对序列中的每个元素应用相同的线性变换（具有相同的权重）。<strong>这也可以看作是滤波器大小为1的卷积层</strong>。每个子模块都有一个剩余连接和layer normalization。所有子模块输出相同维度的数据。</p>
 <p>Transformer的decoder功能是从encoder的表示中抽取信息。该结构与encoder非常相似，只是decoder包含两个多头注意子模块，而不是在每个相同的重复模块中包含一个。第一个多头注意子模块被屏蔽，以防止位置穿越。</p>
-<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/TransformerModel.jpg" alt></p>
+<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/TransformerModel.jpg"></p>
 <h3 id="Improved-Attention-Span"><a href="#Improved-Attention-Span" class="headerlink" title="Improved Attention Span"></a>Improved Attention Span</h3><p>提高Attention Span的目的是使可用于self-attention的上下文更长、更有效、更灵活。</p>
 <h4 id="1-Longer-Attention-Span-Transformer-XL"><a href="#1-Longer-Attention-Span-Transformer-XL" class="headerlink" title="1. Longer Attention Span(Transformer-XL)"></a>1. Longer Attention Span(Transformer-XL)</h4><p>vanilla Transformer有一个固定的和有限的注意广度。在每个更新步骤中，该模型只能处理同一段中的其他元素，并且没有任何信息可以在分离的固定长度段之间流动。<strong>也就是说层数固定不够灵活，同时对于算力需求非常大，导致其并不适合处理超长序列。</strong></p>
 <p>这种context segmentation会导致几个问题：</p>
@@ -356,7 +353,7 @@ MultiheadAttention(X_q,X_k,X_v) & = [head_1;...,head_h]W^0head_i \\
 <li>使用位置编码使其适用于重新使用的states;</li>
 </ul>
 <h4 id="2-Relative-Positional-Encoding"><a href="#2-Relative-Positional-Encoding" class="headerlink" title="2. Relative Positional Encoding"></a>2. Relative Positional Encoding</h4><p>为了处理这种新的attention span的形式，Transformer-XL提出了一种新的位置编码。如果使用相同的方法对绝对位置进行编码，则前一段和当前段将分配相同的编码，这是不需要的。</p>
-<p>为了保持位置信息流在各段之间的一致性，Transformer XL对相对位置进行编码，因为它足以知道位置的offset，从而做出更好的预测，即$：i-j$,在一个key向量$k<em>{T,j}$以及它的query之间$q</em>{T,i}$。</p>
+<p>为了保持位置信息流在各段之间的一致性，Transformer XL对相对位置进行编码，因为它足以知道位置的offset，从而做出更好的预测，即$：i-j$,在一个key向量$k_{T,j}$以及它的query之间$q_{T,i}$。</p>
 <h4 id="3-Adaptive-Attention-Span"><a href="#3-Adaptive-Attention-Span" class="headerlink" title="3. Adaptive Attention Span"></a>3. Adaptive Attention Span</h4><p>Transformer的一个关键优势是能够捕获长期依赖关系。根据上下文的不同，模型可能更愿意在某个时候比其他人更进一步地注意；或者一个attention head可能有不同于另一个attention head的注意模式。如果attention span能够灵活地调整其长度，并且只在需要时再往回看，这将有助于减少计算和内存开销，从而在模型中支持更长的最大上下文大小(这就是Adaptive Attention Span的动机)。</p>
 <p>后来Sukhbaatar等人提出了一种self-attention机制以寻找最优的attention span，他们假设不同的attention heads可以在相同的上下文窗口中赋予不同的分数，因此最优的span可以被每个头分开训练。</p>
 <h4 id="4-Localized-Attention-Span-Image-Transformer"><a href="#4-Localized-Attention-Span-Image-Transformer" class="headerlink" title="4. Localized Attention Span (Image Transformer)"></a>4. Localized Attention Span (Image Transformer)</h4><p>Transformer最初用于语言建模。文本序列是一维的，具有明确的时间顺序，因此attention span随着上下文大小的增加而线性增长。</p>
@@ -368,7 +365,7 @@ MultiheadAttention(X_q,X_k,X_v) & = [head_1;...,head_h]W^0head_i \\
 </ul>
 <p>让我们将要生成的当前像素的表示标记为查询$q$。其表示将用于计算$q$的其他位置是关键向量$k_1, k_2……$它们一起形成一个内存矩阵$M$。$M$的范围定义了像素查询$q$的上下文窗口。</p>
 <p>Image Transformer引入了两种类型的localized $M$，如下所示。</p>
-<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/AttentionSpan.webp" alt></p>
+<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/AttentionSpan.webp"></p>
 <ul>
 <li>(1)、1D Local Attention:输入图像按光栅扫描顺序（即从左到右、从上到下）展平。然后将线性化后的图像分割成不重叠的查询块。上下文窗口由与相同的查询块中的像素和在此查询块之前生成的固定数量的附加像素组成。</li>
 <li>(2)、2D Local Attention:图像被分割成多个不重叠的矩形查询块。查询像素可以处理相同内存块中的所有其他像素。为了确保左上角的像素也可以有一个有效的上下文窗口，内存块将分别向上、左和右扩展一个固定的量。</li>
@@ -397,30 +394,25 @@ MultiheadAttention(X_q,X_k,X_v) & = [head_1;...,head_h]W^0head_i \\
 </li>
 </ul>
 <h3 id="How-it-works"><a href="#How-it-works" class="headerlink" title="How it works?"></a><strong>How it works?</strong></h3><p><strong>Dual Intent and Entity Transformer(DIET)</strong> as its name suggests is a transformer architecture that can handle both intent classification and entity recognition together. The best thing about DIET is its flexibility. It provides the ability to plug and play various pre-trained embeddings like BERT, GloVe, ConveRT, and so on. So, based on your data and number of training examples, you can experiment with various SOTA NLU pipelines without even writing a single line of code.</p>
-<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/DIET-widget.gif" alt></p>
-<font color="red" size="5">**重要论文参考：**</font>
-
+<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/Week5-HuggingFace's-Transformers%5CDIET-widget.gif"></p>
+<p><font color="red" size="5"><strong>重要论文参考：</strong></font></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/337181983">https://zhuanlan.zhihu.com/p/337181983</a></p>
-<font color="red"> https://www.yiyibooks.cn/nlp/diet/index.html </font>
-
-<font color="red"> https://arxiv.org/pdf/2004.09936.pdf </font>
-
-
-
+<p><font color="red"> <a target="_blank" rel="noopener" href="https://www.yiyibooks.cn/nlp/diet/index.html">https://www.yiyibooks.cn/nlp/diet/index.html</a> </font></p>
+<p><font color="red"> <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2004.09936.pdf">https://arxiv.org/pdf/2004.09936.pdf</a> </font></p>
 <p>视频：</p>
-<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=vWStcJDuOUk&amp;feature=emb_logo&amp;ab_channel=Rasa">Rasa Algorithm Whiteboard - Diet Architecture 1: How it Works</a></p>
-<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=KUGGuJ0aTL8&amp;feature=emb_logo&amp;ab_channel=Rasa">Rasa Algorithm Whiteboard - Diet Architecture 2: Design Decisions</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=vWStcJDuOUk&feature=emb_logo&ab_channel=Rasa">Rasa Algorithm Whiteboard - Diet Architecture 1: How it Works</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=KUGGuJ0aTL8&feature=emb_logo&ab_channel=Rasa">Rasa Algorithm Whiteboard - Diet Architecture 2: Design Decisions</a></p>
 <p><a target="_blank" rel="noopener" href="https://youtu.be/wWNMST6t1TA">https://youtu.be/wWNMST6t1TA</a></p>
 <h3 id="Why-does-this-Architecture-look-this-way"><a href="#Why-does-this-Architecture-look-this-way" class="headerlink" title="Why does this Architecture look this way?"></a><strong>Why does this Architecture look this way?</strong></h3><p>Custom ~</p>
 <p>类似于乐高玩具，可以自定义各个模块</p>
-<h3 id="How-to-Choose-Pipeline"><a href="#How-to-Choose-Pipeline" class="headerlink" title="How to Choose Pipeline?"></a><strong>How to Choose Pipeline?</strong></h3><p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/pipeline.png" alt></p>
+<h3 id="How-to-Choose-Pipeline"><a href="#How-to-Choose-Pipeline" class="headerlink" title="How to Choose Pipeline?"></a><strong>How to Choose Pipeline?</strong></h3><p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/pipeline.png"></p>
 <h3 id="You-already-have-Intent-Slot！But-…-which-slots-do-you-need"><a href="#You-already-have-Intent-Slot！But-…-which-slots-do-you-need" class="headerlink" title="You already have Intent + Slot！But … which slots do you need?"></a><strong>You already have Intent + Slot！But … which slots do you need?</strong></h3><p>API</p>
-<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/SlotAndHiddenSlot.png" alt></p>
+<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/SlotAndHiddenSlot.png"></p>
 <p>No Slot neither Hidden Slot and How to do with Multi-turn?</p>
-<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/NOINFO.png" alt></p>
+<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/NOINFO.png"></p>
 <h2 id="FSM"><a href="#FSM" class="headerlink" title="FSM"></a>FSM</h2><p>有限状态机，也称为FSM(Finite State Machine)，其在任意时刻都处于有限状态集合中的某一状态。当其获得一个输入字符时，将从当前状态转换到另一个状态，或者仍然保持在当前状态。</p>
 <p>任何一个FSM都可以用状态转换图来描述，图中的节点表示FSM中的一个状态，有向加权边表示输入字符时状态的变化。</p>
-<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/FSM.png" alt></p>
+<p><img src="/2021/02/07/Week5-HuggingFace's-Transformers/FSM.png"></p>
 <p>如果图中不存在与当前状态与输入字符对应的有向边，则FSM将进入“消亡状态(Doom State)”，此后FSM将一直保持“消亡状态”。</p>
 <p>状态转换图中还有两个特殊状态：状态1称为“起始状态”，表示FSM的初始状态。状态6称为“结束状态”，表示成功识别了所输入的字符序列。</p>
 <p>在启动一个FSM时，首先必须将FSM置于“起始状态”，然后输入一系列字符，最终，FSM会到达“结束状态”或者“消亡状态”。</p>
@@ -710,13 +702,13 @@ MultiheadAttention(X_q,X_k,X_v) & = [head_1;...,head_h]W^0head_i \\
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">143k</span>
+    <span title="站点总字数">144k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:10</span>
+    <span title="站点阅读时长">2:11</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>

@@ -42,7 +42,6 @@
 <meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet.png">
 <meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet-certain-setting.png">
 <meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/TheDecoderBlock.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/The%20Decoder-Only-Block.png">
 <meta property="article:published_time" content="2021-03-19T16:00:00.000Z">
 <meta property="article:modified_time" content="2021-04-03T08:25:38.381Z">
 <meta property="article:author" content="进军要努力呀">
@@ -323,7 +322,7 @@
       
         <h2 id="Model-based-Dialogue-Policy"><a href="#Model-based-Dialogue-Policy" class="headerlink" title="Model-based Dialogue Policy"></a>Model-based Dialogue Policy</h2><h3 id="Markov-Chain-马尔科夫链"><a href="#Markov-Chain-马尔科夫链" class="headerlink" title="Markov Chain - 马尔科夫链"></a>Markov Chain - 马尔科夫链</h3><p>马尔科夫链，它是假设某一时刻状态转移的概率只依赖于它的前一个状态。</p>
 <p>举个形象的比喻，假如每天的天气是一个状态的话，那个今天是不是晴天只依赖于昨天的天气，而和前天的天气没有任何关系。当然这么说可能有些武断，但是这样做可以大大简化模型的复杂度，因此马尔科夫链在很多时间序列模型中得到广泛的应用，比如循环神经网络RNN，隐式马尔科夫模型HMM等，当然MC也需要它。</p>
-<p>如果用精确的数学定义来描述，则假设我们的序列状态是$…X<em>{t-2}, X</em>{t-1}, X<em>{t}, X</em>{t+1},…$，那么我们的在时刻$X<em>{t+1}$的状态的条件概率仅仅依赖于时刻$X</em>{t}$，即：<script type="math/tex">P(X_{t+1} |...X_{t-2}, X_{t-1}, X_{t} ) = P(X_{t+1} | X_{t})</script></p>
+<p>如果用精确的数学定义来描述，则假设我们的序列状态是$…X_{t-2}, X_{t-1}, X_{t}, X_{t+1},…$，那么我们的在时刻$X_{t+1}$的状态的条件概率仅仅依赖于时刻$X_{t}$，即：$$P(X_{t+1} |…X_{t-2}, X_{t-1}, X_{t} ) = P(X_{t+1} | X_{t})$$</p>
 <p>既然某一时刻状态转移的概率只依赖于它的前一个状态，那么我们只要能求出系统中任意两个状态之间的转换概率，这个马尔科夫链的模型就定了。我们来看看下图这个马尔科夫链模型的具体的例子(来源于维基百科)。</p>
 <p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/markov-chain.png" alt="img"></p>
 <p>这个马尔科夫链是表示股市模型的，共有三种状态：牛市（Bull market）, 熊市（Bear market）和横盘（Stagnant market）。每一个状态都以一定的概率转化到下一个状态。比如，牛市以0.025的概率转化到横盘的状态。这个状态概率转化图可以以矩阵的形式表示。如果我们定义矩阵阵$P$某一位置$P(i,j)$的值为$P(j|i)$,即从状态i转化到状态j的概率，并定义牛市为状态0， 熊市为状态1, 横盘为状态2. 这样我们得到了马尔科夫链模型的状态转移矩阵为：</p>
@@ -335,7 +334,7 @@
 <li>第二个骰子是个四面体（称这个骰子为D4），每个面（1，2，3，4）出现的概率是1/4。</li>
 <li>第三个骰子有八个面（称这个骰子为D8），每个面（1，2，3，4，5，6，7，8）出现的概率是1/8。</li>
 </ul>
-<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/2018_04_10-4.png" alt></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/2018_04_10-4.png"></p>
 <p>假设我们开始掷骰子，我们先从三个骰子里挑一个，挑到每一个骰子的概率都是1/3。 然后我们掷骰子，得到一个数字，1，2，3，4，5，6，7，8中的一个。 不停的重复上述过程，我们会得到一串数字，每个数字都是1，2，3，4，5，6，7，8中的一个。 例如我们可能得到这么一串数字（掷骰子10次）：1635273524</p>
 <p>这串数字叫做<strong>可见状态链</strong>。但是在隐马尔可夫模型中，我们不仅仅有这么一串可见状态链，还有一串<strong>隐含状态链</strong>。在这个例子里，这串隐含状态链就是你用的骰子的序列。比如，隐含状态链有可能是：D6-D8-D8-D6-D4-D8-D6-D6-D4-D8</p>
 <p>一般来说，HMMHMM中说到的马尔可夫链其实是指隐含状态链，因为隐含状态（骰子）之间存在转换概率（transition probability）。在我们这个例子里，D6的下一个状态是D4，D6，D8的概率都是1/3。D4，D8的下一个状态是D4，D6，D8的转换概率也都一样是1/3。这样设定是为了最开始容易说清楚，但是我们其实是可以随意设定转换概率的。比如，我们可以这样定义，D6后面不能接D4，D6后面是D6的概率是0.9，是D8的概率是0.1。这样就是一个新的HMM。</p>
@@ -344,19 +343,19 @@
 <p><strong>隐马尔可夫示意图</strong></p>
 <p>其实对于 HMM来说，如果提前知道所有隐含状态之间的转换概率和所有隐含状态到所有可见状态之间的输出概率，做模拟是相当容易的。</p>
 <p>但是应用HMM模型时候呢，往往是缺失了一部分信息的，有时候你知道骰子有几种，每种骰子是什么，但是不知道掷出来的骰子序列；有时候你只是看到了很多次掷骰子的结果，剩下的什么都不知道。如果应用算法去估计这些缺失的信息，就成了一个很重要的问题。</p>
-<h3 id="Markov-Chain"><a href="#Markov-Chain" class="headerlink" title="Markov-Chain"></a>Markov-Chain</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/markov-chain-turns.png" alt></p>
-<h3 id="随机过程"><a href="#随机过程" class="headerlink" title="随机过程"></a>随机过程</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/Random_process.png" alt></p>
-<h3 id="强化学习在Dialogue-Policy的应用"><a href="#强化学习在Dialogue-Policy的应用" class="headerlink" title="强化学习在Dialogue Policy的应用"></a>强化学习在Dialogue Policy的应用</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/ReinforceLearningonDP.png" alt></p>
+<h3 id="Markov-Chain"><a href="#Markov-Chain" class="headerlink" title="Markov-Chain"></a>Markov-Chain</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/markov-chain-turns.png"></p>
+<h3 id="随机过程"><a href="#随机过程" class="headerlink" title="随机过程"></a>随机过程</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/Random_process.png"></p>
+<h3 id="强化学习在Dialogue-Policy的应用"><a href="#强化学习在Dialogue-Policy的应用" class="headerlink" title="强化学习在Dialogue Policy的应用"></a>强化学习在Dialogue Policy的应用</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/ReinforceLearningonDP.png"></p>
 <h3 id="一些技巧"><a href="#一些技巧" class="headerlink" title="一些技巧"></a>一些技巧</h3><p>关注对话轮次、对话时间、对话情感变化。</p>
-<h2 id="Template-based-Natural-Language-Generation"><a href="#Template-based-Natural-Language-Generation" class="headerlink" title="Template-based Natural Language Generation"></a>Template-based Natural Language Generation</h2><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/Template.png" alt></p>
-<h2 id="Rasa-Response-Selector"><a href="#Rasa-Response-Selector" class="headerlink" title="Rasa Response Selector"></a>Rasa Response Selector</h2><h3 id="参考老师第九周课件"><a href="#参考老师第九周课件" class="headerlink" title="参考老师第九周课件"></a>参考老师第九周课件</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/pizza-bot.png" alt></p>
-<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/config.png" alt></p>
-<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/dialogue-faq.png" alt></p>
-<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/text_represenation.png" alt></p>
-<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet.png" alt></p>
-<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet-certain-setting.png" alt></p>
-<h2 id="End2End-Conversational-AI"><a href="#End2End-Conversational-AI" class="headerlink" title="End2End Conversational AI"></a>End2End Conversational AI</h2><h3 id="The-Decoder-Block"><a href="#The-Decoder-Block" class="headerlink" title="The Decoder Block"></a>The Decoder Block</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/TheDecoderBlock.png" alt></p>
-<h3 id="The-Decoder-Only-Block"><a href="#The-Decoder-Only-Block" class="headerlink" title="The Decoder-Only Block"></a>The Decoder-Only Block</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/The Decoder-Only-Block.png" alt></p>
+<h2 id="Template-based-Natural-Language-Generation"><a href="#Template-based-Natural-Language-Generation" class="headerlink" title="Template-based Natural Language Generation"></a>Template-based Natural Language Generation</h2><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/Template.png"></p>
+<h2 id="Rasa-Response-Selector"><a href="#Rasa-Response-Selector" class="headerlink" title="Rasa Response Selector"></a>Rasa Response Selector</h2><h3 id="参考老师第九周课件"><a href="#参考老师第九周课件" class="headerlink" title="参考老师第九周课件"></a>参考老师第九周课件</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/pizza-bot.png"></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/config.png"></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/dialogue-faq.png"></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/text_represenation.png"></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet.png"></p>
+<p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/diet-certain-setting.png"></p>
+<h2 id="End2End-Conversational-AI"><a href="#End2End-Conversational-AI" class="headerlink" title="End2End Conversational AI"></a>End2End Conversational AI</h2><h3 id="The-Decoder-Block"><a href="#The-Decoder-Block" class="headerlink" title="The Decoder Block"></a>The Decoder Block</h3><p><img src="/2021/03/20/Week7-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E7%89%88%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%94%9F%E6%88%90%E5%92%8C%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA/TheDecoderBlock.png"></p>
+<h3 id="The-Decoder-Only-Block"><a href="#The-Decoder-Only-Block" class="headerlink" title="The Decoder-Only Block"></a>The Decoder-Only Block</h3><p>![](Week7-基于模版的对话生成和有限状态机/The Decoder-Only-Block.png)</p>
 <h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p>1、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/cmt/p/14553189.html">马尔科夫链</a></p>
 <p>2、<a target="_blank" rel="noopener" href="http://ulsonhu.cn/HMM-%E9%9A%90%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E6%A8%A1%E5%9E%8B.html">HMM-隐马尔可夫模型</a></p>
 
@@ -627,13 +626,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">143k</span>
+    <span title="站点总字数">144k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:10</span>
+    <span title="站点阅读时长">2:11</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
