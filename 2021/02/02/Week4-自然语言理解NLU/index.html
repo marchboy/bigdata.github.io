@@ -28,21 +28,22 @@
 <meta property="og:site_name" content="ComputerScience">
 <meta property="og:description" content="关于CrossWOZ数据集第一个大规模的中文跨域“人机交互”任务导向的数据集。 CrossWOZ包含 6K 个对话，102K 个句子，涉及 5 个领域（景点、酒店、餐馆、地铁、出租）。 将对话分成五种类型：单领域 S，多领域 M，多领域加交通 M+T，跨领域 CM，跨领域加交通 CM+T。交通代表了地铁和出租领域，M 和 CM 的区别是有没有跨领域的约束。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CDingtalk_20210202211237.jpg">
-<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5Cattention-encoderdecoder.gif">
-<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CAttention.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CAttentiontypes.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5Ctransformer.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5Cslot.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CEncode-decoder.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CSlot-gated.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CBert.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Dingtalk_20210202211237.jpg">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/attention-encoderdecoder.gif">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Attention.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Attentiontypes.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/transformer.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/sequenceLabeling.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/slot.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Encode-decoder.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Slot-gated.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Bert.png">
 <meta property="article:published_time" content="2021-02-01T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-03-29T14:19:15.463Z">
+<meta property="article:modified_time" content="2021-04-03T08:03:00.443Z">
 <meta property="article:author" content="进军要努力呀">
 <meta property="article:tag" content="NLP">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CDingtalk_20210202211237.jpg">
+<meta name="twitter:image" content="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Dingtalk_20210202211237.jpg">
 
 <link rel="canonical" href="https://marchboy.github.io/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/">
 
@@ -250,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-29 22:19:15" itemprop="dateModified" datetime="2021-03-29T22:19:15+08:00">2021-03-29</time>
+                <time title="修改时间：2021-04-03 16:03:00" itemprop="dateModified" datetime="2021-04-03T16:03:00+08:00">2021-04-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -426,7 +427,7 @@
 <p>probability—pro+ ##bali + ##lity </p>
 <p>如果bali被masked，则很容易预测到probability这个单词，在中文中亦是如此。</p>
 <p>解决方案：Whole Word Masking</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CDingtalk_20210202211237.jpg"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Dingtalk_20210202211237.jpg"></p>
 <blockquote>
 <p>补充点：</p>
 <p>1、关于whole word piece（WWP），它是对BERT的一个很有效的改进</p>
@@ -455,18 +456,18 @@
 <p>Attention 是挑重点，就算文本比较长，也能从中间抓住重点，不丢失重要的信息。</p>
 <p><strong>Attention原理</strong></p>
 <p>attention 引入 Encoder-Decoder 框架下，完成机器翻译任务的大致流程。</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5Cattention-encoderdecoder.gif"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/attention-encoderdecoder.gif"></p>
 <p><strong>Attention基本原理的基本步骤:</strong></p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CAttention.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Attention.png"></p>
 <p>第一步： query 和 key 进行相似度计算，得到权值</p>
 <p>第二步：将权值进行归一化，得到直接可用的权重</p>
 <p>第三步：将权重和 value 进行加权求和</p>
 <p>Attenttion 类型：</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CAttentiontypes.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Attentiontypes.png"></p>
 <p><a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/attention/">EasyAI-Attention 机制</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/43493999">NLP中的Attention原理和源码解析</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/guoyaohua/p/9429924.html">Attention Model（注意力模型）学习总结</a></p>
-<h1 id="关于Transformer"><a href="#关于Transformer" class="headerlink" title="关于Transformer"></a>关于Transformer</h1><p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5Ctransformer.png"></p>
+<h1 id="关于Transformer"><a href="#关于Transformer" class="headerlink" title="关于Transformer"></a>关于Transformer</h1><p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/transformer.png"></p>
 <p><strong>参考老师PPT32-45页</strong></p>
 <p>参考：</p>
 <p>1、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/48508221">论文详解Transformer （Attention Is All You Need）</a></p>
@@ -474,16 +475,16 @@
 <p>3、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/347492368">Transformer 一篇就够了（二）： Transformer中的Self-attenstion</a></p>
 <p>4、技术细节 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54530247">模型优化之Layer Normalization</a></p>
 <p>5、<a target="_blank" rel="noopener" href="https://medium.com/huggingface/multi-label-text-classification-using-bert-the-mighty-transformer-69714fa3fb3d">Multi-label Text Classification using BERT – The Mighty Transformer</a></p>
-<h1 id="NLU-Slot-Extraction"><a href="#NLU-Slot-Extraction" class="headerlink" title="NLU: Slot Extraction"></a>NLU: Slot Extraction</h1><p>![](Week4-自然语言理解NLU\sequence labeling.png)</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5Cslot.png"></p>
+<h1 id="NLU-Slot-Extraction"><a href="#NLU-Slot-Extraction" class="headerlink" title="NLU: Slot Extraction"></a>NLU: Slot Extraction</h1><p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/sequenceLabeling.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/slot.png"></p>
 <h1 id="NLU-Joint-Intent-Slot-extraction"><a href="#NLU-Joint-Intent-Slot-extraction" class="headerlink" title="NLU: Joint Intent-Slot extraction"></a>NLU: Joint Intent-Slot extraction</h1><h4 id="Attention-Based-Recurrent-Neural-Network-Models-for-Joint-Intent-Detection-and-Slot-Filling（2016）"><a href="#Attention-Based-Recurrent-Neural-Network-Models-for-Joint-Intent-Detection-and-Slot-Filling（2016）" class="headerlink" title="Attention-Based Recurrent Neural Network Models for Joint Intent Detection and Slot Filling（2016）"></a>Attention-Based Recurrent Neural Network Models for Joint Intent Detection and Slot Filling（2016）</h4><p>基于注意力的编码器-解码器神经网络模型最近在机器翻译和语音识别中显示出令人鼓舞的结果。在这项工作中，我们提出了一种基于注意力的神经网络模型，用于联合意图检测和slot filling，这对于许多语音理解和对话系统都是至关重要的步骤。与机器翻译和语音识别不同，对齐在slot filling中是显式的。我们探索将对齐信息整合到编码器-解码器框架中的不同策略。从编码器-解码器模型中的注意力机制中学习，我们进一步建议将注意力引入基于对齐的RNN模型。这种关注为意图分类和slot filling预测提供了更多信息。我们的独立任务模型在ATIS任务上实现了最优的意图检测错误率和slot fillingF1分数。与独立任务模型相比，我们的联合训练模型在意图检测上进一步获得了0.56％的绝对误差（相对值23.8％的相对误差），在slot filling上获得了0.23％的绝对增益。</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CEncode-decoder.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Encode-decoder.png"></p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shengyan5515/article/details/105691543">Attention-Based Recurrent Neural Network Models for Joint Intent Detection and Slot Filling论文笔记</a></p>
 <h4 id="Slot-Gated-Modeling-for-Joint-Slot-Filling-and-Intent-Prediction（2018）"><a href="#Slot-Gated-Modeling-for-Joint-Slot-Filling-and-Intent-Prediction（2018）" class="headerlink" title="Slot-Gated Modeling for Joint Slot Filling and Intent Prediction（2018）"></a>Slot-Gated Modeling for Joint Slot Filling and Intent Prediction（2018）</h4><p>基于注意力的递归神经网络模型用于联合意图检测和插槽填充，具有最先进的性能，同时具有独立的注意力权重。考虑到插槽和意图之间存在很强的关系，本文提出了一种插槽门，其重点是学习意图和插槽注意向量之间的关系，以便通过全局优化获得更好的语义框架结果。实验表明，与基准ATIS和Snips数据集上的注意力模型相比，我们提出的模型显著提高了句子级语义框架的准确率，相对注意度模型分别提高了4.2％和1.9％。</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CSlot-gated.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Slot-gated.png"></p>
 <p>笔记：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shengyan5515/article/details/105776303">Slot-Gated Modeling for Joint Slot Filling and Intent Prediction论文笔记</a></p>
 <h4 id="BERT-for-Joint-Intent-Classification-and-Slot-Filling（2019）"><a href="#BERT-for-Joint-Intent-Classification-and-Slot-Filling（2019）" class="headerlink" title="BERT for Joint Intent Classification and Slot Filling（2019）"></a>BERT for Joint Intent Classification and Slot Filling（2019）</h4><p>意图分类和slot filling是自然语言理解的两个基本任务。它们经常遭受小规模的人工标签训练数据的困扰，导致泛化能力差，尤其是对于稀有单词。最近，一种新的语言表示模型BERT（来自Transformers的双向编码器表示）有助于在大型未标记的语料库上进行预训练深层的双向表征，并在处理完各种自然语言处理任务后创建了最新的模型简单的微调。但是，在探索BERT以获得自然语言理解方面并没有付出很多努力。在这项工作中，我们提出了一个基于BERT的联合意图分类和slot filling模型。实验结果表明，与基于注意力的递归神经网络模型和slot-gated模型相比，我们提出的模型在多个公共基准数据集上的意图分类准确性，slot filling F1和句子级语义准确性都有了显着提高。</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU%5CBert.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Bert.png"></p>
 <p>笔记：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shengyan5515/article/details/105678169">BERT for Joint Intent Classification and Slot Filling论文笔记</a></p>
 
     </div>
@@ -568,7 +569,7 @@
       <i class="fa fa-chevron-left"></i> week3-RASA源码和定制化你的对话机器人
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/02/07/Week5-HuggingFace's%20Transformers/" rel="next" title="week5-Further NLU and Dialogue State Tracking">
+    <a href="/2021/02/07/Week5-HuggingFace's-Transformers/" rel="next" title="week5-Further NLU and Dialogue State Tracking">
       week5-Further NLU and Dialogue State Tracking <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
