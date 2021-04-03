@@ -308,7 +308,7 @@
       
         <h2 id="分析数据"><a href="#分析数据" class="headerlink" title="分析数据"></a>分析数据</h2><p>即探索性数据分析，对数据进行摸底，了解数据分布情况。一般可以通过绘制直方图、散点图、箱线图或者QQ图来观察数据的基本分布情况</p>
 <h2 id="缺失值处理"><a href="#缺失值处理" class="headerlink" title="缺失值处理"></a>缺失值处理</h2><h2 id="异常值处理"><a href="#异常值处理" class="headerlink" title="异常值处理"></a>异常值处理</h2><h2 id="去重处理"><a href="#去重处理" class="headerlink" title="去重处理"></a>去重处理</h2><p><strong>Reference：</strong></p>
-<p>1、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/charlotte77/p/5606926.html">机器学习基础与实践（一）—-数据清洗</a></p>
+<p>1、<a target="_blank" rel="noopener" href="https://www.cnblogs.com/charlotte77/p/5606926.html">机器学习基础与实践（一）——数据清洗</a></p>
 <p>2、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/112501514">数据分布特征的描述</a></p>
 
     </div>
@@ -411,15 +411,15 @@
           
       <div class="tabs tabs-comment">
         <ul class="nav-tabs">
-            <li class="tab"><a href="#comment-valine">valine</a></li>
             <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane valine" id="comment-valine">
-              <div class="comments" id="valine-comments"></div>
-            </div>
             <div class="tab-pane gitalk" id="comment-gitalk">
               <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
             </div>
         </div>
       </div>
@@ -579,13 +579,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">142k</span>
+    <span title="站点总字数">141k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:09</span>
+    <span title="站点阅读时长">2:08</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
@@ -711,6 +711,26 @@ setInterval("createtime()",250);
 
   
 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9de70fca612487225ccc',
+      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
+      repo        : 'marchboy.github.io',
+      owner       : 'marchboy',
+      admin       : ['marchboy'],
+      id          : 'ef2c6cbc935c7cc1568468fedbeb2859',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
 
 <script>
 NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
@@ -737,26 +757,6 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
       serverURLs : ''
     });
   }, window.Valine);
-});
-</script>
-
-<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
-
-<script>
-NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
-    var gitalk = new Gitalk({
-      clientID    : '9de70fca612487225ccc',
-      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
-      repo        : 'marchboy.github.io',
-      owner       : 'marchboy',
-      admin       : ['marchboy'],
-      id          : 'ef2c6cbc935c7cc1568468fedbeb2859',
-        language: '',
-      distractionFreeMode: false
-    });
-    gitalk.render('gitalk-container');
-  }, window.Gitalk);
 });
 </script>
 
