@@ -279,7 +279,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3k</span>
+              <span>3.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -415,7 +415,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Conversational-AI-in-Industry"><a href="#Conversational-AI-in-Industry" class="headerlink" title="Conversational AI in Industry"></a>Conversational AI in Industry</h2><h3 id="智变中的美团客服"><a href="#智变中的美团客服" class="headerlink" title="智变中的美团客服"></a>智变中的美团客服</h3><h4 id="客服系统的演变历史"><a href="#客服系统的演变历史" class="headerlink" title="客服系统的演变历史"></a>客服系统的演变历史</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/对话系统的类别.png" alt></p>
+          <h2 id="Conversational-AI-in-Industry"><a href="#Conversational-AI-in-Industry" class="headerlink" title="Conversational AI in Industry"></a>Conversational AI in Industry</h2><h3 id="智变中的美团客服"><a href="#智变中的美团客服" class="headerlink" title="智变中的美团客服"></a>智变中的美团客服</h3><h4 id="客服系统的演变历史"><a href="#客服系统的演变历史" class="headerlink" title="客服系统的演变历史"></a>客服系统的演变历史</h4><p><img src="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%B1%BB%E5%88%AB.png"></p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/03/27/Week8-%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%92%8C%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%9C%A8%E5%B7%A5%E4%B8%9A%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/#more" rel="contents">
@@ -1109,6 +1109,8 @@
 
       
           <h3 id="一、Setting-up-RASA-Source-Code"><a href="#一、Setting-up-RASA-Source-Code" class="headerlink" title="一、Setting up RASA Source Code"></a>一、Setting up RASA Source Code</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-1、Python Environment Setup</span></span></span><br><span class="line">Python环境配置、创建新的虚拟环境以及pip的安装方法，详见Week2笔记</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-2、Building from Source</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## 这里介绍源码的安装方法</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-3、安装poetry</span></span></span><br><span class="line">curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关于poetry，截至目前pypi并未托管potery的whl文件，如果上述指令执行缓慢，或者由于网络原因不能下载；</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可下载poetry.py和poetry源码，执行以下命令行安装；</span></span><br><span class="line">python get-poetry.py --file poetry-1.1.4-win32.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-4、下载rasa源码</span></span></span><br><span class="line">git clone https://github.com/RasaHQ/rasa.git</span><br><span class="line">cd rasa</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-5、安装</span></span></span><br><span class="line">poetry install</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## 总结下安装过程：</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## poetry install对网络的要求很高，如果中途网络断开，再次执行poetry install会直接报错，这里尚不清楚为何重复执行后不会像pip那样重新请求网络资源安装，而是会直接出错。迫不得已，手动pip安装了poetry.lock文件要求的包版本，再执行poetry install至成功安装，非常耗时，前前后后折腾约2小时。</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## STEP-6:特别地，若有需要安装RASA的附加依赖，如：</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Dependencies <span class="keyword">for</span> spaCy</span></span><br><span class="line">pip3 install rasa[spacy]</span><br><span class="line">python3 -m spacy download en_core_web_md</span><br><span class="line">python3 -m spacy link en_core_web_md en</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Dependencies <span class="keyword">for</span> MITIE</span></span><br><span class="line">pip3 install git+https://github.com/mit-nlp/MITIE.git</span><br><span class="line">pip3 install rasa[mitie]    # pip list可以查看到已安装好了mitie包</span><br></pre></td></tr></table></figure>
+
+
 <h3 id="二、Optimize-NLU"><a href="#二、Optimize-NLU" class="headerlink" title="二、Optimize NLU"></a>二、Optimize NLU</h3><h4 id="2-0-如何增强RASA-NLU-Lifestyle"><a href="#2-0-如何增强RASA-NLU-Lifestyle" class="headerlink" title="2.0 如何增强RASA NLU - Lifestyle"></a>2.0 如何增强RASA NLU - Lifestyle</h4>
           <!--noindex-->
             <div class="post-button">
@@ -1206,7 +1208,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>8.1k</span>
+              <span>8.2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -1531,13 +1533,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">146k</span>
+    <span title="站点总字数">147k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:13</span>
+    <span title="站点阅读时长">2:14</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
