@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title>week2_项目导论中与中文词向量实践</title>
+      <link href="2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/"/>
+      <url>2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Text-Summarization"><a href="#Text-Summarization" class="headerlink" title="Text Summarization"></a>Text Summarization</h2><h2 id="一、Preview"><a href="#一、Preview" class="headerlink" title="一、Preview"></a>一、Preview</h2><h3 id="1、What’s-a-good-algorithm-engineer"><a href="#1、What’s-a-good-algorithm-engineer" class="headerlink" title="1、What’s a good algorithm engineer?"></a>1、What’s a good algorithm engineer?</h3><p>算法基础</p><p>代码功底</p><p>业务理解和应用能力</p><p>良好的产品sense和业务owner意识</p><h3 id="2、Level-of-Machine-Learning-Engineer"><a href="#2、Level-of-Machine-Learning-Engineer" class="headerlink" title="2、Level of Machine Learning Engineer"></a>2、Level of Machine Learning Engineer</h3><h4 id="第一阶段：高效执行机器"><a href="#第一阶段：高效执行机器" class="headerlink" title="第一阶段：高效执行机器"></a>第一阶段：高效执行机器</h4><p>这一阶段我认为算法工程师的核心竞争力是对模型的理解，对于模型不仅知其然，还得知其所以然。</p><h4 id="第二阶段：算法选型和改造能力"><a href="#第二阶段：算法选型和改造能力" class="headerlink" title="第二阶段：算法选型和改造能力"></a>第二阶段：算法选型和改造能力</h4><p>这一阶段我认为算法工程师的核心竞争力在于代码功底好，一则知道各个模型的实现细节，二则能即快又好地实现idea。</p><h4 id="第三阶段：业务抽象能力"><a href="#第三阶段：业务抽象能力" class="headerlink" title="第三阶段：业务抽象能力"></a>第三阶段：业务抽象能力</h4><p>他们像大夫，望闻问切，跟客户一起梳理出业务流程中的痛点，找到优化方式。不只是对行业整体的判断，还要对赛道<br>中的选手体检，有开药的能力。可以把对方的难言之隐梳理出来，定量、优先级排序，然后从整体到细节，一层层结构<br>化分解，最后进入具体执行。你要在传统行业创造新价值，就要搞清楚：什么东西制约了你的产能，制约了你的效率，<br>制约了你的利润率。</p><h2 id="二、Language-to-word-embedding"><a href="#二、Language-to-word-embedding" class="headerlink" title="二、Language to word embedding"></a>二、Language to word embedding</h2><h3 id="1、what-is-Out-of-vocabulary-OOV"><a href="#1、what-is-Out-of-vocabulary-OOV" class="headerlink" title="1、what is Out-of-vocabulary(OOV)"></a>1、what is Out-of-vocabulary(OOV)</h3><p>未登录词就是训练时未出现，测试时出现了的单词。在自然语言处理或者文本处理的时候，我们通常会有一个字词库（vocabulary）。这个vocabulary要么是提前加载的，或者是自己定义的，或者是从当前数据集提取的。假设之后你有了另一个的数据集，这个数据集中有一些词并不在你现有的vocabulary里，我们就说这些词汇是Out-of-vocabulary，简称OOV。</p><h3 id="2、Word-Embedding"><a href="#2、Word-Embedding" class="headerlink" title="2、Word Embedding"></a>2、Word Embedding</h3><p>简单的讲vector就是一个一维的数组，每一个词都变成一个vector。比如说先把一个词变到一个多维空间中，然后把所有的词都放在这个多维空间中。最大的好处是，这些词对计算机来说是categorical feature，像one-hot一样，两个词放在不同位置完全没有关系。如果用vector来表示，词与词之间的关系就可以用距离来表现。也就是说这些词对计算机来说本来是没有关系的，但通过vector转换之后，它们的距离代表了它们的关系，这也是比较好的帮助计算机去理解词之间关系的方法。</p><p>Word Embedding 实际上就是把词从词本身或从one-hot本身变成一个vector 的过程，Embedding就是你怎么去变换这个向量。</p><h3 id="3、How-do-we-represent-the-meaning-of-a-word"><a href="#3、How-do-we-represent-the-meaning-of-a-word" class="headerlink" title="3、How do we represent the meaning of a word?"></a>3、How do we represent the meaning of a word?</h3><p>Meaning本身在字典的定义是：词背后的想法，或是某个人、文章、艺术品想要表达的想法。Meaning本身是个idea，它在大脑里面怎么存储的我们不知道，这个idea怎么让计算机系统去理解它，比较好的办法是把它变成一个vector。</p><p>词本身如果不做向量的变化，那计算机看起来是什么？如果两个词不一样，那就是一个分类的feature, 那我们就直接做one-hot，就是在出现的位置记为1，其他位置记为0，这样做显然是可以的，但是维度是十分大的，尤其是英文。比如说，你搜索电视大小其实和电视容量是一个意思，那计算机怎么知道电视大小和电视容量是同一个意思？包括你要查hotel和motel，其实是一个意思，如果用one-hot它们将在两个维度上，完全没有关系。如果把它变到一个比one-hot低维的，但每个位置上都是有浮点数的vector，而且这些浮点数的数值是有意义的，比如说两个词的浮点数值大小非常靠近，那这两个词就比较靠近，那这样学出来的vector 也是非常有意义的。</p><h3 id="4、Problems-with-WordNet"><a href="#4、Problems-with-WordNet" class="headerlink" title="4、Problems with WordNet"></a>4、Problems with WordNet</h3><p>Great but missing nuance(细微差别)<br>    • e.g., “proficient” is listed as a synonym for “good” This is only<br>correct in some contexts<br>    • Missing new meanings of words<br>    • e.g., wicked, badass, nifty, wizard, genius, ninja, bombast<br>    • Impossible to keep up-to-date!<br>Subjective<br>Requires human labor to create and adapt<br>Can’t compute accurate word similarity</p><h3 id="5、Representing-words-as-discrete-symbols"><a href="#5、Representing-words-as-discrete-symbols" class="headerlink" title="5、Representing words as discrete symbols"></a>5、Representing words as discrete symbols</h3><p>In traditional NLP, we regard words as discrete symbols:<br>hotel, conference, motel – a localist representation<br>Such symbols for words can be represented by one-hot vectors:<br>motel = [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0]<br>hotel = [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0]<br>Vector dimension = number of words in vocabulary (e.g., 5000,000)</p><h3 id="6、Problem-with-words-as-discrete-symbols"><a href="#6、Problem-with-words-as-discrete-symbols" class="headerlink" title="6、Problem with words as discrete symbols"></a>6、Problem with words as discrete symbols</h3><p>Example: in web search, if user searches for “Seattle motel”,<br>we would like to match documents containing “Seattle hotel”<br>But:<br>motel = [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0]<br>hotel = [0 0 0 0 0 0 0 1 0 0 0 0 0 0 0]<br>These two vectors are orthogonal<br>There is no natural notion of similarity for one-hot vectors!<br>Solution:<br>Could try to rely on WordNet’s list of synonyms to get similarity?<br>• But it is well-known to fail badly: incompleteness, etc<br>• Instead: learn to encode similarity in the vectors themselves</p><p>7、Question of N-gram</p><p>数据稀疏，难免会出现OOV的问题<br>• 随着 n 的增⼤，参数空间呈指数增⻓（维度灾难）<br>• 缺少⻓期依赖，只能建模到前 n-1 个词<br>• ⽆法表示⼀词多义（语义鸿沟）</p><p>8、Word Vector</p><p>Neural Probabilistic Language Model</p><p>9、Problems with Neural Probabilistic Language Model</p><p>• 有限的前文信息<br>• 计算量过大<br>• 词向量是副产品</p><h2 id="三、Word2Vec"><a href="#三、Word2Vec" class="headerlink" title="三、Word2Vec"></a>三、Word2Vec</h2><h3 id="1、Word2Vec-2013"><a href="#1、Word2Vec-2013" class="headerlink" title="1、Word2Vec(2013)"></a>1、Word2Vec(2013)</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/word2vec.png"></p><h3 id="2、Word2vec-objective-function"><a href="#2、Word2vec-objective-function" class="headerlink" title="2、Word2vec: objective function"></a>2、Word2vec: objective function</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/word2vec_objectve_function.png"></p><h3 id="3、Word2vec-prediction-function"><a href="#3、Word2vec-prediction-function" class="headerlink" title="3、Word2vec: prediction function"></a>3、Word2vec: prediction function</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/word2vec_predict_function.png"></p><h3 id="4、CBOW-amp-skip-gram"><a href="#4、CBOW-amp-skip-gram" class="headerlink" title="4、CBOW&amp;skip-gram"></a>4、CBOW&amp;skip-gram</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/CBOW.png"></p><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/skip_gram.png"></p><p>下面举一个Skip-Gram Model的例子，它的主要思想是：如果你能够拿到一些文本，可能是维基百科、百度百科的文章，很自然的有一些词就会出现在另一些词的附近，那我们在做Skip-Gram的过程实际就是在create　一个train data的过程，我们把文本拿来，把中间词作为ｘ，两边的词作为label或是topic words，这两个词如果同时出现在附近，可以记为１，如果没有记为０。</p><p>这样的就可以得到一个train sample，这样的train sample都是一个pairs，这样就可以把文本变成很多个train sample，再返回刚才的模型，能很好的把Hidden Layer学出来。学到Hidden Layer之后这就一个embedding了，通过word Paris建立语言模型，然后每一个词再回来，本身还是一个one-hot encoding，再经过Hidden Layer weight matrix，会变成一些的word vector。</p><p>回溯总结一下，vector就是把词本身变成一个向量，怎么得到这个向量？刚才举到了用神经网络，Skip-Gram 建立train 数据，然后学到这个数据，然后Embedding实际上就是Hidden Layer weight matrix，通过Embedding就得到了向量。这是一个比较直接的，事实证明也是一个比较有效的办法。</p><h3 id="5、Difference-between-Skip-Gram-and-CBOW"><a href="#5、Difference-between-Skip-Gram-and-CBOW" class="headerlink" title="5、Difference between Skip-Gram and CBOW"></a>5、Difference between Skip-Gram and CBOW</h3><ul><li>Intuitively, the first task is much simpler, this implies a much faster convergence for CBOW than for Skip-gram, in the original paper (link below) they wrote that CBOW took hours to train, Skip-gram 3 days.</li><li>For the same logic regarding the task difficulty, CBOW learn better syntactic relationships between words while Skipgram<br>is better in capturing better semantic relationships.</li><li>A final consideration to make deals instead with the sensitivity to rare and frequent words.</li></ul><h2 id="四、Hierarchical-Softmax（H-Softmax）"><a href="#四、Hierarchical-Softmax（H-Softmax）" class="headerlink" title="四、Hierarchical Softmax（H-Softmax）"></a>四、Hierarchical Softmax（H-Softmax）</h2><h3 id="1、Negative-Sampling"><a href="#1、Negative-Sampling" class="headerlink" title="1、Negative Sampling"></a>1、Negative Sampling</h3><p>刚刚有讲到每个词用one-hot encoding，然后用weight matrix与它相乘，假设我们想要得到的vector的size是300，输入字典的维度是10000，可以看到weight matrix 有300*10000个parameter，只有一个FC Layer就非常大了，所以不仅是weight matrix 这么大，每一次迭代都要把matrix更新一遍，这样整个学习过程的效率是十分低的。</p><p>比如说在10000个词中有很多和它是词义相近的，但绝大部分和它是没有关系的，数学的角度是正交的，所以它不需要每次都进行更新。所以Negative Sampling的核心：大量减少更新的内容，而且可以大量的减少训练损失，实际测量下来的结果也是非常好的。当然还要做一个词频，高频的词需要放到训练的过程当中去，低频的就不需要做了。</p><p>总结一下Word2Vec 是怎样一个流程：</p><p>Collect text data</p><p>Process text</p><p>Skip-Gram to generate word pair</p><p>Training embedding</p><p>Word2Vec</p><h3 id="2、Vector-Space-Visualization"><a href="#2、Vector-Space-Visualization" class="headerlink" title="2、Vector Space Visualization"></a>2、Vector Space Visualization</h3><p>把它们全都变成vector之后下一步需要做什么？下一步最简单的做法就是把它们画出来。</p><p>当然之前例子中说到把每一个词变到300维，300维是人的肉眼是看不出来的，大家的物理世界只有３维，需要一些降维的方法，降维之后可以看到本来一些词是没有关系的，最后自动的group到一起。</p><p>比如说左上角12345678910的英语都到一起了，左下角和时间相关的都在一起了，右下角语文数学化学高考科目都到一起了，这是个比较有意思的事情，明显的看到这个学习的过程是比较有意义的，意思相近的词都在一起了。</p><p>还有一个点，word vector不仅仅是把词进行分类，而且词和词之间的距离也是有很强的关系。</p><p>比如说英语里面有基本级、比较级、最高级，如果看成一个向量，一个的比较级减去最高级和另外一个比较级减去另外一个最高级，下面的向量还是一样的。它不仅把词之间的分类学会了，词之间的关系也学会了。还有就是男人对应国王，女人对应什么？是皇后。这个也能学出来。所以Word2Vec的fundamental idea不是很难，但效果也是非常好的。</p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/peghoty/p/3857839.html">word2vec 中的数学原理详解</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> NLP </category>
+          
+          <category> 摘要自动生成 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> NLP </tag>
+            
+            <tag> 摘要自动生成 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>全连接神经网络</title>
       <link href="2021/04/12/%E5%85%A8%E8%BF%9E%E6%8E%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/"/>
       <url>2021/04/12/%E5%85%A8%E8%BF%9E%E6%8E%A5%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/</url>
@@ -42,12 +71,16 @@
           
           <category> NLP </category>
           
+          <category> 任务型对话 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> NLP </tag>
+            
+            <tag> 任务型对话 </tag>
             
         </tags>
       
@@ -67,12 +100,16 @@
           
           <category> NLP </category>
           
+          <category> 任务型对话 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> NLP </tag>
+            
+            <tag> 任务型对话 </tag>
             
         </tags>
       
@@ -105,12 +142,16 @@
           
           <category> NLP </category>
           
+          <category> 任务型对话 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> NLP </tag>
+            
+            <tag> 任务型对话 </tag>
             
         </tags>
       
@@ -130,12 +171,16 @@
           
           <category> NLP </category>
           
+          <category> 任务型对话 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> NLP </tag>
+            
+            <tag> 任务型对话 </tag>
             
         </tags>
       
@@ -155,12 +200,16 @@
           
           <category> NLP </category>
           
+          <category> 任务型对话 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> NLP </tag>
+            
+            <tag> 任务型对话 </tag>
             
         </tags>
       
@@ -180,12 +229,16 @@
           
           <category> NLP </category>
           
+          <category> 任务型对话 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> NLP </tag>
+            
+            <tag> 任务型对话 </tag>
             
         </tags>
       
@@ -205,12 +258,16 @@
           
           <category> NLP </category>
           
+          <category> 任务型对话 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> NLP </tag>
+            
+            <tag> 任务型对话 </tag>
             
         </tags>
       
@@ -230,12 +287,16 @@
           
           <category> NLP </category>
           
+          <category> 任务型对话 </category>
+          
       </categories>
       
       
         <tags>
             
             <tag> NLP </tag>
+            
+            <tag> 任务型对话 </tag>
             
         </tags>
       
