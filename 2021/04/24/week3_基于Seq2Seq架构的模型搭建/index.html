@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Text SummarizationDefinitionsAutomatic text summarization is the task of producing a concise and fluent summary while preserving key information content and overall meaning. 自动文本摘要是生成简洁流畅的摘要，同时保留关键信息内">
+<meta property="og:type" content="article">
+<meta property="og:title" content="week3_基于Seq2Seq架构的模型搭建">
+<meta property="og:url" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="ComputerScience">
+<meta property="og:description" content="Text SummarizationDefinitionsAutomatic text summarization is the task of producing a concise and fluent summary while preserving key information content and overall meaning. 自动文本摘要是生成简洁流畅的摘要，同时保留关键信息内">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/summary-approaches.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/TextRank.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/classical_RNN.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN_Architecture.gif">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN_Layers.gif">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN-output.gif">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/solve_vanishing_gradient.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/solve_exploding_gradient.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/long_short_term_memory.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/R_NET.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/encoder.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/decoder.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Encoder-Decoder.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq.gif">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/attention.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq2.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/bahdanau.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/time_t.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/bahdanau_mechanism.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Luong_Attention.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Luong_Attention2.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/difference.png">
+<meta property="article:published_time" content="2021-04-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-04-25T15:04:35.346Z">
+<meta property="article:author" content="进军要努力呀">
+<meta property="article:tag" content="NLP">
+<meta property="article:tag" content="摘要自动生成">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/summary-approaches.png">
+
+<link rel="canonical" href="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>week3_基于Seq2Seq架构的模型搭建 | ComputerScience</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74793810-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74793810-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a5f7448ac0b523badc121b2d870f1b0c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ComputerScience</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">温故而知新</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          week3_基于Seq2Seq架构的模型搭建
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-04-24 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-24T00:00:00+08:00">2021-04-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-25 23:04:35" itemprop="dateModified" datetime="2021-04-25T23:04:35+08:00">2021-04-25</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%91%98%E8%A6%81%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">摘要自动生成</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/" class="post-meta-item leancloud_visitors" data-flag-title="week3_基于Seq2Seq架构的模型搭建" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="Text-Summarization"><a href="#Text-Summarization" class="headerlink" title="Text Summarization"></a>Text Summarization</h3><h4 id="Definitions"><a href="#Definitions" class="headerlink" title="Definitions"></a>Definitions</h4><p>Automatic text summarization is the task of producing a concise and fluent summary while preserving key information content and overall meaning.</p>
+<p>自动文本摘要是生成简洁流畅的摘要，同时保留关键信息内容和整体含义的任务</p>
+<h4 id="categories"><a href="#categories" class="headerlink" title="categories"></a>categories</h4><h5 id="Extractive-Summarization"><a href="#Extractive-Summarization" class="headerlink" title="Extractive Summarization"></a>Extractive Summarization</h5><p>抽取式自动文摘方法，通过提取文档中已存在的关键词，句子形成摘要</p>
+<h5 id="Abstractive-Summarization"><a href="#Abstractive-Summarization" class="headerlink" title="Abstractive Summarization"></a>Abstractive Summarization</h5><p>生成式自动文摘方法，通过建立抽象的语意表示，使用自然语言生成技术，形成摘要。由于生成式自动摘要方法需要复杂的自然语言理解和生成技术支持，应用领域受限。</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/summary-approaches.png" style="zoom: 60%;"></p>
+<p><strong><a target="_blank" rel="noopener" href="https://www.jiqizhixin.com/articles/2019-03-25-7">文本摘要简述</a></strong></p>
+<p><strong><a target="_blank" rel="noopener" href="http://xcfeng.net/res/presentation/文本摘要简述.pdf">文本摘要简述 - Xiachong Feng</a></strong></p>
+<p>目前主要方法有：</p>
+<p>基于统计：统计词频，位置等信息，计算句子权值，再简选取权值高的句子作为文摘，特点：简单易用，但对词句的使用大多仅停留在表面信息。</p>
+<p>基于图模型：构建拓扑结构图，对词句进行排序。例如，TextRank/LexRank</p>
+<p>基于潜在语义：使用主题模型，挖掘词句隐藏信息。例如，采用LDA，HMM</p>
+<p>基于整数规划：将文摘问题转为整数线性规划，求全局最优解。</p>
+<h3 id="Text-Rank"><a href="#Text-Rank" class="headerlink" title="Text Rank"></a>Text Rank</h3><p>TextRank 算法是一种用于文本的基于图的排序算法。其基本思想来源于谷歌的 PageRank算法,通过把文本分割成若干组成单元（单词、句子）并建立图模型，利用投票机制对文本中的重要成分进行排序，仅利用单篇文档本身的信息即可实现关键词提取、文摘。和 LDA、M 等模型不同，TextRank不需要事先对多篇文档进行学习训练，因其简洁有效而得到广泛应用。</p>
+<p><a target="_blank" rel="noopener" href="http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf">最早提出TextRank的论文</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/coshaho/p/9740937.html">马尔科夫链及其平稳状态</a></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/TextRank.png" alt></p>
+<p><strong><a target="_blank" rel="noopener" href="https://www.jiqizhixin.com/articles/2018-12-28-18">TextRank算法的流程</a></strong></p>
+<p><strong>1.</strong> 第一步是把所有文章整合成文本数据</p>
+<p><strong>2.</strong> 接下来把文本分割成单个句子</p>
+<p><strong>3.</strong> 然后，我们将为每个句子找到向量表示（词向量）。</p>
+<p><strong>4.</strong> 计算句子向量间的相似性并存放在矩阵中</p>
+<p><strong>5.</strong> 然后将相似矩阵转换为以句子为节点、相似性得分为边的图结构，用于句子TextRank计算。</p>
+<p><strong>6.</strong> 最后，一定数量的排名最高的句子构成最后的摘要。 </p>
+<p><strong>TFIDF&amp;TextRank对比总结</strong></p>
+<blockquote>
+<p>TextRank与TFIDF均严重依赖于分词结果——如果某词在分词时被切分成了两个词，那么在做关键词提取时无法将两个词黏合在一起（TextRank有部分黏合效果，但需要这两个词均为关键词）。因此是否添加标注关键词进自定义词典，将会造成准确率、召回率大相径庭。</p>
+<p>TextRank的效果并不优于TFIDF。</p>
+<p>TextRank虽然考虑到了词之间的关系，但是仍然倾向于将频繁词作为关键词。</p>
+</blockquote>
+<p>此外，由于TextRank涉及到构建词图及迭代计算，所以提取速度较慢。</p>
+<p>发现以上两种方法本质上还是基于词频，这也导致了我们在进行自然语言处理的时候造成的弊端，因为我们阅读一篇文章的时候，并不是意味着主题词会一直出现，特别对于中文来说，蕴含的中心思想也往往不是一两个词能够说明的，这也是未来自然语言方面要解决的基于语义的分析，路还很长。</p>
+<h3 id="Recurrent-Neural-Network-RNN"><a href="#Recurrent-Neural-Network-RNN" class="headerlink" title="Recurrent Neural Network (RNN)"></a>Recurrent Neural Network (RNN)</h3><p><strong><a target="_blank" rel="noopener" href="https://zybuluo.com/hanbingtao/note/541458">循环神经网络</a></strong></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/classical_RNN.png" style="zoom: 50%;"></p>
+<p>RNN 跟传统神经网络最大的区别在于每次都会将前一次的输出结果，带到下一次的隐藏层中，一起训练。如下图所示：</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN_Architecture.gif"></p>
+<p>假如需要判断用户的说话意图（问天气、问时间、设置闹钟…），用户说了一句“what time is it？”我们需要先对这句话进行分词：</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN_Layers.gif" alt></p>
+<p>当我们判断意图的时候，只需要最后一层的输出「05」，如下图所示：</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN-output.gif" alt></p>
+<p><strong>Solve Vanishing Gradient</strong></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/solve_vanishing_gradient.png" style="zoom:50%;"></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1705.08209.pdf"><strong>Solve Exploding Gradient</strong></a></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/solve_exploding_gradient.png" style="zoom:50%;"></p>
+<p><strong>RNN优点</strong></p>
+<p>1、The main advantage of RNN over ANN is that RNN <strong>can model sequence of data</strong> (i.e. time series) so that each sample can be assumed to be dependent on previous ones<br>2、Share Parameters</p>
+<p><strong>RNN 的缺点也比较明显</strong></p>
+<p>通过上面的例子，我们已经发现，短期的记忆影响较大（如橙色区域），但是长期的记忆影响就很小（如黑色和绿色区域），这就是 RNN 存在的短期记忆问题。</p>
+<p>1、<strong><font color="red"> Gradient vanishing and exploding problems </font></strong></p>
+<p>2、Training an RNN is a very difficult task</p>
+<p>3、<strong>It cannot process very long sequences if using tanh or relu as an activation function</strong></p>
+<p>4、RNN 有短期记忆问题，无法处理很长的输入序列</p>
+<p>5、训练 RNN 需要投入极大的成本</p>
+<h3 id="Long-Short-Term-Memory-LSTM"><a href="#Long-Short-Term-Memory-LSTM" class="headerlink" title="Long Short Term Memory (LSTM)"></a>Long Short Term Memory (LSTM)</h3><p><strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32085405">人人都能看懂的LSTM</a></strong></p>
+<p><strong><a target="_blank" rel="noopener" href="https://zybuluo.com/hanbingtao/note/581764">零基础入门深度学习(6) - 长短时记忆网络(LSTM)</a></strong></p>
+<p>RNN 是一种死板的逻辑，越晚的输入影响越大，越早的输入影响越小，且无法改变这个逻辑。</p>
+<p><a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/lstm/">LSTM</a> 做的最大的改变就是打破了这个死板的逻辑，而改用了一套灵活了逻辑——只保留重要的信息。</p>
+<p><strong>简单说就是：抓重点！</strong></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/long_short_term_memory.png" alt></p>
+<h3 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h3><p><strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32481747">人人都能看懂的GRU</a></strong></p>
+<p>GRU（Gate Recurrent Unit）是循环神经网络（Recurrent Neural Network, RNN）的一种。和LSTM（Long-Short Term Memory）一样，也是为了解决长期记忆和反向传播中的梯度等问题而提出来的。</p>
+<p>GRU和LSTM在很多情况下实际表现上相差无几，那么为什么我们要使用新人GRU（2014年提出）而不是相对经受了更多考验的LSTM（1997提出）呢。</p>
+<p>下图1-1引用论文中的一段话来说明GRU的优势所在。</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/R_NET.png" style="zoom: 50%;"></p>
+<blockquote>
+<p>简单译文：我们在我们的实验中选择GRU是因为它的实验效果与LSTM相似，但是更易于计算。</p>
+</blockquote>
+<p><strong>简单来说就是贫穷限制了我们的计算能力…</strong></p>
+<p>相比LSTM，使用GRU能够达到相当的效果，并且相比之下更容易进行训练，能够很大程度上提高训练效率，因此很多时候会更倾向于使用GRU。</p>
+<p>GRU输入输出的结构与普通的RNN相似，其中的内部思想与LSTM相似。</p>
+<p>与LSTM相比，GRU内部少了一个”门控“，参数比LSTM少，但是却也能够达到与LSTM相当的功能。考虑到硬件的<strong>计算能力</strong>和<strong>时间成本</strong>，因而很多时候我们也就会选择更加”实用“的GRU啦。</p>
+<p><strong>Differences &amp; Trade-off</strong></p>
+<p>1、对于 LSTM 与 GRU ⽽⾔， 由于 GRU 参数更少，收敛速度更快，因此其实际花费时间要少很多，这可以⼤⼤加速了我们的迭代过程。<br>2、⽽从表现上讲，⼆者之间孰优孰劣并没有定论，这要依据具体的任务和数据集⽽定，⽽实际上，⼆者之间的 performance 差距往往并不⼤，远没有调参所带来的效果明显，与其争论 LSTM 与 GRU 孰优孰劣， 不如在 LSTM 或 GRU的激活函数（如将tanh改为tanh变体）和权重初始化上功夫。<br>3、⼀般来说，我会选择GRU作为基本的单元，因为它收敛速度快，可以加速试验进程，快速迭代，⽽我认为快速迭代这⼀特点很重要。如果实现没其余优化技，才会尝试将 GRU 换为 LSTM，看看有没有什么惊喜发⽣。</p>
+<h3 id="Seq2seq-Architecture"><a href="#Seq2seq-Architecture" class="headerlink" title="Seq2seq Architecture"></a>Seq2seq Architecture</h3><h4 id="什么是-Encoder-Decoder"><a href="#什么是-Encoder-Decoder" class="headerlink" title="什么是 Encoder-Decoder"></a><a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/encoder-decoder-seq2seq/">什么是 Encoder-Decoder</a></h4><p>Encoder-Decoder 模型主要是 NLP 领域里的概念。它并不特值某种具体的算法，而是一类算法的统称。Encoder-Decoder 算是一个通用的框架，在这个框架下可以使用不同的算法来解决不同的任务。</p>
+<p>Encoder-Decoder 这个框架很好的诠释了机器学习的核心思路：将现实问题转化为数学问题，通过求解数学问题，从而解决现实问题。</p>
+<p>Encoder 又称作编码器。它的作用就是「将现实问题转化为数学问题」</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/encoder.png" style="zoom:50%;"></p>
+<p>Decoder 又称作解码器，他的作用是「求解数学问题，并转化为现实世界的解决方案」</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/decoder.png" style="zoom:50%;"></p>
+<p>把 2 个环节连接起来，用通用的图来表达则是下面的样子:</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Encoder-Decoder.png" style="zoom:50%;"></p>
+<p>关于 Encoder-Decoder，有2 点需要说明：</p>
+<ol>
+<li>不论输入和输出的长度是什么，中间的「向量 c」 长度都是固定的（这也是它的缺陷，下文会详细说明）</li>
+<li>根据不同的任务可以选择不同的编码器和解码器（可以是一个 <em><a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/rnn/">RNN</a></em> ，但通常是其变种 <em><a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/lstm/">LSTM</a></em> 或者 <em>GRU</em> ）</li>
+</ol>
+<p>只要是符合上面的框架，都可以统称为 Encoder-Decoder 模型。</p>
+<h4 id="什么是-Seq2Seq"><a href="#什么是-Seq2Seq" class="headerlink" title="什么是 Seq2Seq"></a>什么是 Seq2Seq</h4><p>Seq2Seq（是 Sequence-to-sequence 的缩写），就如字面意思，输入一个序列，输出另一个序列。这种结构最重要的地方在于输入序列和输出序列的长度是可变的。例如下图：</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq.gif" alt></p>
+<p>如上图：输入了 6 个汉字，输出了 3 个英文单词。输入和输出的长度不同。</p>
+<h4 id="Seq2Seq-的由来"><a href="#Seq2Seq-的由来" class="headerlink" title="Seq2Seq 的由来"></a><strong>Seq2Seq 的由来</strong></h4><p>在 Seq2Seq 框架提出之前，深度神经网络在图像分类等问题上取得了非常好的效果。在其擅长解决的问题中，输入和输出通常都可以表示为固定长度的向量，如果长度稍有变化，会使用补零等操作。</p>
+<p>然而许多重要的问题，例如机器翻译、语音识别、自动对话等，表示成序列后，其长度事先并不知道。因此如何突破先前深度神经网络的局限，使其可以适应这些场景，成为了13年以来的研究热点，Seq2Seq框架应运而生。</p>
+<h4 id="「Seq2Seq」和「Encoder-Decoder」的关系"><a href="#「Seq2Seq」和「Encoder-Decoder」的关系" class="headerlink" title="「Seq2Seq」和「Encoder-Decoder」的关系"></a><strong>「Seq2Seq」和「Encoder-Decoder」的关系</strong></h4><p>Seq2Seq（强调目的）不特指具体方法，满足「输入序列、输出序列」的目的，都可以统称为 Seq2Seq 模型。</p>
+<p>而 Seq2Seq 使用的具体方法基本都属于Encoder-Decoder 模型（强调方法）的范畴。</p>
+<p>总结一下的话：</p>
+<ul>
+<li>Seq2Seq 属于 Encoder-Decoder 的大范畴</li>
+<li>Seq2Seq 更强调目的，Encoder-Decoder 更强调方法</li>
+</ul>
+<h4 id="Encoder-Decoder-的缺陷"><a href="#Encoder-Decoder-的缺陷" class="headerlink" title="Encoder-Decoder 的缺陷"></a>Encoder-Decoder 的缺陷</h4><p>上文提到：Encoder（编码器）和 Decoder（解码器）之间只有一个「向量 c」来传递信息，且 c 的长度固定。</p>
+<p>为了便于理解，我们类比为「压缩-解压」的过程：</p>
+<p>将一张 800X800 像素的图片压缩成 100KB，看上去还比较清晰。再将一张 3000X3000 像素的图片也压缩到 100KB，看上去就模糊了。</p>
+<p>Encoder-Decoder 就是类似的问题：当输入信息太长时，会丢失掉一些信息。</p>
+<h3 id="Attention-Mechanism"><a href="#Attention-Mechanism" class="headerlink" title="Attention Mechanism"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_34072381/article/details/106728056">Attention Mechanism</a></h3><p>Attention 机制就是为了解决「信息过长，信息丢失」的问题。</p>
+<p><em>Ａttention</em> 模型的特点是 Eecoder 不再将整个输入序列编码为固定长度的「中间向量 Ｃ」 ，而是编码成一个向量的序列。引入了 <em>Ａttention</em> 的 <em>Encoder-Decoder</em> 模型如下图：</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/attention.png" style="zoom:50%;"></p>
+<p>这样，在产生每一个输出的时候，都能够做到充分利用输入序列携带的信息。而且这种方法在翻译任务中取得了非常不错的成果。</p>
+<p>Attention 是一个很重要的知识点，想要详细了解 Attention，请查看《<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/attention/">一文看懂 Attention（本质原理+3大优点+5大类型）</a>》</p>
+<h4 id="Additive-Attention-Bahdanau-Attention"><a href="#Additive-Attention-Bahdanau-Attention" class="headerlink" title="Additive Attention (Bahdanau Attention)"></a>Additive Attention (Bahdanau Attention)</h4><p>传统seq2seq模型中encoder将输入序列编码成一个context向量，decoder将context向量作为初始隐状态，生成目标序列。随着输入序列长度的增加，<strong>编码器难以将所有输入信息编码为单一context向量</strong>，编码信息缺失，难以完成高质量的解码。</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq.png" style="zoom: 67%;"></p>
+<p>注意力机制是在每个时刻解码时，基于当前时刻解码器的隐状态、输入或输出等信息，<strong>计算其对输入序列各位置隐状态的注意力（分数）并加权生成context向量</strong>用于当前时刻解码。引入注意力机制，使得不同时刻的解码能够关注不同位置的输入信息，提高预测准确性。</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq2.png" style="zoom:67%;"></p>
+<h4 id="Bahdanau-Attention-Mechanism"><a href="#Bahdanau-Attention-Mechanism" class="headerlink" title="Bahdanau Attention Mechanism"></a>Bahdanau Attention Mechanism</h4><p>Bahdanau本质是一种 <strong>加性attention机制</strong>，将decoder的隐状态和encoder所有位置输出通过线性组合对齐，得到context向量，用于改善序列到序列的翻译模型。</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/bahdanau.png" alt></p>
+<p>本质：两层全连接网络，隐藏层激活函数tanh，输出层维度为1。</p>
+<p><strong>Bahdanau的特点为：</strong></p>
+<p>1、编码器隐状态 ：编码器对于每一个输入向量产生一个隐状态向量；</p>
+<p>2、计算对齐分数：使用上一时刻的隐状态$s_{t-1}$ 和编码器每个位置输出$s_t$计算对齐分数（使用前馈神经网络计算），编码器最终时刻隐状态可作为解码器初始时刻隐状态；</p>
+<p>3、概率化对齐分数：解码器上一时刻隐状态$s_{t-1}$在编码器每个位置输出的对齐分数，通过softmax转化为概率分布向量；</p>
+<p>4、计算上下文向量：根据概率分布化的对齐分数，加权编码器各位置输出，得上下文向量$c_t$;</p>
+<p>5、解码器输出：将上下文向量$c<em>t$和上一时刻编码器输出$\hat y</em>{t-1} $对应的embedding拼接，作为当前时刻编码器输入，经RNN网络产生新的输出和隐状态，训练过程中有真实目标序列$y=(y<em>1···y_m)$，多使用$y</em>{t-1}$取代$\hat y_{t-1} $作为解码器t时刻输入；</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/time_t.png" alt></p>
+<p>使用Bahdanau注意力机制的解码过程：</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/bahdanau_mechanism.png" alt></p>
+<h4 id="Multiplicative-Attention-Luong-Attention"><a href="#Multiplicative-Attention-Luong-Attention" class="headerlink" title="Multiplicative Attention (Luong Attention)"></a>Multiplicative Attention (Luong Attention)</h4><p>Luong本质是一种 乘性attention机制，将解码器隐状态和编码器输出进行矩阵乘法，得到上下文向量。</p>
+<p>Luong注意力机制是对Bahdanau注意力机制的改进，根据是否全部使用所有编码器输出分为两种：全局注意力和局部注意力，全局注意力适合用于短输入序列，局部注意力适合用于长输入序列（计算全局注意力代价高），以下内容仅介绍全局注意力。</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Luong_Attention.png" alt></p>
+<p><strong>Luong注意力机制与Bahdanau注意力机制的主要不同点：</strong></p>
+<p>1、对齐分数计算：使用当前时刻的隐状态$s_t$计算在编码器位置i输出的对齐分数；</p>
+<p>2、解码器输出：解码器在t时刻，拼接上下文向量$c<em>t$ 和当前时刻隐状态$s_t$，经全连接层，产生当前时刻输出$\hat y</em>{t+1}$ ，并作为下一时刻输入；</p>
+<p>3、流程图当前时刻计算的context向量，会被应用到下一时刻的输入；</p>
+<p><strong>Luong注意力的三种计算方法：</strong></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Luong_Attention2.png" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/difference.png" alt></p>
+<h4 id="Teacher-Forcing"><a href="#Teacher-Forcing" class="headerlink" title="Teacher Forcing"></a>Teacher Forcing</h4><p>Teacher Forcing是一种用来训练循环神经网络模型的方法，这种方法以上一时刻的输出作为下一时刻的输入。</p>
+<p><a target="_blank" rel="noopener" href="https://kexue.fm/archives/7818"><a target="_blank" rel="noopener" href="https://kexue.fm/archives/7818">让Teacher Forcing更有“远见”一些</a></a></p>
+<p><a target="_blank" rel="noopener" href="https://wmathor.com/index.php/archives/1449/">Teacher Forcing</a></p>
+<h3 id="Layer-amp-Model-in-Action"><a href="#Layer-amp-Model-in-Action" class="headerlink" title="Layer &amp; Model in Action"></a>Layer &amp; Model in Action</h3><p>Tensorflow 2 API (<a target="_blank" rel="noopener" href="https://github.com/lyhue1991/eat_tensorflow2_in_30_days">https://github.com/lyhue1991/eat_tensorflow2_in_30_days</a>)</p>
+<h3 id="Tensorflow的一些配置"><a href="#Tensorflow的一些配置" class="headerlink" title="Tensorflow的一些配置"></a>Tensorflow的一些配置</h3><h4 id="设置Tensorflow使用的显存大小"><a href="#设置Tensorflow使用的显存大小" class="headerlink" title="设置Tensorflow使用的显存大小"></a>设置Tensorflow使用的显存大小</h4><h5 id="获得当前主机上特定运算设备的列表"><a href="#获得当前主机上特定运算设备的列表" class="headerlink" title="获得当前主机上特定运算设备的列表"></a>获得当前主机上特定运算设备的列表</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gpus = tf.config.experimental.list_physical_devices(device_type=<span class="string">&#x27;GPU&#x27;</span>)</span><br><span class="line">cpus = tf.config.experimental.list_physical_devices(device_type=<span class="string">&#x27;CPU&#x27;</span>)</span><br><span class="line">print(gpus, cpus)</span><br></pre></td></tr></table></figure>
+<h5 id="设置当前程序可见的设备范围"><a href="#设置当前程序可见的设备范围" class="headerlink" title="设置当前程序可见的设备范围"></a>设置当前程序可见的设备范围</h5><p>默认情况下 TensorFlow 会使用其所能够使用的所有 GPU。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tf.config.experimental.set_visible_devices(devices=gpus[<span class="number">2</span>:<span class="number">4</span>], device_type=<span class="string">&#x27;GPU&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>设置之后，当前程序只会使用自己可见的设备，不可见的设备不会被当前程序使用。</p>
+<p>另一种方式是使用环境变量 CUDA_VISIBLE_DEVICES 也可以控制程序所使用的 GPU。</p>
+<p>在终端输入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export CUDA_VISIBLE_DEVICES=2,3</span><br></pre></td></tr></table></figure>
+<p>或者在代码里加入</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import os</span><br><span class="line">os.environ[&#x27;CUDA_VISIBLE_DEVICES&#x27;] = &quot;2,3&quot;</span><br></pre></td></tr></table></figure>
+<p>都可以达到同样的效果。</p>
+<h5 id="显存的使用"><a href="#显存的使用" class="headerlink" title="显存的使用"></a>显存的使用</h5><p>默认情况下，TensorFlow 将使用几乎所有可用的显存，以避免内存碎片化所带来的性能损失。</p>
+<p>但是TensorFlow 提供两种显存使用策略，让我们能够更灵活地控制程序的显存使用方式：</p>
+<ol>
+<li><p>仅在需要时申请显存空间【按需设置显存】（程序初始运行时消耗很少的显存，随着程序的运行而动态申请显存）；</p>
+</li>
+<li><p>限制消耗固定大小的显存【定量设置显存】（程序不会超出限定的显存大小，若超出的报错）。</p>
+</li>
+</ol>
+<p>设置仅在需要时申请显存空间。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> gpu <span class="keyword">in</span> gpus:</span><br><span class="line">    tf.config.experimental.set_memory_growth(gpu, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>下面的方式是设置Tensorflow固定消耗GPU:0的2GB显存。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tf.config.experimental.set_virtual_device_configuration(</span><br><span class="line">    gpus[<span class="number">0</span>],</span><br><span class="line">    [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=<span class="number">2048</span>)]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h5 id="单GPU模拟多GPU环境"><a href="#单GPU模拟多GPU环境" class="headerlink" title="单GPU模拟多GPU环境"></a>单GPU模拟多GPU环境</h5><p>上面的方式不仅可以设置显存的使用，还可以在只有单GPU的环境模拟多GPU进行调试。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tf.config.experimental.set_virtual_device_configuration(</span><br><span class="line">    gpus[<span class="number">0</span>],</span><br><span class="line">    [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=<span class="number">2048</span>),</span><br><span class="line">     tf.config.experimental.VirtualDeviceConfiguration(memory_limit=<span class="number">2048</span>)])</span><br></pre></td></tr></table></figure>
+<p>上面的代码就在GPU:0上建立了两个显存均为 2GB 的虚拟 GPU。</p>
+<h4 id="Tensorflow-错误"><a href="#Tensorflow-错误" class="headerlink" title="Tensorflow 错误"></a>Tensorflow 错误</h4><p>Could not create cudnn handle: CUDNN_STATUS_ALLOC_FAILED</p>
+<p>解决方案：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">import os</span><br><span class="line">gpus &#x3D; tf.config.experimental.list_physical_devices(device_type&#x3D;&#39;GPU&#39;)</span><br><span class="line">for gpu in gpus:</span><br><span class="line">    tf.config.experimental.set_memory_growth(gpu, True)</span><br><span class="line">os.environ[&#39;CUDA_VISIBLE_DEVICES&#39;]&#x3D;&#39;2&#39;</span><br></pre></td></tr></table></figure>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/heiheiya/article/details/102776353">Tensorflow 2.0 GPU的使用与分配</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/HHTNAN/article/details/78032712">TextRank算法原理与提取关键词、自动提取摘要PYTHON</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/STHSF/TextRank">关于自动文摘</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.hankcs.com/nlp/textrank-algorithm-java-implementation-of-automatic-abstract.html">TextRank算法自动摘要的Java实现</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jiqizhixin.com/articles/2018-12-28-18">基于TextRank算法的文本摘要（附Python代码）</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/en-heng/p/6626210.html">关键词提取算法TextRank</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/41091116">通俗易懂理解——TF-IDF与TextRank</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_34072381/article/details/106728056">Attention机制（Bahdanau attention &amp; Luong Attention）</a></p>
+<p><a target="_blank" rel="noopener" href="https://towardsdatascience.com/sequence-2-sequence-model-with-attention-mechanism-9e9ca2a613a">Attention: Sequence 2 Sequence model with Attention Mechanism</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1409.0473.pdf">NEURAL MACHINE TRANSLATION BY JOINTLY LEARNING TO ALIGN AND TRANSLATE</a></p>
+<p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1508.04025.pdf">Effective Approaches to Attention-based Neural Machine Translation</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.floydhub.com/attention-mechanism/">Attention Mechanism</a></p>
+<p><a target="_blank" rel="noopener" href="https://lilianweng.github.io/lil-log/2018/06/24/attention-attention.html">Attention? Attention!</a></p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;"> ------ 本文结束------</div>
+    
+</div>
+        <div class="reward-container">
+  <div>Donate comment here.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="进军要努力呀 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="进军要努力呀 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>进军要努力呀
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/" title="week3_基于Seq2Seq架构的模型搭建">https://marchboy.github.io/2021/04/24/week3_基于Seq2Seq架构的模型搭建/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
+              <a href="/tags/%E6%91%98%E8%A6%81%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/" rel="tag"><i class="fa fa-tag"></i> 摘要自动生成</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/" rel="prev" title="week2_项目导论中与中文词向量实践">
+      <i class="fa fa-chevron-left"></i> week2_项目导论中与中文词向量实践
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Text-Summarization"><span class="nav-number">1.</span> <span class="nav-text">Text Summarization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Definitions"><span class="nav-number">1.1.</span> <span class="nav-text">Definitions</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#categories"><span class="nav-number">1.2.</span> <span class="nav-text">categories</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Extractive-Summarization"><span class="nav-number">1.2.1.</span> <span class="nav-text">Extractive Summarization</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Abstractive-Summarization"><span class="nav-number">1.2.2.</span> <span class="nav-text">Abstractive Summarization</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Text-Rank"><span class="nav-number">2.</span> <span class="nav-text">Text Rank</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Recurrent-Neural-Network-RNN"><span class="nav-number">3.</span> <span class="nav-text">Recurrent Neural Network (RNN)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Long-Short-Term-Memory-LSTM"><span class="nav-number">4.</span> <span class="nav-text">Long Short Term Memory (LSTM)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GRU"><span class="nav-number">5.</span> <span class="nav-text">GRU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Seq2seq-Architecture"><span class="nav-number">6.</span> <span class="nav-text">Seq2seq Architecture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-Encoder-Decoder"><span class="nav-number">6.1.</span> <span class="nav-text">什么是 Encoder-Decoder</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-Seq2Seq"><span class="nav-number">6.2.</span> <span class="nav-text">什么是 Seq2Seq</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Seq2Seq-%E7%9A%84%E7%94%B1%E6%9D%A5"><span class="nav-number">6.3.</span> <span class="nav-text">Seq2Seq 的由来</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E3%80%8CSeq2Seq%E3%80%8D%E5%92%8C%E3%80%8CEncoder-Decoder%E3%80%8D%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">6.4.</span> <span class="nav-text">「Seq2Seq」和「Encoder-Decoder」的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Encoder-Decoder-%E7%9A%84%E7%BC%BA%E9%99%B7"><span class="nav-number">6.5.</span> <span class="nav-text">Encoder-Decoder 的缺陷</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Attention-Mechanism"><span class="nav-number">7.</span> <span class="nav-text">Attention Mechanism</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Additive-Attention-Bahdanau-Attention"><span class="nav-number">7.1.</span> <span class="nav-text">Additive Attention (Bahdanau Attention)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Bahdanau-Attention-Mechanism"><span class="nav-number">7.2.</span> <span class="nav-text">Bahdanau Attention Mechanism</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Multiplicative-Attention-Luong-Attention"><span class="nav-number">7.3.</span> <span class="nav-text">Multiplicative Attention (Luong Attention)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Teacher-Forcing"><span class="nav-number">7.4.</span> <span class="nav-text">Teacher Forcing</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Layer-amp-Model-in-Action"><span class="nav-number">8.</span> <span class="nav-text">Layer &amp; Model in Action</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tensorflow%E7%9A%84%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%AE"><span class="nav-number">9.</span> <span class="nav-text">Tensorflow的一些配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AETensorflow%E4%BD%BF%E7%94%A8%E7%9A%84%E6%98%BE%E5%AD%98%E5%A4%A7%E5%B0%8F"><span class="nav-number">9.1.</span> <span class="nav-text">设置Tensorflow使用的显存大小</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%8E%B7%E5%BE%97%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E4%B8%8A%E7%89%B9%E5%AE%9A%E8%BF%90%E7%AE%97%E8%AE%BE%E5%A4%87%E7%9A%84%E5%88%97%E8%A1%A8"><span class="nav-number">9.1.1.</span> <span class="nav-text">获得当前主机上特定运算设备的列表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%BD%93%E5%89%8D%E7%A8%8B%E5%BA%8F%E5%8F%AF%E8%A7%81%E7%9A%84%E8%AE%BE%E5%A4%87%E8%8C%83%E5%9B%B4"><span class="nav-number">9.1.2.</span> <span class="nav-text">设置当前程序可见的设备范围</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%98%BE%E5%AD%98%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">9.1.3.</span> <span class="nav-text">显存的使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8D%95GPU%E6%A8%A1%E6%8B%9F%E5%A4%9AGPU%E7%8E%AF%E5%A2%83"><span class="nav-number">9.1.4.</span> <span class="nav-text">单GPU模拟多GPU环境</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Tensorflow-%E9%94%99%E8%AF%AF"><span class="nav-number">9.2.</span> <span class="nav-text">Tensorflow 错误</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%EF%BC%9A"><span class="nav-number">10.</span> <span class="nav-text">参考：</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="进军要努力呀"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">进军要努力呀</p>
+  <div class="site-description" itemprop="description">可怕的是自己内心的堕落</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/marchboy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;marchboy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jjgdut@gmail.com" title="E-Mail → mailto:jjgdut@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/yourname" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://youtube.com/yourname" title="YouTube → https:&#x2F;&#x2F;youtube.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/pinard" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard" rel="noopener" target="_blank">刘建平Pinard</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://vel.life/" title="https:&#x2F;&#x2F;vel.life&#x2F;" rel="noopener" target="_blank">思维之海</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wulc.me/" title="https:&#x2F;&#x2F;wulc.me&#x2F;" rel="noopener" target="_blank">吴良超的学习笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/IT_job" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;IT_job" rel="noopener" target="_blank">IT_job的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zdaiot.com/categories/" title="https:&#x2F;&#x2F;www.zdaiot.com&#x2F;categories&#x2F;" rel="noopener" target="_blank">zdaiot</a>
+        </li>
+    </ul>
+  </div>
+
+
+      </div>
+	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 
+	 src="//music.163.com/outchain/player?type=2&id=463352828&auto=0&height=66">
+		    </iframe>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">进军要努力呀</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">161k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:26</span>
+</div><!-- ����ҳ�ײ�������վ����ʱ�� -->
+<span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/01/2020 00:00:00");//�˴��޸���Ľ�վʱ�������վ����ʱ��
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9de70fca612487225ccc',
+      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
+      repo        : 'marchboy.github.io',
+      owner       : 'marchboy',
+      admin       : ['marchboy'],
+      id          : 'dfa38919715092f2ee75ea1f97ac1b0b',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'qAoqMWohGTiECb1RgaNqvgNB-MdYXbMMI',
+      appKey     : 'ISI8QFSo7GcRyExPHSjMkz7R',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
