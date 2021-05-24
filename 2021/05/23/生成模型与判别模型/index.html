@@ -21,23 +21,20 @@
     var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Text Summarization - NLGNatural Language Generation NLG Introduction1、Application">
+  <meta name="description" content="生成式模型和判别式模型决策函数$Y&#x3D;f(X)$与条件概率分布$P(Y|X)$决策函数$Y&#x3D;f(x)$：输入一个$x$，它就输出一个$y$值，这个$y$与一个阈值比较，根据比较结果判定$x$属于哪个类别。 条件概率分布$P(y|x)$：输入一个$x$，它通过比较它属于所有类的概率，然后预测时应用最大后验概率法（MAP）即比较条件概率最大的类为x对应的类别。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="week4_NLG过程的优化与项目Inference">
-<meta property="og:url" content="https://marchboy.github.io/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/index.html">
+<meta property="og:title" content="生成式模型和判别式模型">
+<meta property="og:url" content="https://marchboy.github.io/2021/05/23/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B/index.html">
 <meta property="og:site_name" content="ComputerScience">
-<meta property="og:description" content="Text Summarization - NLGNatural Language Generation NLG Introduction1、Application">
+<meta property="og:description" content="生成式模型和判别式模型决策函数$Y&#x3D;f(X)$与条件概率分布$P(Y|X)$决策函数$Y&#x3D;f(x)$：输入一个$x$，它就输出一个$y$值，这个$y$与一个阈值比较，根据比较结果判定$x$属于哪个类别。 条件概率分布$P(y|x)$：输入一个$x$，它通过比较它属于所有类的概率，然后预测时应用最大后验概率法（MAP）即比较条件概率最大的类为x对应的类别。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://marchboy.github.io/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/structure.png">
-<meta property="article:published_time" content="2021-05-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-05-24T13:45:39.140Z">
+<meta property="article:published_time" content="2021-05-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-05-24T13:53:19.644Z">
 <meta property="article:author" content="进军要努力呀">
-<meta property="article:tag" content="NLP">
-<meta property="article:tag" content="摘要自动生成">
+<meta property="article:tag" content="Machine Learning">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://marchboy.github.io/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/structure.png">
 
-<link rel="canonical" href="https://marchboy.github.io/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/">
+<link rel="canonical" href="https://marchboy.github.io/2021/05/23/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B/">
 
 
 <script id="page-configurations">
@@ -50,7 +47,7 @@
   };
 </script>
 
-  <title>week4_NLG过程的优化与项目Inference | ComputerScience</title>
+  <title>生成式模型和判别式模型 | ComputerScience</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74793810-1"></script>
     <script>
@@ -215,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/05/23/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -228,7 +225,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          week4_NLG过程的优化与项目Inference
+          生成式模型和判别式模型
         </h1>
 
         <div class="post-meta">
@@ -238,14 +235,14 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-16T00:00:00+08:00">2021-05-16</time>
+              <time title="创建时间：2021-05-23 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-23T00:00:00+08:00">2021-05-23</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-24 21:45:39" itemprop="dateModified" datetime="2021-05-24T21:45:39+08:00">2021-05-24</time>
+                <time title="修改时间：2021-05-24 21:53:19" itemprop="dateModified" datetime="2021-05-24T21:53:19+08:00">2021-05-24</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -253,16 +250,12 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%91%98%E8%A6%81%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">摘要自动生成</span></a>
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
                 </span>
             </span>
 
           
-            <span id="/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/" class="post-meta-item leancloud_visitors" data-flag-title="week4_NLG过程的优化与项目Inference" title="阅读次数">
+            <span id="/2021/05/23/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B/" class="post-meta-item leancloud_visitors" data-flag-title="生成式模型和判别式模型" title="阅读次数">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
@@ -284,8 +277,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/05/23/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/23/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -295,14 +288,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
+              <span>1.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -314,85 +307,31 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Text-Summarization-NLG"><a href="#Text-Summarization-NLG" class="headerlink" title="Text Summarization - NLG"></a>Text Summarization - NLG</h2><p>Natural Language Generation</p>
-<h3 id="NLG-Introduction"><a href="#NLG-Introduction" class="headerlink" title="NLG Introduction"></a>NLG Introduction</h3><h4 id="1、Application"><a href="#1、Application" class="headerlink" title="1、Application"></a>1、Application</h4><p>Translation</p>
-<p>Document Summarization</p>
-<p>E-mail Summarization</p>
-<p>Meeting Summarization</p>
-<h4 id="2、What’s-Natural-Language-Generation"><a href="#2、What’s-Natural-Language-Generation" class="headerlink" title="2、What’s Natural Language Generation?"></a>2、What’s Natural Language Generation?</h4><p>Any task involving text production for human consumption requires natural language generation</p>
-<p>NLG 是为了跨越人类和机器之间的沟通鸿沟，将非语言格式的数据转换成人类可以理解的语言格式，如文章、报告等。</p>
-<h4 id="3、自然语言生成的2种方式："><a href="#3、自然语言生成的2种方式：" class="headerlink" title="3、自然语言生成的2种方式："></a>3、自然语言生成的2种方式：</h4><p>text – to – text：文本到语言的生成</p>
-<p>data – to – text ：数据到语言的生成</p>
-<h4 id="4、NLG的3个LEVEL"><a href="#4、NLG的3个LEVEL" class="headerlink" title="4、NLG的3个LEVEL"></a>4、NLG的3个LEVEL</h4><p>1、<strong>简单的数据合并：</strong>自然语言处理的简化形式，这将允许将数据转换为文本（通过类似Excel的函数）。为了关联，以<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/邮件合并/7804213?fr=aladdin">邮件合并</a>（MS Word mailmerge）为例，其中间隙填充了一些数据，这些数据是从另一个源（例如MS Excel中的表格）中检索的。</p>
-<p>2、<strong>模板化的 NLG</strong> ：这种形式的NLG使用模板驱动模式来显示输出。以足球比赛得分板为例。数据动态地保持更改，并由预定义的业务规则集（如if / else循环语句）生成。</p>
-<p>3、<strong>高级 NLG</strong> ：这种形式的自然语言生成就像人类一样。它理解意图，添加智能，考虑上下文，并将结果呈现在用户可以轻松阅读和理解的富有洞察力的叙述中。</p>
-<h4 id="5、NLG-的6个步骤"><a href="#5、NLG-的6个步骤" class="headerlink" title="5、NLG 的6个步骤"></a>5、NLG 的6个步骤</h4><p><strong>第一步：内容确定 – Content Determination</strong></p>
-<p>作为第一步，NLG 系统需要决定哪些信息应该包含在正在构建的文本中，哪些不应该包含。通常数据中包含的信息比最终传达的信息要多。</p>
-<p><strong>第二步：文本结构 – Text Structuring</strong></p>
-<p>确定需要传达哪些信息后，NLG 系统需要合理的组织文本的顺序。例如在报道一场篮球比赛时，会优先表达“什么时间”“什么地点”“哪2支球队”，然后再表达“比赛的概况”，最后表达“比赛的结局”。</p>
-<p><strong>第三步：句子聚合 – Sentence Aggregation</strong></p>
-<p>不是每一条信息都需要一个独立的句子来表达，将多个信息合并到一个句子里表达可能会更加流畅，也更易于阅读。</p>
-<p><strong>第四步：语法化 – Lexicalisation</strong></p>
-<p>当每一句的内容确定下来后，就可以将这些信息组织成自然语言了。这个步骤会在各种信息之间加一些连接词，看起来更像是一个完整的句子。</p>
-<p><strong>第五步：参考表达式生成 – Referring Expression Generation|REG</strong></p>
-<p>这个步骤跟语法化很相似，都是选择一些单词和短语来构成一个完整的句子。不过他跟语法化的本质区别在于“REG需要识别出内容的领域，然后使用该领域（而不是其他领域）的词汇”。</p>
-<p><strong>第六步：语言实现 – Linguistic Realisation</strong></p>
-<p>最后，当所有相关的单词和短语都已经确定时，需要将它们组合起来形成一个结构良好的完整句子。</p>
-<h4 id="6、NLG-的3种典型应用"><a href="#6、NLG-的3种典型应用" class="headerlink" title="6、NLG 的3种典型应用"></a>6、NLG 的3种典型应用</h4><p>NLG 的不管如何应用，大部分都是下面的3种目的：</p>
-<ol>
-<li>能够大规模的产生个性化内容</li>
-<li>帮助人类洞察数据，让数据更容易理解</li>
-<li>加速内容生产</li>
-</ol>
-<h3 id="NLG-Decoding-Strategy"><a href="#NLG-Decoding-Strategy" class="headerlink" title="NLG Decoding Strategy"></a>NLG Decoding Strategy</h3><h4 id="1、Greedy-Decoding"><a href="#1、Greedy-Decoding" class="headerlink" title="1、Greedy Decoding"></a>1、Greedy Decoding</h4><p>Greedy Decoding（贪心算法）：挑选P中概率最高的一个作为预测结果，停止条件是遇到\<end>。贪心算法存在一些问题：比如重复（重复的语句会降低模型的loss，也就是说模型可以从重复的语句中学到东西）、局部最优并不是全局最优，结果存在一定偏差。需要结合老师给的代码理解一下原理。</end></p>
-<h5 id="1-1-Greedy-Search"><a href="#1-1-Greedy-Search" class="headerlink" title="1.1 Greedy Search"></a>1.1 Greedy Search</h5><p>核心思想：每一步取当前最可能的结果，作为最终结果。</p>
-<p>On each step of decoder, keep track of the k most probable partial  translations (which we call hypotheses)。</p>
-<p>在解码器的每一步，跟踪k个最可能的部分翻译(我们称之为假设)。</p>
-<p>具体方法：获得新生成的词是vocab中各个词的概率，取argmax作为需要生成的词向量索引，继而生成后一个词。</p>
-<h5 id="1-2-Beam-Search"><a href="#1-2-Beam-Search" class="headerlink" title="1.2 Beam Search"></a>1.2 Beam Search</h5><p>对比贪心算法，beam search取到了概率中最大的K个值进行下一步的运算，每一步都取到概率中的Top-k。Beam Search也有一些限制条件：</p>
-<blockquote>
-<p>1、timestep T（预定义值需要自己根据应用场景来设定）</p>
-<p>2、生成假设(hypothese)的数量是需要考虑的。K的数值代表beam size，beam size设置的大小也有很多的影响，具体表现为：</p>
-<p>beam size过小时会出现生成的语句没有语法性、不自然、不顺畅、不正确等问题；</p>
-<p>beam size变大时上面的问题会缓解，但是也存在一些缺点：</p>
-<blockquote>
-<p>1、k变大，相应的计算代价也会变大，</p>
-<p>2、Blue score指标会下降的非常快，</p>
-<p>3、生成的句子变短了，</p>
-<p>4、topic相关度会下降。</p>
-</blockquote>
-</blockquote>
-<p>核心思想：beam search尝试在广度优先基础上进行进行搜索空间的优化（类似于剪枝）达到减少内存消耗的目的。</p>
-<p>具体方法：在decoding的每个步骤，我们都保留着 top K 个可能的候选单词，然后到了下一个步骤的时候，我们对这 K 个单词都做下一步 decoding，分别选出 top K，然后对这 $K^2$ 个候选句子再挑选出 top K 个句子。以此类推一直到 decoding 结束为止。当然 Beam Search 本质上也是一个 greedy decoding 的方法，所以我们无法保证自己一定可以得到最好的 decoding 结果。</p>
-<h5 id="1-3-Greedy-Decoding与Beam-Search存在问题"><a href="#1-3-Greedy-Decoding与Beam-Search存在问题" class="headerlink" title="1.3 Greedy Decoding与Beam Search存在问题"></a>1.3 Greedy Decoding与Beam Search存在问题</h5><p>①容易出现很无聊的回答：I don’t know.</p>
-<p>②容易重复自己：I don’t know. I don’t know. I don’t know. I don’t know. I don’t know. I don’t know.</p>
-<h5 id="1-4-NLG中重复性问题"><a href="#1-4-NLG中重复性问题" class="headerlink" title="1.4 NLG中重复性问题"></a>1.4 NLG中重复性问题</h5><p>出现重复性原因是重复的语句会降低模型的loss，也就是说模型可以从重复的语句中学到东西。</p>
-<p>解决方法：</p>
-<p>1、将前面生成的文本写入到n-gram中，</p>
-<p>2、在loss中加入多项式惩罚相似文本，</p>
-<p>3、对loss进行改变，</p>
-<p>4、F2 softmax,将频率分类，再和原loss相乘。</p>
-<h4 id="2、Sampling引入随机性"><a href="#2、Sampling引入随机性" class="headerlink" title="2、Sampling引入随机性"></a>2、Sampling引入随机性</h4><p>核心思想： 根据单词的概率分布随机采样</p>
-<h5 id="2-1-随机Sampling-vocab-y-i"><a href="#2-1-随机Sampling-vocab-y-i" class="headerlink" title="2.1 随机Sampling(vocab($y_i$))"></a>2.1 随机Sampling(vocab($y_i$))</h5><p>我们可以在生成文本的时候引入一些随机性。例如现在语言模型告诉我们下一个单词在整个单词表上的概率分布是<script type="math/tex">p = (p_1, p_2, … p_|V|)</script>,那么我们就可以按照这个概率分布进行随机采样，然后决定下一个单词生成什么。采样相对于greedy方法的好处是，我们生成的文字开始有了一些随机性，不会总是生成很机械的回复了。</p>
-<h5 id="2-2-随机Sampling存在问题"><a href="#2-2-随机Sampling存在问题" class="headerlink" title="2.2 随机Sampling存在问题"></a>2.2 随机Sampling存在问题</h5><p>①生成的话容易不连贯，上下文比较矛盾。</p>
-<p>②容易生成奇怪的话，出现罕见词。</p>
-<h5 id="2-3-top-k-sampling"><a href="#2-3-top-k-sampling" class="headerlink" title="2.3 top-k sampling"></a>2.3 top-k sampling</h5><p>可以缓解生成罕见单词的问题。比如说，我们可以每次只在概率最高的50个单词中按照概率分布做采样。</p>
-<p>我只保留top-k个probability的单词，然后在这些单词中根据概率做sampling。</p>
-<h5 id="2-4-Neucleus-Sampling"><a href="#2-4-Neucleus-Sampling" class="headerlink" title="2.4 Neucleus Sampling"></a>2.4 Neucleus Sampling</h5><p>Neucleus Sampling的基本思想是，top p sampling，例如设置一个threshold，p=0.95。</p>
-<h4 id="3、Sampling-Strategy"><a href="#3、Sampling-Strategy" class="headerlink" title="3、Sampling Strategy"></a>3、Sampling Strategy</h4><p>常用的随机采样会随机选取到文本出现概率很低的词语，这样对结果很不利，所以会有一些采样的策略来解决这些问题。</p>
-<p>方法：</p>
-<h5 id="1、Temperature-Sampling"><a href="#1、Temperature-Sampling" class="headerlink" title="1、Temperature Sampling"></a>1、Temperature Sampling</h5><p>通过选取temperature大小，来将重要词的概率变大，将不重要词的概率变小，突出重要部分。</p>
-<h5 id="2、Top-K-Sampling"><a href="#2、Top-K-Sampling" class="headerlink" title="2、Top-K Sampling"></a>2、Top-K Sampling</h5><p>根据不同场景选取不同top-k个样本，存在问题：会把距离top近的其他样本舍弃掉。</p>
-<h5 id="3、Top-p-p代表percentage"><a href="#3、Top-p-p代表percentage" class="headerlink" title="3、Top-p(p代表percentage)"></a>3、Top-p(p代表percentage)</h5><p>本质上Top-p sampling和Top-k sampling都是从truncated vocabulary distribution中sample token,区别在于置信区间的选择不同。</p>
-<h3 id="NLG的评估指标"><a href="#NLG的评估指标" class="headerlink" title="NLG的评估指标"></a>NLG的评估指标</h3><p>1、Rouge-N(N代表n-gram)</p>
-<p>2、Rouge-L(L代表the longest common subseqence 最长子序列)</p>
-<p>3、Rouge-s(s代表skip-gram)</p>
-<p>这几种评价指标前两种用的较多，需要重点掌握。</p>
-<h3 id="现在自然语言生成Structure"><a href="#现在自然语言生成Structure" class="headerlink" title="现在自然语言生成Structure"></a>现在自然语言生成Structure</h3><p><img src="/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/structure.png" alt></p>
-<p>1、<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_42615068/article/details/93767781">CTC loss的几种解码方法：贪心搜索 （greedy search）、束搜索（Beam Search）、前缀束搜索（Prefix Beam Search）</a></p>
-<p>2、<a target="_blank" rel="noopener" href="https://blog.csdn.net/sollasido/article/details/10798653">NLP（一）文本生成 —Sampling问题</a>)</p>
-<p>3、<a target="_blank" rel="noopener" href="https://blog.csdn.net/jingfudu1538/article/details/88863247">Pretraining-Based Natural Language Generation for Text Summarization</a></p>
-<p>4、<a target="_blank" rel="noopener" href="https://www.csie.ntu.edu.tw/~yvchen/s105-icb/doc/170502_NLG.pdf">自然语言简报</a></p>
+        <h2 id="生成式模型和判别式模型"><a href="#生成式模型和判别式模型" class="headerlink" title="生成式模型和判别式模型"></a>生成式模型和判别式模型</h2><h3 id="决策函数-Y-f-X-与条件概率分布-P-Y-X"><a href="#决策函数-Y-f-X-与条件概率分布-P-Y-X" class="headerlink" title="决策函数$Y=f(X)$与条件概率分布$P(Y|X)$"></a>决策函数$Y=f(X)$与条件概率分布$P(Y|X)$</h3><p>决策函数$Y=f(x)$：输入一个$x$，它就输出一个$y$值，这个$y$与一个阈值比较，根据比较结果判定$x$属于哪个类别。</p>
+<p>条件概率分布$P(y|x)$：输入一个$x$，它通过比较它属于所有类的概率，然后预测时应用最大后验概率法（MAP）即比较条件概率最大的类为x对应的类别。</p>
+<p>举个例子，对于一个二分类问题：对于$Y=f(x)$形式的分类模型，如果输出$Y$大于某个阈值$V$就属于类$w_1$，否则属于类$w2$；而对于$P(y|x)$形式的分类模型，分别计算条件概率，如果$P(w_1|x)$大于$P(w_2|x)$，$x$就属于类$w_1$，否则属于类$w_2$。</p>
+<h3 id="生成式模型与判别式模型"><a href="#生成式模型与判别式模型" class="headerlink" title="生成式模型与判别式模型"></a>生成式模型与判别式模型</h3><p>生成式模型（Generative Model）：由数据学习联合概率密度分布P(x,y)，然后生成条件概率分布P(y|x)，或者直接学得一个决策函数 Y=f(x)，用作模型预测。</p>
+<p>判别式模型（Discriminative Model）：由数据直接学习决策函数f(x)或者条件概率分布P(y|x)作为预测。</p>
+<h3 id="异同点"><a href="#异同点" class="headerlink" title="异同点"></a>异同点</h3><p>1.生成模型和判别模型都属于监督学习的模型。</p>
+<p>2.生成式模型可以根据贝叶斯公式得到条件概率分布P(y|x)，但反过来不行，即判别方法不能还原出联合概率分布P(x,y)。</p>
+<p>3.生成方法学习联合概率密度分布P(x,y)，所以就可以从统计的角度表示数据的分布情况，能够反映同类数据本身的相似度，但它不关心到底划分各类的那个分类边界在哪；判别方法不能反映训练数据本身的特性，但它寻找不同类别之间的最优分类面，反映的是异类数据之间的差异。</p>
+<h3 id="常见模型分类"><a href="#常见模型分类" class="headerlink" title="常见模型分类"></a>常见模型分类</h3><h4 id="生成式模型："><a href="#生成式模型：" class="headerlink" title="生成式模型："></a>生成式模型：</h4><p>判别式分析<br>朴素贝叶斯<br>混合高斯模型<br>隐马尔科夫模型（HMM）<br>贝叶斯网络<br>Sigmoid Belief Networks<br>马尔可夫随机场（Markov Random Fields）<br>深度信念网络（DBN）</p>
+<h4 id="判别式模型："><a href="#判别式模型：" class="headerlink" title="判别式模型："></a>判别式模型：</h4><p>线性回归（Linear Regression）<br>逻辑斯特回归（Logistic Regression）<br>K近邻（KNN）<br>感知机<br>神经网络（NN）<br>支持向量机（SVM）<br>决策树<br>最大熵模型（maximum entropy model, MaxEnt）<br>高斯过程（Gaussian Process）<br>条件随机场（CRF）<br>区分度训练<br>boosting方法</p>
+<h3 id="借用一个网友举的通俗易懂的例子"><a href="#借用一个网友举的通俗易懂的例子" class="headerlink" title="借用一个网友举的通俗易懂的例子"></a>借用一个网友举的通俗易懂的例子</h3><p>假如你的任务是识别一个语音属于哪种语言，对面一个人走过来，和你说了一句话，你需要识别出她说的到底是汉语、英语还是法语等。那么你可以有两种方法达到这个目的：</p>
+<p>（1）学习每一种语言，你花了大量精力把汉语、英语和法语等都学会了，我指的学会是你知道什么样的语音对应什么样的语言。然后再有人过来对你说，你就可以知道他说的是什么语音.</p>
+<p>（2）不去学习每一种语言，你只学习这些语言之间的差别，然后再判断（分类）。意思是指我学会了汉语和英语等语言的发音是有差别的，我学会这种差别就好了。</p>
+<p>第一种方法就是生成方法，第二种方法是判别方法。</p>
+<p><strong>参考</strong>：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_14997473/article/details/85219353">机器学习：生成式模型和判别式模型</a></p>
+<p><strong>判别式模型（Discriminative Model）</strong></p>
+<p>即判别(数据输出量)的模型，直接对条件概率$p(x|y;\theta)$建模。常见的判别式模型有线性回归模型、线性判别分析、支持向量机SVM、神经网络等。</p>
+<p>判别式模型举例：</p>
+<p>要确定一个羊是山羊还是绵羊，用判别模型的方法是从历史数据中学习到模型，然后通过提取这只羊的特征来预测出这只羊是山羊的概率，是绵羊的概率。（logistic回归，&gt;0.5为正例，否则，为反例） </p>
+<p><strong>生成式模型（Generative Model）</strong></p>
+<p>即生成(数据的分布)的模型，会对x和y的联合分布$p(x,y)$建模，然后通过贝叶斯公式来求得$p(x,y)$，然后选取使得$p(y_i|x)$最大的$y_i$，即：<br>$$<br>arg\ max\ {p(y|x)} = arg max \frac{p(x|y)p(y)}{P(x)}<br>= arg\ max\ p(x|y)p(y)<br>$$</p>
+<p>常见的生成式模型有 隐马尔可夫模型HMM、朴素贝叶斯模型、高斯混合模型GMM、LDA等。</p>
+<p>生成式模型举例：</p>
+<p>利用生成模型是根据山羊的特征首先学习出一个山羊的模型，然后根据绵羊的特征学习出一个绵羊的模型，然后从这只羊中提取特征，放到山羊模型中看概率是多少，在放到绵羊模型中看概率是多少，哪个大就是哪个。（朴素贝叶斯分类就是这样） </p>
+<p> 常见的模型大多是判别模型，生成模型有：朴素贝叶斯（需要求联合概率分布），隐马尔科夫HMM，高斯混合模型GMM，LDA（Latent Dirichlet Allocation）是一种文档主题生成模型，也称为一个三层<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%B4%9D%E5%8F%B6%E6%96%AF">贝叶斯</a>概率模型。</p>
 
     </div>
 
@@ -432,7 +371,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://marchboy.github.io/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/" title="week4_NLG过程的优化与项目Inference">https://marchboy.github.io/2021/05/16/week4_NLG过程的优化和项目Inference/</a>
+    <a href="https://marchboy.github.io/2021/05/23/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B/" title="生成式模型和判别式模型">https://marchboy.github.io/2021/05/23/生成模型与判别模型/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -463,8 +402,7 @@
       <footer class="post-footer">
           
           <div class="post-tags">
-              <a href="/tags/NLP/" rel="tag"><i class="fa fa-tag"></i> NLP</a>
-              <a href="/tags/%E6%91%98%E8%A6%81%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/" rel="tag"><i class="fa fa-tag"></i> 摘要自动生成</a>
+              <a href="/tags/Machine-Learning/" rel="tag"><i class="fa fa-tag"></i> Machine Learning</a>
           </div>
 
         
@@ -473,13 +411,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/" rel="prev" title="week3_基于Seq2Seq架构的模型搭建">
-      <i class="fa fa-chevron-left"></i> week3_基于Seq2Seq架构的模型搭建
+    <a href="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/" rel="prev" title="week5_OOV和Word-repetition问题的改进">
+      <i class="fa fa-chevron-left"></i> week5_OOV和Word-repetition问题的改进
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/" rel="next" title="week5_OOV和Word-repetition问题的改进">
-      week5_OOV和Word-repetition问题的改进 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -552,7 +487,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Text-Summarization-NLG"><span class="nav-number">1.</span> <span class="nav-text">Text Summarization - NLG</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NLG-Introduction"><span class="nav-number">1.1.</span> <span class="nav-text">NLG Introduction</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81Application"><span class="nav-number">1.1.1.</span> <span class="nav-text">1、Application</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81What%E2%80%99s-Natural-Language-Generation"><span class="nav-number">1.1.2.</span> <span class="nav-text">2、What’s Natural Language Generation?</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%94%9F%E6%88%90%E7%9A%842%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%9A"><span class="nav-number">1.1.3.</span> <span class="nav-text">3、自然语言生成的2种方式：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81NLG%E7%9A%843%E4%B8%AALEVEL"><span class="nav-number">1.1.4.</span> <span class="nav-text">4、NLG的3个LEVEL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81NLG-%E7%9A%846%E4%B8%AA%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.1.5.</span> <span class="nav-text">5、NLG 的6个步骤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6%E3%80%81NLG-%E7%9A%843%E7%A7%8D%E5%85%B8%E5%9E%8B%E5%BA%94%E7%94%A8"><span class="nav-number">1.1.6.</span> <span class="nav-text">6、NLG 的3种典型应用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NLG-Decoding-Strategy"><span class="nav-number">1.2.</span> <span class="nav-text">NLG Decoding Strategy</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81Greedy-Decoding"><span class="nav-number">1.2.1.</span> <span class="nav-text">1、Greedy Decoding</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-1-Greedy-Search"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">1.1 Greedy Search</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-2-Beam-Search"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">1.2 Beam Search</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-3-Greedy-Decoding%E4%B8%8EBeam-Search%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">1.3 Greedy Decoding与Beam Search存在问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#1-4-NLG%E4%B8%AD%E9%87%8D%E5%A4%8D%E6%80%A7%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">1.4 NLG中重复性问题</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81Sampling%E5%BC%95%E5%85%A5%E9%9A%8F%E6%9C%BA%E6%80%A7"><span class="nav-number">1.2.2.</span> <span class="nav-text">2、Sampling引入随机性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#2-1-%E9%9A%8F%E6%9C%BASampling-vocab-y-i"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">2.1 随机Sampling(vocab($y_i$))</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-2-%E9%9A%8F%E6%9C%BASampling%E5%AD%98%E5%9C%A8%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">2.2 随机Sampling存在问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-3-top-k-sampling"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">2.3 top-k sampling</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-4-Neucleus-Sampling"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">2.4 Neucleus Sampling</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81Sampling-Strategy"><span class="nav-number">1.2.3.</span> <span class="nav-text">3、Sampling Strategy</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%E3%80%81Temperature-Sampling"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">1、Temperature Sampling</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%E3%80%81Top-K-Sampling"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">2、Top-K Sampling</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%E3%80%81Top-p-p%E4%BB%A3%E8%A1%A8percentage"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">3、Top-p(p代表percentage)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NLG%E7%9A%84%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87"><span class="nav-number">1.3.</span> <span class="nav-text">NLG的评估指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8E%B0%E5%9C%A8%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%94%9F%E6%88%90Structure"><span class="nav-number">1.4.</span> <span class="nav-text">现在自然语言生成Structure</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%BC%8F%E6%A8%A1%E5%9E%8B%E5%92%8C%E5%88%A4%E5%88%AB%E5%BC%8F%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">生成式模型和判别式模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E5%87%BD%E6%95%B0-Y-f-X-%E4%B8%8E%E6%9D%A1%E4%BB%B6%E6%A6%82%E7%8E%87%E5%88%86%E5%B8%83-P-Y-X"><span class="nav-number">1.1.</span> <span class="nav-text">决策函数$Y&#x3D;f(X)$与条件概率分布$P(Y|X)$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%BC%8F%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E5%BC%8F%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">生成式模型与判别式模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%82%E5%90%8C%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">异同点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E6%A8%A1%E5%9E%8B%E5%88%86%E7%B1%BB"><span class="nav-number">1.4.</span> <span class="nav-text">常见模型分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E5%BC%8F%E6%A8%A1%E5%9E%8B%EF%BC%9A"><span class="nav-number">1.4.1.</span> <span class="nav-text">生成式模型：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E5%88%AB%E5%BC%8F%E6%A8%A1%E5%9E%8B%EF%BC%9A"><span class="nav-number">1.4.2.</span> <span class="nav-text">判别式模型：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%80%9F%E7%94%A8%E4%B8%80%E4%B8%AA%E7%BD%91%E5%8F%8B%E4%B8%BE%E7%9A%84%E9%80%9A%E4%BF%97%E6%98%93%E6%87%82%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-number">1.5.</span> <span class="nav-text">借用一个网友举的通俗易懂的例子</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -858,7 +793,7 @@ NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
       repo        : 'marchboy.github.io',
       owner       : 'marchboy',
       admin       : ['marchboy'],
-      id          : '629e28145b0711bc3e081b3b934906bf',
+      id          : '7d8db0e73da0fb9748e9028fbcc78e2e',
         language: '',
       distractionFreeMode: false
     });
