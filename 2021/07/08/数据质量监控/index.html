@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://marchboy.github.io/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/4.jpg">
 <meta property="og:image" content="https://marchboy.github.io/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/5.jpg">
 <meta property="article:published_time" content="2021-07-07T17:57:13.000Z">
-<meta property="article:modified_time" content="2021-08-02T18:04:06.237Z">
+<meta property="article:modified_time" content="2021-08-02T18:08:07.336Z">
 <meta property="article:author" content="进军要努力呀">
 <meta property="article:tag" content="数据仓库">
 <meta property="article:tag" content="数据质量">
@@ -249,7 +249,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-08-03 02:04:06" itemprop="dateModified" datetime="2021-08-03T02:04:06+08:00">2021-08-03</time>
+                <time title="修改时间：2021-08-03 02:08:07" itemprop="dateModified" datetime="2021-08-03T02:08:07+08:00">2021-08-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -325,18 +325,18 @@
 <li>数据质量监控面临的一些难点和解决思路</li>
 </ol>
 <h2 id="四大关注点"><a href="#四大关注点" class="headerlink" title="四大关注点"></a>四大关注点</h2><p>本节，先简单地聊一下数据质量需要关注的四个点：即完整性、准确性、一致性和及时性。这四个关注点，会在我们的数据处理流程的各个环节有所体现。</p>
-<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/1.jpg"></p>
-<h4 id="一、完整性"><a href="#一、完整性" class="headerlink" title="一、完整性"></a>一、完整性</h4><p>完整性是指数据的记录和信息是否完整，是否存在缺失的情况。数据的缺失主要包括记录的缺失和记录中某个字段信息的缺失，两者都会造成统计结果不准确，所以说完整性是数据质量最基础的保障。</p>
+<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/1.jpg" alt></p>
+<h3 id="一、完整性"><a href="#一、完整性" class="headerlink" title="一、完整性"></a>一、完整性</h3><p>完整性是指数据的记录和信息是否完整，是否存在缺失的情况。数据的缺失主要包括记录的缺失和记录中某个字段信息的缺失，两者都会造成统计结果不准确，所以说完整性是数据质量最基础的保障。</p>
 <p>简单来讲，如果要做监控，需要考虑两个方面：一是，数据条数是否少了，二是，某些字段的取值是否缺失。完整性的监控，多出现在日志级别的监控上，一般会在数据接入的时候来做数据完整性校验。</p>
-<h4 id="二、准确性"><a href="#二、准确性" class="headerlink" title="二、准确性"></a>二、准确性</h4><p>准确性是指数据中记录的信息和数据是否准确，是否存在异常或者错误的信息。</p>
+<h3 id="二、准确性"><a href="#二、准确性" class="headerlink" title="二、准确性"></a>二、准确性</h3><p>准确性是指数据中记录的信息和数据是否准确，是否存在异常或者错误的信息。</p>
 <p>直观来讲就是看数据是否上准确的。一般准确性的监控多集中在对业务结果数据的监控，比如每日的活跃、收入等数据是否正常。</p>
-<h4 id="三、一致性"><a href="#三、一致性" class="headerlink" title="三、一致性"></a>三、一致性</h4><p>一致性是指同一指标在不同地方的结果是否一致。</p>
+<h3 id="三、一致性"><a href="#三、一致性" class="headerlink" title="三、一致性"></a>三、一致性</h3><p>一致性是指同一指标在不同地方的结果是否一致。</p>
 <p>数据不一致的情况，多出现在数据系统达到一定的复杂度后，同一指标会在多处进行计算，由于计算口径或者开发人员的不同，容易造成同一指标出现的不同的结果。</p>
-<h4 id="四、及时性"><a href="#四、及时性" class="headerlink" title="四、及时性"></a>四、及时性</h4><p>在确保数据的完整性、准确性和一致性后，接下来就要保障数据能够及时产出，这样才能体现数据的价值。</p>
+<h3 id="四、及时性"><a href="#四、及时性" class="headerlink" title="四、及时性"></a>四、及时性</h3><p>在确保数据的完整性、准确性和一致性后，接下来就要保障数据能够及时产出，这样才能体现数据的价值。</p>
 <p>及时性很容易理解，主要就是数据计算出来的速度是否够快，这点在数据质量监控中可以体现在监控结果数据数据是否在指定时间点前计算完成。</p>
 <h2 id="数据处理各环节的数据质量"><a href="#数据处理各环节的数据质量" class="headerlink" title="数据处理各环节的数据质量"></a>数据处理各环节的数据质量</h2><p>数据质量监控之所以难做，是因为在数据的各个环节都会出现数据质量的问题。因此，本节将以一个典型的数据处理链条为例，为大家分享在每个阶段容易出现哪些数据质量问题。</p>
 <p>如下图，为了举例说明，我画了一个简单的数据处理流程（<em>在实际中的情况会比该情况复杂很多</em>），我将数据处理分为 3 个阶段：数据接入、中间数据清洗、结果数据计算。</p>
-<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/2.jpg"></p>
+<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/2.jpg" alt></p>
 <h3 id="数据接入"><a href="#数据接入" class="headerlink" title="数据接入"></a>数据接入</h3><p>如上图所示，数据接入环节最容易出现的是数据完整性的问题，这里要特别注意的是数据量是否陡增和陡降。</p>
 <p>陡增意味着可能会出现大量数据重复上报或者异常数据侵入等情况，陡降意味着可能出现数据丢失的情况。</p>
 <p>另一方面，也要检查不同字段的的取值是否有丢失，比如地址和设备字段是否出现大量空值等异常。</p>
@@ -353,7 +353,7 @@
 </ol>
 <p>如下图，是一个 App 的用户行为漏斗分析，其实也就是从获取用户到转化的简单链路。</p>
 <p>那么针对该链路，我们数据质量监控要做的事，除了告诉使用方某一个节点的值有问题，也需要告诉他们整个链条哪里出了问题，哪里的转化低了。</p>
-<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/3.jpg"></p>
+<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/3.jpg" alt></p>
 <h2 id="如何实现数据质量监控"><a href="#如何实现数据质量监控" class="headerlink" title="如何实现数据质量监控"></a>如何实现数据质量监控</h2><p>前面分享了数据质量关注的点，以及从技术和业务角度会如何关注数据质量，本节将简单地分享一下如何实现数据质量监控。这里将分两个角度：宏观的设计思路和技术实现思路。</p>
 <h3 id="一、设计思路"><a href="#一、设计思路" class="headerlink" title="一、设计思路"></a>一、设计思路</h3><p>数据质量监控的设计要分为四个模块：数据、规则、告警和反馈。</p>
 <ul>
@@ -362,9 +362,8 @@
 <li>告警：告警是指发出告警的动作，这里可以通过微信消息、电话、短信或者是微信小程序的方式来触发告警内容。</li>
 <li>反馈：这里需要特别注意，反馈是指对告警内容的反馈，比如说收到的告警的内容，那么负责人要来回应这个告警消息是否是真的异常，是否需要忽略该异常，是否已经处理了该异常。有了反馈的机制，整个数据质量监控才容易形成闭环。更能体现业务价值。</li>
 </ul>
-<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/4.jpg"></p>
-<p>二、技术方案</p>
-<p>关于技术方案，这里不多描述细节，因为不同的公司和团队情况对实现方案的考虑是不同的，简单做的话，可以写一些定时脚本即可，复杂的话可以做成一个分布式的系统。这里也可以参考居士17年写的一部分内容<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzUyMjI4MzE0MQ==&mid=2247483847&idx=1&sn=d7c7001a72a9fc4ce578ee256afe609a&chksm=f9cf702dceb8f93bd66d49c681a79f1a586c504ee906b4275c4acb2fdb606411fafd18a6fb2d&scene=21#wechat_redirect">No.22 漫谈数据质量监控</a>。</p>
+<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/4.jpg" alt></p>
+<h3 id="二、技术方案"><a href="#二、技术方案" class="headerlink" title="二、技术方案"></a>二、技术方案</h3><p>关于技术方案，这里不多描述细节，因为不同的公司和团队情况对实现方案的考虑是不同的，简单做的话，可以写一些定时脚本即可，复杂的话可以做成一个分布式的系统。这里也可以参考居士17年写的一部分内容<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzUyMjI4MzE0MQ==&amp;mid=2247483847&amp;idx=1&amp;sn=d7c7001a72a9fc4ce578ee256afe609a&amp;chksm=f9cf702dceb8f93bd66d49c681a79f1a586c504ee906b4275c4acb2fdb606411fafd18a6fb2d&amp;scene=21#wechat_redirect">No.22 漫谈数据质量监控</a>。</p>
 <p>本篇只简单说明几个技术实现中需要关注的点：</p>
 <ol>
 <li>最开始可以先关注核心要监控的内容，比如说准确性，那么就对核心的一些指标做监控即可，不用开始就做很大的系统。</li>
@@ -389,7 +388,7 @@
 </ol>
 <h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p>草稿发出来后，收到了一些反馈，但是要将这些反馈都融入到文章中需要很多的时间，因此先将内容在展现出来，供大家参考。</p>
 <h3 id="一、水大人"><a href="#一、水大人" class="headerlink" title="一、水大人"></a>一、水大人</h3><p>思路很清晰，展示在这里给大家做参考</p>
-<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/5.jpg"></p>
+<p><img src="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/5.jpg" alt></p>
 <h3 id="二、邢胖"><a href="#二、邢胖" class="headerlink" title="二、邢胖"></a>二、邢胖</h3><p>数据准确性 是建立在合理的业务口径下，从口径角度去统一才会获得准确的结果。</p>
 <p>而不是仅仅认为从某个面去看这个数据是准确的就要做统一，不应从数据去逆推口径。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>和本系列其它文章相似，本文更侧重的是做数据质量过程的思考，这个思考主要体现的地方是，怎么去定义问题和解决问题，而不是直接给出解决的方案。</p>
@@ -555,7 +554,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%A4%A7%E5%85%B3%E6%B3%A8%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">四大关注点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="nav-number">2.0.1.</span> <span class="nav-text">一、完整性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%87%86%E7%A1%AE%E6%80%A7"><span class="nav-number">2.0.2.</span> <span class="nav-text">二、准确性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">2.0.3.</span> <span class="nav-text">三、一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8F%8A%E6%97%B6%E6%80%A7"><span class="nav-number">2.0.4.</span> <span class="nav-text">四、及时性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%90%84%E7%8E%AF%E8%8A%82%E7%9A%84%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">数据处理各环节的数据质量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%85%A5"><span class="nav-number">3.1.</span> <span class="nav-text">数据接入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97"><span class="nav-number">3.2.</span> <span class="nav-text">数据清洗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text">数据结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%90%84%E7%8E%AF%E8%8A%82%E7%9A%84%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F"><span class="nav-number">4.</span> <span class="nav-text">业务流程各环节的数据质量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7"><span class="nav-number">5.</span> <span class="nav-text">如何实现数据质量监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">5.1.</span> <span class="nav-text">一、设计思路</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%9B%B0%E9%9A%BE"><span class="nav-number">6.</span> <span class="nav-text">一些困难</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">7.</span> <span class="nav-text">补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%B0%B4%E5%A4%A7%E4%BA%BA"><span class="nav-number">7.1.</span> <span class="nav-text">一、水大人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%82%A2%E8%83%96"><span class="nav-number">7.2.</span> <span class="nav-text">二、邢胖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%A4%A7%E5%85%B3%E6%B3%A8%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">四大关注点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="nav-number">2.1.</span> <span class="nav-text">一、完整性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%87%86%E7%A1%AE%E6%80%A7"><span class="nav-number">2.2.</span> <span class="nav-text">二、准确性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">2.3.</span> <span class="nav-text">三、一致性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%8F%8A%E6%97%B6%E6%80%A7"><span class="nav-number">2.4.</span> <span class="nav-text">四、及时性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%90%84%E7%8E%AF%E8%8A%82%E7%9A%84%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F"><span class="nav-number">3.</span> <span class="nav-text">数据处理各环节的数据质量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8E%A5%E5%85%A5"><span class="nav-number">3.1.</span> <span class="nav-text">数据接入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97"><span class="nav-number">3.2.</span> <span class="nav-text">数据清洗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text">数据结果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%9A%E5%8A%A1%E6%B5%81%E7%A8%8B%E5%90%84%E7%8E%AF%E8%8A%82%E7%9A%84%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F"><span class="nav-number">4.</span> <span class="nav-text">业务流程各环节的数据质量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7"><span class="nav-number">5.</span> <span class="nav-text">如何实现数据质量监控</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E8%AE%BE%E8%AE%A1%E6%80%9D%E8%B7%AF"><span class="nav-number">5.1.</span> <span class="nav-text">一、设计思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88"><span class="nav-number">5.2.</span> <span class="nav-text">二、技术方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%9B%B0%E9%9A%BE"><span class="nav-number">6.</span> <span class="nav-text">一些困难</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A5%E5%85%85"><span class="nav-number">7.</span> <span class="nav-text">补充</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%B0%B4%E5%A4%A7%E4%BA%BA"><span class="nav-number">7.1.</span> <span class="nav-text">一、水大人</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%82%A2%E8%83%96"><span class="nav-number">7.2.</span> <span class="nav-text">二、邢胖</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
