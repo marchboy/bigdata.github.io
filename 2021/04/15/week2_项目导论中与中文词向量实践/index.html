@@ -346,11 +346,11 @@
 <p>这里的分布式（distributed）是“分散”、“分配”的意思，与中文“分布式计算”一词语义对应，与之相对的是局部表示（local representation）。</p>
 <p>词嵌入vs词向量<br>还是叫词嵌入好点。词向量容易绕人。从广义上讲，传统的词袋子模型也是用向量描述文本，也应当被称作词的向量表示，但是这种向量是高维稀疏的。在目前的NLP语境中，“词向量”特指由神经网络模型得到的低维实数向量表示。</p>
 <h3 id="9、Neural-Probabilistic-Language-Model"><a href="#9、Neural-Probabilistic-Language-Model" class="headerlink" title="9、Neural Probabilistic Language Model"></a>9、Neural Probabilistic Language Model</h3><h3 id="10、Problems-with-Neural-Probabilistic-Language-Model"><a href="#10、Problems-with-Neural-Probabilistic-Language-Model" class="headerlink" title="10、Problems with Neural Probabilistic Language Model"></a>10、Problems with Neural Probabilistic Language Model</h3><p>• 有限的前文信息<br>• 计算量过大<br>• 词向量是副产品</p>
-<h2 id="三、Word2Vec"><a href="#三、Word2Vec" class="headerlink" title="三、Word2Vec"></a>三、Word2Vec</h2><h3 id="1、Word2Vec-2013"><a href="#1、Word2Vec-2013" class="headerlink" title="1、Word2Vec(2013)"></a>1、Word2Vec(2013)</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/word2vec.png" alt></p>
-<h3 id="2、Word2vec-objective-function"><a href="#2、Word2vec-objective-function" class="headerlink" title="2、Word2vec: objective function"></a>2、Word2vec: objective function</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/word2vec_objectve_function.png" alt></p>
-<h3 id="3、Word2vec-prediction-function"><a href="#3、Word2vec-prediction-function" class="headerlink" title="3、Word2vec: prediction function"></a>3、Word2vec: prediction function</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/word2vec_predict_function.png" alt></p>
-<h3 id="4、CBOW-amp-skip-gram"><a href="#4、CBOW-amp-skip-gram" class="headerlink" title="4、CBOW&amp;skip-gram"></a>4、CBOW&amp;skip-gram</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/CBOW.png" alt></p>
-<p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/skip_gram.png" alt></p>
+<h2 id="三、Word2Vec"><a href="#三、Word2Vec" class="headerlink" title="三、Word2Vec"></a>三、Word2Vec</h2><h3 id="1、Word2Vec-2013"><a href="#1、Word2Vec-2013" class="headerlink" title="1、Word2Vec(2013)"></a>1、Word2Vec(2013)</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/word2vec.png"></p>
+<h3 id="2、Word2vec-objective-function"><a href="#2、Word2vec-objective-function" class="headerlink" title="2、Word2vec: objective function"></a>2、Word2vec: objective function</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/word2vec_objectve_function.png"></p>
+<h3 id="3、Word2vec-prediction-function"><a href="#3、Word2vec-prediction-function" class="headerlink" title="3、Word2vec: prediction function"></a>3、Word2vec: prediction function</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/word2vec_predict_function.png"></p>
+<h3 id="4、CBOW-amp-skip-gram"><a href="#4、CBOW-amp-skip-gram" class="headerlink" title="4、CBOW&amp;skip-gram"></a>4、CBOW&amp;skip-gram</h3><p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/CBOW.png"></p>
+<p><img src="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/skip_gram.png"></p>
 <p>下面举一个Skip-Gram Model的例子，它的主要思想是：如果你能够拿到一些文本，可能是维基百科、百度百科的文章，很自然的有一些词就会出现在另一些词的附近，那我们在做Skip-Gram的过程实际就是在create　一个train data的过程，我们把文本拿来，把中间词作为ｘ，两边的词作为label或是topic words，这两个词如果同时出现在附近，可以记为１，如果没有记为０。</p>
 <p>这样的就可以得到一个train sample，这样的train sample都是一个pairs，这样就可以把文本变成很多个train sample，再返回刚才的模型，能很好的把Hidden Layer学出来。学到Hidden Layer之后这就一个embedding了，通过word Paris建立语言模型，然后每一个词再回来，本身还是一个one-hot encoding，再经过Hidden Layer weight matrix，会变成一些的word vector。</p>
 <p>回溯总结一下，vector就是把词本身变成一个向量，怎么得到这个向量？刚才举到了用神经网络，Skip-Gram 建立train 数据，然后学到这个数据，然后Embedding实际上就是Hidden Layer weight matrix，通过Embedding就得到了向量。这是一个比较直接的，事实证明也是一个比较有效的办法。</p>
@@ -607,9 +607,7 @@
 
 
       </div>
-	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 
-	 src="//music.163.com/outchain/player?type=2&id=463352828&auto=0&height=66">
-		    </iframe>
+	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=186 src="//music.163.com/outchain/player?type=2&id=1858139145&auto=1&height=166"></iframe>
         <div class="back-to-top motion-element">
           <i class="fa fa-arrow-up"></i>
           <span>0%</span>
