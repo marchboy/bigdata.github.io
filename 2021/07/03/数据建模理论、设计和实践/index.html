@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="为什么要数据建模为什么要数据建模？ 这是一个互联网的时代，也是大数据的时代，数据的价值不言而喻。虽然大家都知道数据很重要，但如果数据不能得到很好应用，那么数据就没有价值，数据建模就是为了能够将数据的价值更好的挖掘出来 ，所进行的一系列工作。 数据建模本身是一种组织、分析、存储、应用数据的方法论，尽然是一种方法论，那么就有衡量好坏的标准：性能、成本、效率、质量。因此，数据建模的工作，就是围绕这四个指">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据建模理论、设计和实践">
+<meta property="og:url" content="https://marchboy.github.io/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="ComputerScience">
+<meta property="og:description" content="为什么要数据建模为什么要数据建模？ 这是一个互联网的时代，也是大数据的时代，数据的价值不言而喻。虽然大家都知道数据很重要，但如果数据不能得到很好应用，那么数据就没有价值，数据建模就是为了能够将数据的价值更好的挖掘出来 ，所进行的一系列工作。 数据建模本身是一种组织、分析、存储、应用数据的方法论，尽然是一种方法论，那么就有衡量好坏的标准：性能、成本、效率、质量。因此，数据建模的工作，就是围绕这四个指">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://marchboy.github.io/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/1.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/2.png">
+<meta property="article:published_time" content="2021-07-02T17:33:55.000Z">
+<meta property="article:modified_time" content="2021-08-02T17:56:48.508Z">
+<meta property="article:author" content="进军要努力呀">
+<meta property="article:tag" content="数据仓库">
+<meta property="article:tag" content="数据建模">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://marchboy.github.io/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/1.png">
+
+<link rel="canonical" href="https://marchboy.github.io/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>数据建模理论、设计和实践 | ComputerScience</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74793810-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74793810-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a5f7448ac0b523badc121b2d870f1b0c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ComputerScience</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">温故而知新</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据建模理论、设计和实践
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-07-03 01:33:55" itemprop="dateCreated datePublished" datetime="2021-07-03T01:33:55+08:00">2021-07-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-08-03 01:56:48" itemprop="dateModified" datetime="2021-08-03T01:56:48+08:00">2021-08-03</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1/" itemprop="url" rel="index"><span itemprop="name">数据建模</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/" class="post-meta-item leancloud_visitors" data-flag-title="数据建模理论、设计和实践" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="为什么要数据建模"><a href="#为什么要数据建模" class="headerlink" title="为什么要数据建模"></a>为什么要数据建模</h3><p>为什么要数据建模？</p>
+<p>这是一个互联网的时代，也是大数据的时代，数据的价值不言而喻。虽然大家都知道数据很重要，但如果数据不能得到很好应用，那么数据就没有价值，<font color="red">数据建模就是为了能够将数据的价值更好的挖掘出来 </font>，所进行的一系列工作。</p>
+<p>数据建模本身是一种<font color="red">组织、分析、存储、应用数据的方法论</font>，尽然是一种方法论，那么就有衡量好坏的标准：性能、成本、效率、质量。因此，数据建模的工作，就是围绕这四个指标做出最优解而进行的努力。</p>
+<p>数据建模是数据研发岗位的核心内容，是<font color="red">数据采集 - 数据建模 - 数据开发 - BI应用</font>这个研发链条上的关键步骤。</p>
+<p><font color="red">数据建模的日常工作，就是通过宏观模型 + 分层模型，做好标准化的模型建设，并依赖报表、接口等产品服务，输出数据价值。</font></p>
+<p>因此，掌握核心的数据建模理论，就是数据研发工程师的核心竞争力。</p>
+<p>好在，数据建模的理论并不难理解，很容易学会。但困难的是，想要把这套理论应用的的新应用，需要非常多的训练才能掌握。尤其对于互联网行业来讲，数据量足够大、业务足够复杂，才能练出足够好的数据建模师来。</p>
+<h3 id="数据建模理论"><a href="#数据建模理论" class="headerlink" title="数据建模理论"></a>数据建模理论</h3><p>让我们先来看看基础的数据建模理论。</p>
+<p>由于在变化快速的商业世界里，业务形态多种多样，为了能够更有针对性的进行数据建模，经过长时间的摸索，业界逐步形成了数据建模的四部曲：<font color="red">业务建模-&gt;领域建模-&gt;逻辑建模-&gt;物理建模</font>。简单讲，就是<strong>明确具体业务，抽象实体和关系，结合具体的建模方法，确定所有关键成分和属性，最后建数据表进行数据的存储和计算。</strong></p>
+<p>目前数据建模的方法论有两大阵营，一个是<font color="red">基于关系型数据库理论</font>设计出来的，比如<code>基于3NF的范式建模</code>。虽然目前也有不少非关系型数据库以及不少半结构化和非结构化数据。但将半结构化/非结构化数据转化为结构化数据，然后再利用关系型数据库处理仍然是一种通用的主流数据处理方案。另一个是<code>基于数据仓库之父Bill Inmon提出的维度建模理论</code>，是从全企业的高度利用实体关系来对企业业务进行描述。</p>
+<p>先讲讲范式建模，包括<code>E-R模型、DATA Vault模型和Anchor模型</code>。</p>
+<p><code>E-R模型</code>是典型的范式数仓建模，满足3NF，通过实体关系来描述企业业务之间的关系，通常是面向整体的，而不是面向单个业务过程来进行建立。作为一种标准的数据建模方案，E-R模型的数据一致性和扩展性都比较好，且经得起时间的考验，但在大数据多分析型场景诉求下，查询性能和便捷度都存在一定的不足，因此在实际业务中，往往只应用在DWD层。</p>
+<p><code>DATA Vault模型</code>是ER模型的衍生版本，将实体的描述部分拆分开来，当作单独的一个部分存在。DATA Vault模型不能直接面向业务进行数据分析决策，需要关联处理之后才能进行相应数据指标的统计，它的扩展性更好，但同时性能和便捷度更差。</p>
+<p><code>Anchor模型</code>是对DATA Vault更进一步的范式化处理，扩展性更好，但可分析性能更差。</p>
+<p>再讲讲维度建模。</p>
+<p><code>维度模型</code>主要围绕一个确定的业务过程展开，先确定好粒度和维度属性，再计算具体的指标。维度模型的典型结构是星型模型，也可能演变为雪花模型。经过互联网行业多年的探索，证实设计出好的维度模型比E-R模型更简单快速，但是缺点也比较明显，由于冗余太多维度属性，数据一致性和扩展型都相对较差，对过快业务变化的场景并不友好。由于维度建模更适合大数据面向OLAP场景下的数据建模方案，因此在实际业务中，通常应用在中间层DWS或ADS上层的数据集市。</p>
+<p>以上内容，网上有大量的书籍和文章详细介绍，这里推荐阅读两本就足够了，一本是Kimball的原书《数据仓库生命周期工具箱》、一本是《阿里巴巴大数据实践之路》。</p>
+<h3 id="数据建模中的宏观模型"><a href="#数据建模中的宏观模型" class="headerlink" title="数据建模中的宏观模型"></a>数据建模中的宏观模型</h3><p>讲完了基础的数据建模理论，再来看看日常工作，先讲一下宏观模型。</p>
+<p><font color="red">数据仓库的定义是什么？是一个面向“主题”的、集成的、相对稳定的、反映历史变化的“数据集合”，用于支持管理决策。数据仓库的指导思想是：以“维度建模”为基础构建总线矩阵，按照“数据域”和“业务过程”进行“主题模型”设计，构建一致性的维度和事实。</font></p>
+<p>主题模型是指数仓使用用户所重点关心大脑内容，是一个商业领域所涉及的所有分析对象，如“销售分析”、“用户分析”，通常横跨多个业务系统或者数据系统。主题域下面可以有多个主题，主题还可以划分成更多的子主题。</p>
+<p>把一个数据仓库做了横向的切分，或者说把企业的多个业务横向切分成不同的主题模型，又可继续细分为不同的子域，因此形成了一个具有公共前缀的树形结构，这个公共前缀通过命名规范体现出来，这也是为什么我们要强调表的命名规范的原因。</p>
+<p>如下图所示，基础DB或者是Log日志，通过不同的主题进行聚集，最后输出到同一个主题域中。</p>
+<p><img src="/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/1.png"></p>
+<p>从宏观的顶层设计来看，我们的数据模型应该是面向主题设计的，由于业务体系庞大，为了能够更加清晰的区分数据表的职责，我们将主题模型设计将细分为数据域和业务过程。</p>
+<p><strong>数据域：将业务过程或维度进行抽象，即“业务过程”或“维度”的集合，数据域还可划分多级子域。数据域是指面向业务分析，将业务过程进行抽象的集合。数据域需要抽象提炼，并且长期维护和更新，但不轻易变动。</strong>数据域的划分对于维度建模理论在层次数仓建模落地上有重要意义，一般根据业务过程相似性将同类业务数据划分到一个数据域中，底层数据的加工都会聚焦在同一个数据域中进行，在上层应用时才会加工跨数据域的数据模型。</p>
+<p><strong>业务过程：指企业活动中一个不可拆分的的行为事件，如下单、支付、退款等行为事件</strong>。</p>
+<p>因此，我们可以简单的认为，<font color="red">主题模型 = 数据域 + 业务过程。</font></p>
+<p>我们通常所做的模型设计，宏观层面上，就是合理的划分数据域和业务过程，而这种划分的结果是以表名的形式体现出来的，因此合理的数仓结构中，通过<strong>表名便应该能够清晰的分辨出这张表所属的数据域和业务过程，这与工程上所强调的“代码整洁之道”有异曲同工之妙</strong>。</p>
+<h3 id="数据建模中的分层设计"><a href="#数据建模中的分层设计" class="headerlink" title="数据建模中的分层设计"></a>数据建模中的分层设计</h3><p>划分清楚了大的概念，接下来讲实际开发，最重要的是<font color="red">分层设计</font>，这也是维度建模的灵魂，也是互联网公司经过过年的探索，得出的最佳实践。</p>
+<p>在介绍分层之前，讲几个基本的概念。</p>
+<p><img src="/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/2.png"></p>
+<p>接下来讲分层的内容。</p>
+<p><font color="red">数据分层 = ODS + CDM（DIM + DWD + DWS）+ ADS</font>，当业务不复杂时，也可以忽略某些层，比如DB设计的足够优秀且业务比较简单，ODS就可以不用建设。</p>
+<p>ODS面向ETL过程设计，通常不改变数据的内容，重点考虑数据如何及时可靠的同步过来。</p>
+<p><strong>ODS作为原始数据存储层</strong>，建议保留全部的数据原始记录，留底而不做任何清洗操作。ODS层对接的系统侧数据一般为明细数据，如果不是实时数据，调度周期一般为日调度或小时调度。对于数据的同步方式，ODS只记录会发生更新变更的数据，例如累计快照事实表、多事务事实表，建议采用时间上的全量同步；不会发生更改删除的数据，例如事务事实表，建议采用时间增量同步。ODS表的保留周期，一般为全量7天、增量永久。</p>
+<p><strong>CDM = Common Data Model</strong>，该层不面向产品需求开发，而是针对业务过程的抽象和定义，是数据模型的核心层，一般需要非常严格的规范管理，每次修改理论上都需要进行CodeReview。</p>
+<p><strong>DIM作为维表的概念</strong>，依据维度建模理论，数据只来自于ODS层，可以做一定加工处理操作。DIM表的调度周期一般为日调度，同步DB全量的快照数据，通常不建议采用增量进行同步。由于是快照表，因此建议永久保留，如果是拉链表则建议保留7天。DIM表有一些额外的考虑因素，即是否缓慢变化维度（选择快照还是拉链需要根据变化频次和业务场景来确定），如果维度存在层次关系，可以通过_ext或者是_tree或者是_graph的后缀进行标注。</p>
+<p><strong>DWD作为数据仓库明细层</strong>，建设思路主要围绕事务事实表、多事务事实表、累计快照事实表等的明细类表进行建设，对于多个事务事实表可以进行合并为多事务事实表，在各个业务域中结合业务过程选择一个应用较为通用的粒度建立一张明细宽表，同时还需要进行原始数据的清洗工作。DWD表的调度周期一般为日调度，时间上建议全量快照保留，少部分采用增量（主要考虑数据是否发生修改或删除，若存在则需要使用全量）。保留周期同样为全量7天、增量永久。如果有清洗数据的需求，通常做在DWD层，而退化部分维度属性，杂项维度、行为维度、微型维度等直接退化在事实表中，对于明细宽表会考虑冗余部分常用属性提升查询效率。</p>
+<p><strong>DWS作为数据仓库服务层</strong>，考虑建设完善的数据服务体系与数据集市，统一指标口径，主要存放周期快照事实表、聚集型事实表等汇总类型指标数据表，并且根据是否跨数据域分为两个部分进行建设。统计周期上，DWS与DWD和ODS不同，统计周期通常为：1d（最近一天）、nd（最近n天）、cm（自然月）等方式，因此需要设定通用的规范，与ODS/DWD进行区分。DWS层不存在时间上的全量，只能根据汇总的维度进行周期统计。DWS分为跨数据域和不跨数据域两类汇总表，在同一个业务过程中进行指标汇总计算可以确保数据维度的统一且高效产出，但由于DWS沉淀不足，对上游应用使用不友好，如果都放在ADS进行跨业务过程融合会过于臃肿，因此考虑在DWS进行同一业务过程内汇总的同时，也沉淀一部分通用的跨业务过程汇总表。</p>
+<p><strong>ADS是面向应用、服务、需求而开发</strong>，命名规范不会限定的很严格，因为存在很多手工数据这种无法标准化的情况，但ADS需要严格的限定依赖深度，防止设计的太复杂导致维护成本很高。</p>
+<p><strong>ADS作为应用数据存储层</strong>，建设思路是根据业务具体诉求，提供数据服务，公共通用指标尽量从DWS层获取，明细数据透出或其他业务可以从DWD层获取，不建议直接从ODS层获取数据。ADS尽量展示完整的原子指标（例如：有今年花费和去年花费两个指标，应用性能满足的情况下，同比指标可不提供）。</p>
+<h3 id="数据建模的标准化"><a href="#数据建模的标准化" class="headerlink" title="数据建模的标准化"></a>数据建模的标准化</h3><p>标准化是数据建模非常重要的一步，有道是：“如果数据都是错误的，那么业务如何做出正确的决策呢？”由于数据离不开人的开发，而人通常都是会犯错误的，因此如果标准化做的不好，不光做出来的数据容易出错，而且很容易背锅。</p>
+<p>那么数据建模如何标准化？如果有五点：</p>
+<p><strong>第一点，数据表的命名是标准的。</strong>比如：分层_数据域_二级数据域_业务过程_业务描述_主键_统计周期_刷新周期，通常没有绝对的标准，只有相对的标准。如果数据表的命名规范做的好，不用看注释，其他人都能直接用。</p>
+<p><strong>第二点，表指标定义是标准的，无二义性的。</strong>表的字段通常包含三个部分：实体&amp;属性、派生指标、时间定义，实体代表DWS和ADS的统计粒度，其属性是从我们的维表中关联出来的；派生指标，是基于原子指标、业务限定等组合出来的；时间定义，通常是天、小时、分钟等。数仓标准化的程度，很大一部分就是看派生指标是否规范、是否统一，很多公司做的“指标库”，本质就是做表指标定义的标准化。</p>
+<p><strong>第三点，模型中语料是不断完善的。</strong>前面两点中，表和字段都会拆解成最小粒度了，数仓模型针对每个最小粒度都进行了定义，后续的工作中，表命名、字段命名、字段口径都应该从这些模型中能够取出来。</p>
+<p>第四点，数据质量是有保障的。</p>
+<p>第五点，通过数据来保障模型的规范性。还是那句话，人都是会犯错误的，那么用数据来治理数据，并做成工具天天提醒你，是目前大公司比较统一的思路。参考笔者之前的文章：<a target="_blank" rel="noopener" href="http://mp.weixin.qq.com/s?__biz=MzU4MDg5NjE4OA==&mid=2247485090&idx=1&sn=8d114a9967bcff54caaa4174c61ace84&chksm=fd4e9271ca391b67f3b803f165b530f1fe96303a31c0f6e94091a7a965656e8ef0e081c52dfe&scene=21#wechat_redirect">《数据资产治理概要：用数据来治理数据》</a>。</p>
+<h3 id="数据建模中的应用价值"><a href="#数据建模中的应用价值" class="headerlink" title="数据建模中的应用价值"></a>数据建模中的应用价值</h3><p>我们构建的数据模型实际上是一种信息流，从<font color="red">明细 -&gt; 轻度汇总 -&gt; 高度汇总的链路，细节逐渐消失，携带的信息量逐渐减少</font>。在明细我们可以看到业务细节，在汇总我们只能看到一些结论性的数据，那么底层的模型设计对外其实是不可见的，那么我们通过高度汇总的数据怎么透传数据价值呢？</p>
+<p>其中一种方式，是做<strong>数据中台，提供数据产品、数据服务和其他一些数据基础设施，即丰富数据的应用场景可以带来较大的增量价值。</strong></p>
+<p>另外一种方式，是做<strong>基于数据的业务中台，提供一些对业务场景的洞察</strong>。单独的数据模型其实很难产生价值，通常需要配合其他的一些业务场景，来产生增量的价值。</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/WBuv9jPuJJx0SNmQSihY_A">数据建模理论、设计和实践</a></p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;"> ------ 本文结束------</div>
+    
+</div>
+        <div class="reward-container">
+  <div>Donate comment here.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="进军要努力呀 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="进军要努力呀 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>进军要努力呀
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://marchboy.github.io/2021/07/03/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA%E3%80%81%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%AE%9E%E8%B7%B5/" title="数据建模理论、设计和实践">https://marchboy.github.io/2021/07/03/数据建模理论、设计和实践/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/" rel="tag"><i class="fa fa-tag"></i> 数据仓库</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1/" rel="tag"><i class="fa fa-tag"></i> 数据建模</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/23/%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E4%B8%8E%E5%88%A4%E5%88%AB%E6%A8%A1%E5%9E%8B/" rel="prev" title="生成式模型和判别式模型">
+      <i class="fa fa-chevron-left"></i> 生成式模型和判别式模型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/07/08/%E6%95%B0%E6%8D%AE%E8%B4%A8%E9%87%8F%E7%9B%91%E6%8E%A7/" rel="next" title="数据质量监控">
+      数据质量监控 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1"><span class="nav-number">1.</span> <span class="nav-text">为什么要数据建模</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%90%86%E8%AE%BA"><span class="nav-number">2.</span> <span class="nav-text">数据建模理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E4%B8%AD%E7%9A%84%E5%AE%8F%E8%A7%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">数据建模中的宏观模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E4%B8%AD%E7%9A%84%E5%88%86%E5%B1%82%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.</span> <span class="nav-text">数据建模中的分层设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E7%9A%84%E6%A0%87%E5%87%86%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">数据建模的标准化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8%E4%BB%B7%E5%80%BC"><span class="nav-number">6.</span> <span class="nav-text">数据建模中的应用价值</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="进军要努力呀"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">进军要努力呀</p>
+  <div class="site-description" itemprop="description">可怕的是自己内心的堕落</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">43</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/marchboy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;marchboy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jjgdut@gmail.com" title="E-Mail → mailto:jjgdut@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/yourname" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://youtube.com/yourname" title="YouTube → https:&#x2F;&#x2F;youtube.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/pinard" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard" rel="noopener" target="_blank">刘建平Pinard</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://vel.life/" title="https:&#x2F;&#x2F;vel.life&#x2F;" rel="noopener" target="_blank">思维之海</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wulc.me/" title="https:&#x2F;&#x2F;wulc.me&#x2F;" rel="noopener" target="_blank">吴良超的学习笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/IT_job" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;IT_job" rel="noopener" target="_blank">IT_job的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zdaiot.com/categories/" title="https:&#x2F;&#x2F;www.zdaiot.com&#x2F;categories&#x2F;" rel="noopener" target="_blank">zdaiot</a>
+        </li>
+    </ul>
+  </div>
+
+
+      </div>
+	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=86 
+	 src="//music.163.com/outchain/player?type=2&id=463352828&auto=0&height=66">
+		    </iframe>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">进军要努力呀</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">182k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:45</span>
+</div><!-- ����ҳ�ײ�������վ����ʱ�� -->
+<span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/01/2020 00:00:00");//�˴��޸���Ľ�վʱ�������վ����ʱ��
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9de70fca612487225ccc',
+      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
+      repo        : 'marchboy.github.io',
+      owner       : 'marchboy',
+      admin       : ['marchboy'],
+      id          : 'bb236a4d5625ea2cd938dbde0344aa05',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'qAoqMWohGTiECb1RgaNqvgNB-MdYXbMMI',
+      appKey     : 'ISI8QFSo7GcRyExPHSjMkz7R',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
