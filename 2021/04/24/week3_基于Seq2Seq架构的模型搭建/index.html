@@ -340,9 +340,10 @@
 <p>自动文本摘要是生成简洁流畅的摘要，同时保留关键信息内容和整体含义的任务</p>
 <h4 id="categories"><a href="#categories" class="headerlink" title="categories"></a>categories</h4><h5 id="Extractive-Summarization"><a href="#Extractive-Summarization" class="headerlink" title="Extractive Summarization"></a>Extractive Summarization</h5><p>抽取式自动文摘方法，通过提取文档中已存在的关键词，句子形成摘要</p>
 <h5 id="Abstractive-Summarization"><a href="#Abstractive-Summarization" class="headerlink" title="Abstractive Summarization"></a>Abstractive Summarization</h5><p>生成式自动文摘方法，通过建立抽象的语意表示，使用自然语言生成技术，形成摘要。由于生成式自动摘要方法需要复杂的自然语言理解和生成技术支持，应用领域受限。</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/summary-approaches.png" style="zoom: 60%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/summary-approaches.png" style="zoom: 60%;">
+
 <p><strong><a target="_blank" rel="noopener" href="https://www.jiqizhixin.com/articles/2019-03-25-7">文本摘要简述</a></strong></p>
-<p><strong><a target="_blank" rel="noopener" href="http://xcfeng.net/res/presentation/文本摘要简述.pdf">文本摘要简述 - Xiachong Feng</a></strong></p>
+<p><strong><a target="_blank" rel="noopener" href="http://xcfeng.net/res/presentation/%E6%96%87%E6%9C%AC%E6%91%98%E8%A6%81%E7%AE%80%E8%BF%B0.pdf">文本摘要简述 - Xiachong Feng</a></strong></p>
 <p>目前主要方法有：</p>
 <p>基于统计：统计词频，位置等信息，计算句子权值，再简选取权值高的句子作为文摘，特点：简单易用，但对词句的使用大多仅停留在表面信息。</p>
 <p>基于图模型：构建拓扑结构图，对词句进行排序。例如，TextRank/LexRank</p>
@@ -351,7 +352,7 @@
 <h3 id="Text-Rank"><a href="#Text-Rank" class="headerlink" title="Text Rank"></a>Text Rank</h3><p>TextRank 算法是一种用于文本的基于图的排序算法。其基本思想来源于谷歌的 PageRank算法,通过把文本分割成若干组成单元（单词、句子）并建立图模型，利用投票机制对文本中的重要成分进行排序，仅利用单篇文档本身的信息即可实现关键词提取、文摘。和 LDA、M 等模型不同，TextRank不需要事先对多篇文档进行学习训练，因其简洁有效而得到广泛应用。</p>
 <p><a target="_blank" rel="noopener" href="http://web.eecs.umich.edu/~mihalcea/papers/mihalcea.emnlp04.pdf">最早提出TextRank的论文</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/coshaho/p/9740937.html">马尔科夫链及其平稳状态</a></p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/TextRank.png" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/TextRank.png"></p>
 <p><strong><a target="_blank" rel="noopener" href="https://www.jiqizhixin.com/articles/2018-12-28-18">TextRank算法的流程</a></strong></p>
 <p><strong>1.</strong> 第一步是把所有文章整合成文本数据</p>
 <p><strong>2.</strong> 接下来把文本分割成单个句子</p>
@@ -368,22 +369,32 @@
 <p>此外，由于TextRank涉及到构建词图及迭代计算，所以提取速度较慢。</p>
 <p>发现以上两种方法本质上还是基于词频，这也导致了我们在进行自然语言处理的时候造成的弊端，因为我们阅读一篇文章的时候，并不是意味着主题词会一直出现，特别对于中文来说，蕴含的中心思想也往往不是一两个词能够说明的，这也是未来自然语言方面要解决的基于语义的分析，路还很长。</p>
 <h3 id="Recurrent-Neural-Network-RNN"><a href="#Recurrent-Neural-Network-RNN" class="headerlink" title="Recurrent Neural Network (RNN)"></a>Recurrent Neural Network (RNN)</h3><p><strong><a target="_blank" rel="noopener" href="https://zybuluo.com/hanbingtao/note/541458">循环神经网络</a></strong></p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/classical_RNN.png" style="zoom: 50%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/classical_RNN.png" style="zoom: 50%;">
+
 <p>RNN 跟传统神经网络最大的区别在于每次都会将前一次的输出结果，带到下一次的隐藏层中，一起训练。如下图所示：</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN_Architecture.gif"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN_Architecture.gif">
+
 <p>假如需要判断用户的说话意图（问天气、问时间、设置闹钟…），用户说了一句“what time is it？”我们需要先对这句话进行分词：</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN_Layers.gif" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN_Layers.gif"></p>
 <p>当我们判断意图的时候，只需要最后一层的输出「05」，如下图所示：</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN-output.gif" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/RNN-output.gif"></p>
 <p><strong>Solve Vanishing Gradient</strong></p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/solve_vanishing_gradient.png" style="zoom:50%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/solve_vanishing_gradient.png" style="zoom:50%;">
+
+
+
 <p><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1705.08209.pdf"><strong>Solve Exploding Gradient</strong></a></p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/solve_exploding_gradient.png" style="zoom:50%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/solve_exploding_gradient.png" style="zoom:50%;">
+
+
+
+
+
 <p><strong>RNN优点</strong></p>
 <p>1、The main advantage of RNN over ANN is that RNN <strong>can model sequence of data</strong> (i.e. time series) so that each sample can be assumed to be dependent on previous ones<br>2、Share Parameters</p>
 <p><strong>RNN 的缺点也比较明显</strong></p>
 <p>通过上面的例子，我们已经发现，短期的记忆影响较大（如橙色区域），但是长期的记忆影响就很小（如黑色和绿色区域），这就是 RNN 存在的短期记忆问题。</p>
-<p>1、<strong><font color="red"> Gradient vanishing and exploding problems </font></strong></p>
+<p>1、**<font color="red"> Gradient vanishing and exploding problems </font>**</p>
 <p>2、Training an RNN is a very difficult task</p>
 <p>3、<strong>It cannot process very long sequences if using tanh or relu as an activation function</strong></p>
 <p>4、RNN 有短期记忆问题，无法处理很长的输入序列</p>
@@ -393,12 +404,13 @@
 <p>RNN 是一种死板的逻辑，越晚的输入影响越大，越早的输入影响越小，且无法改变这个逻辑。</p>
 <p><a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/lstm/">LSTM</a> 做的最大的改变就是打破了这个死板的逻辑，而改用了一套灵活了逻辑——只保留重要的信息。</p>
 <p><strong>简单说就是：抓重点！</strong></p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/long_short_term_memory.png" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/long_short_term_memory.png"></p>
 <h3 id="GRU"><a href="#GRU" class="headerlink" title="GRU"></a>GRU</h3><p><strong><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/32481747">人人都能看懂的GRU</a></strong></p>
 <p>GRU（Gate Recurrent Unit）是循环神经网络（Recurrent Neural Network, RNN）的一种。和LSTM（Long-Short Term Memory）一样，也是为了解决长期记忆和反向传播中的梯度等问题而提出来的。</p>
 <p>GRU和LSTM在很多情况下实际表现上相差无几，那么为什么我们要使用新人GRU（2014年提出）而不是相对经受了更多考验的LSTM（1997提出）呢。</p>
 <p>下图1-1引用论文中的一段话来说明GRU的优势所在。</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/R_NET.png" style="zoom: 50%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/R_NET.png" style="zoom: 50%;">
+
 <blockquote>
 <p>简单译文：我们在我们的实验中选择GRU是因为它的实验效果与LSTM相似，但是更易于计算。</p>
 </blockquote>
@@ -411,11 +423,14 @@
 <h3 id="Seq2seq-Architecture"><a href="#Seq2seq-Architecture" class="headerlink" title="Seq2seq Architecture"></a>Seq2seq Architecture</h3><h4 id="什么是-Encoder-Decoder"><a href="#什么是-Encoder-Decoder" class="headerlink" title="什么是 Encoder-Decoder"></a><a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/encoder-decoder-seq2seq/">什么是 Encoder-Decoder</a></h4><p>Encoder-Decoder 模型主要是 NLP 领域里的概念。它并不特值某种具体的算法，而是一类算法的统称。Encoder-Decoder 算是一个通用的框架，在这个框架下可以使用不同的算法来解决不同的任务。</p>
 <p>Encoder-Decoder 这个框架很好的诠释了机器学习的核心思路：将现实问题转化为数学问题，通过求解数学问题，从而解决现实问题。</p>
 <p>Encoder 又称作编码器。它的作用就是「将现实问题转化为数学问题」</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/encoder.png" style="zoom:50%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/encoder.png" style="zoom:50%;">
+
 <p>Decoder 又称作解码器，他的作用是「求解数学问题，并转化为现实世界的解决方案」</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/decoder.png" style="zoom:50%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/decoder.png" style="zoom:50%;">
+
 <p>把 2 个环节连接起来，用通用的图来表达则是下面的样子:</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Encoder-Decoder.png" style="zoom:50%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Encoder-Decoder.png" style="zoom:50%;">
+
 <p>关于 Encoder-Decoder，有2 点需要说明：</p>
 <ol>
 <li>不论输入和输出的长度是什么，中间的「向量 c」 长度都是固定的（这也是它的缺陷，下文会详细说明）</li>
@@ -423,7 +438,7 @@
 </ol>
 <p>只要是符合上面的框架，都可以统称为 Encoder-Decoder 模型。</p>
 <h4 id="什么是-Seq2Seq"><a href="#什么是-Seq2Seq" class="headerlink" title="什么是 Seq2Seq"></a>什么是 Seq2Seq</h4><p>Seq2Seq（是 Sequence-to-sequence 的缩写），就如字面意思，输入一个序列，输出另一个序列。这种结构最重要的地方在于输入序列和输出序列的长度是可变的。例如下图：</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq.gif" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq.gif"></p>
 <p>如上图：输入了 6 个汉字，输出了 3 个英文单词。输入和输出的长度不同。</p>
 <h4 id="Seq2Seq-的由来"><a href="#Seq2Seq-的由来" class="headerlink" title="Seq2Seq 的由来"></a><strong>Seq2Seq 的由来</strong></h4><p>在 Seq2Seq 框架提出之前，深度神经网络在图像分类等问题上取得了非常好的效果。在其擅长解决的问题中，输入和输出通常都可以表示为固定长度的向量，如果长度稍有变化，会使用补零等操作。</p>
 <p>然而许多重要的问题，例如机器翻译、语音识别、自动对话等，表示成序列后，其长度事先并不知道。因此如何突破先前深度神经网络的局限，使其可以适应这些场景，成为了13年以来的研究热点，Seq2Seq框架应运而生。</p>
@@ -440,35 +455,42 @@
 <p>Encoder-Decoder 就是类似的问题：当输入信息太长时，会丢失掉一些信息。</p>
 <h3 id="Attention-Mechanism"><a href="#Attention-Mechanism" class="headerlink" title="Attention Mechanism"></a><a target="_blank" rel="noopener" href="https://blog.csdn.net/sinat_34072381/article/details/106728056">Attention Mechanism</a></h3><p>Attention 机制就是为了解决「信息过长，信息丢失」的问题。</p>
 <p><em>Ａttention</em> 模型的特点是 Eecoder 不再将整个输入序列编码为固定长度的「中间向量 Ｃ」 ，而是编码成一个向量的序列。引入了 <em>Ａttention</em> 的 <em>Encoder-Decoder</em> 模型如下图：</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/attention.png" style="zoom:50%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/attention.png" style="zoom:50%;">
+
 <p>这样，在产生每一个输出的时候，都能够做到充分利用输入序列携带的信息。而且这种方法在翻译任务中取得了非常不错的成果。</p>
 <p>Attention 是一个很重要的知识点，想要详细了解 Attention，请查看《<a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/attention/">一文看懂 Attention（本质原理+3大优点+5大类型）</a>》</p>
 <h4 id="Additive-Attention-Bahdanau-Attention"><a href="#Additive-Attention-Bahdanau-Attention" class="headerlink" title="Additive Attention (Bahdanau Attention)"></a>Additive Attention (Bahdanau Attention)</h4><p>传统seq2seq模型中encoder将输入序列编码成一个context向量，decoder将context向量作为初始隐状态，生成目标序列。随着输入序列长度的增加，<strong>编码器难以将所有输入信息编码为单一context向量</strong>，编码信息缺失，难以完成高质量的解码。</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq.png" style="zoom: 67%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq.png" style="zoom: 67%;">
+
+
+
 <p>注意力机制是在每个时刻解码时，基于当前时刻解码器的隐状态、输入或输出等信息，<strong>计算其对输入序列各位置隐状态的注意力（分数）并加权生成context向量</strong>用于当前时刻解码。引入注意力机制，使得不同时刻的解码能够关注不同位置的输入信息，提高预测准确性。</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq2.png" style="zoom:67%;"></p>
+<img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/seq2seq2.png" style="zoom:67%;">
+
+
+
 <h4 id="Bahdanau-Attention-Mechanism"><a href="#Bahdanau-Attention-Mechanism" class="headerlink" title="Bahdanau Attention Mechanism"></a>Bahdanau Attention Mechanism</h4><p>Bahdanau本质是一种 <strong>加性attention机制</strong>，将decoder的隐状态和encoder所有位置输出通过线性组合对齐，得到context向量，用于改善序列到序列的翻译模型。</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/bahdanau.png" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/bahdanau.png"></p>
 <p>本质：两层全连接网络，隐藏层激活函数tanh，输出层维度为1。</p>
 <p><strong>Bahdanau的特点为：</strong></p>
 <p>1、编码器隐状态 ：编码器对于每一个输入向量产生一个隐状态向量；</p>
 <p>2、计算对齐分数：使用上一时刻的隐状态$s_{t-1}$ 和编码器每个位置输出$s_t$计算对齐分数（使用前馈神经网络计算），编码器最终时刻隐状态可作为解码器初始时刻隐状态；</p>
 <p>3、概率化对齐分数：解码器上一时刻隐状态$s_{t-1}$在编码器每个位置输出的对齐分数，通过softmax转化为概率分布向量；</p>
 <p>4、计算上下文向量：根据概率分布化的对齐分数，加权编码器各位置输出，得上下文向量$c_t$;</p>
-<p>5、解码器输出：将上下文向量$c<em>t$和上一时刻编码器输出$\hat y</em>{t-1} $对应的embedding拼接，作为当前时刻编码器输入，经RNN网络产生新的输出和隐状态，训练过程中有真实目标序列$y=(y<em>1···y_m)$，多使用$y</em>{t-1}$取代$\hat y_{t-1} $作为解码器t时刻输入；</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/time_t.png" alt></p>
+<p>5、解码器输出：将上下文向量$c_t$和上一时刻编码器输出$\hat y_{t-1} $对应的embedding拼接，作为当前时刻编码器输入，经RNN网络产生新的输出和隐状态，训练过程中有真实目标序列$y=(y_1···y_m)$，多使用$y_{t-1}$取代$\hat y_{t-1} $作为解码器t时刻输入；</p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/time_t.png"></p>
 <p>使用Bahdanau注意力机制的解码过程：</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/bahdanau_mechanism.png" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/bahdanau_mechanism.png"></p>
 <h4 id="Multiplicative-Attention-Luong-Attention"><a href="#Multiplicative-Attention-Luong-Attention" class="headerlink" title="Multiplicative Attention (Luong Attention)"></a>Multiplicative Attention (Luong Attention)</h4><p>Luong本质是一种 乘性attention机制，将解码器隐状态和编码器输出进行矩阵乘法，得到上下文向量。</p>
 <p>Luong注意力机制是对Bahdanau注意力机制的改进，根据是否全部使用所有编码器输出分为两种：全局注意力和局部注意力，全局注意力适合用于短输入序列，局部注意力适合用于长输入序列（计算全局注意力代价高），以下内容仅介绍全局注意力。</p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Luong_Attention.png" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Luong_Attention.png"></p>
 <p><strong>Luong注意力机制与Bahdanau注意力机制的主要不同点：</strong></p>
 <p>1、对齐分数计算：使用当前时刻的隐状态$s_t$计算在编码器位置i输出的对齐分数；</p>
-<p>2、解码器输出：解码器在t时刻，拼接上下文向量$c<em>t$ 和当前时刻隐状态$s_t$，经全连接层，产生当前时刻输出$\hat y</em>{t+1}$ ，并作为下一时刻输入；</p>
+<p>2、解码器输出：解码器在t时刻，拼接上下文向量$c_t$ 和当前时刻隐状态$s_t$，经全连接层，产生当前时刻输出$\hat y_{t+1}$ ，并作为下一时刻输入；</p>
 <p>3、流程图当前时刻计算的context向量，会被应用到下一时刻的输入；</p>
 <p><strong>Luong注意力的三种计算方法：</strong></p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Luong_Attention2.png" alt></p>
-<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/difference.png" alt></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/Luong_Attention2.png"></p>
+<p><img src="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/difference.png"></p>
 <h4 id="Teacher-Forcing"><a href="#Teacher-Forcing" class="headerlink" title="Teacher Forcing"></a>Teacher Forcing</h4><p>Teacher Forcing是一种用来训练循环神经网络模型的方法，这种方法以上一时刻的输出作为下一时刻的输入。</p>
 <p><a target="_blank" rel="noopener" href="https://kexue.fm/archives/7818"><a target="_blank" rel="noopener" href="https://kexue.fm/archives/7818">让Teacher Forcing更有“远见”一些</a></a></p>
 <p><a target="_blank" rel="noopener" href="https://wmathor.com/index.php/archives/1449/">Teacher Forcing</a></p>
@@ -476,6 +498,7 @@
 <h3 id="Tensorflow的一些配置"><a href="#Tensorflow的一些配置" class="headerlink" title="Tensorflow的一些配置"></a>Tensorflow的一些配置</h3><h4 id="设置Tensorflow使用的显存大小"><a href="#设置Tensorflow使用的显存大小" class="headerlink" title="设置Tensorflow使用的显存大小"></a>设置Tensorflow使用的显存大小</h4><h5 id="获得当前主机上特定运算设备的列表"><a href="#获得当前主机上特定运算设备的列表" class="headerlink" title="获得当前主机上特定运算设备的列表"></a>获得当前主机上特定运算设备的列表</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gpus = tf.config.experimental.list_physical_devices(device_type=<span class="string">&#x27;GPU&#x27;</span>)</span><br><span class="line">cpus = tf.config.experimental.list_physical_devices(device_type=<span class="string">&#x27;CPU&#x27;</span>)</span><br><span class="line">print(gpus, cpus)</span><br></pre></td></tr></table></figure>
 <h5 id="设置当前程序可见的设备范围"><a href="#设置当前程序可见的设备范围" class="headerlink" title="设置当前程序可见的设备范围"></a>设置当前程序可见的设备范围</h5><p>默认情况下 TensorFlow 会使用其所能够使用的所有 GPU。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tf.config.experimental.set_visible_devices(devices=gpus[<span class="number">2</span>:<span class="number">4</span>], device_type=<span class="string">&#x27;GPU&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
 <p>设置之后，当前程序只会使用自己可见的设备，不可见的设备不会被当前程序使用。</p>
 <p>另一种方式是使用环境变量 CUDA_VISIBLE_DEVICES 也可以控制程序所使用的 GPU。</p>
 <p>在终端输入</p>
@@ -493,15 +516,23 @@
 </ol>
 <p>设置仅在需要时申请显存空间。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> gpu <span class="keyword">in</span> gpus:</span><br><span class="line">    tf.config.experimental.set_memory_growth(gpu, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+
 <p>下面的方式是设置Tensorflow固定消耗GPU:0的2GB显存。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tf.config.experimental.set_virtual_device_configuration(</span><br><span class="line">    gpus[<span class="number">0</span>],</span><br><span class="line">    [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=<span class="number">2048</span>)]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
 <h5 id="单GPU模拟多GPU环境"><a href="#单GPU模拟多GPU环境" class="headerlink" title="单GPU模拟多GPU环境"></a>单GPU模拟多GPU环境</h5><p>上面的方式不仅可以设置显存的使用，还可以在只有单GPU的环境模拟多GPU进行调试。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tf.config.experimental.set_virtual_device_configuration(</span><br><span class="line">    gpus[<span class="number">0</span>],</span><br><span class="line">    [tf.config.experimental.VirtualDeviceConfiguration(memory_limit=<span class="number">2048</span>),</span><br><span class="line">     tf.config.experimental.VirtualDeviceConfiguration(memory_limit=<span class="number">2048</span>)])</span><br></pre></td></tr></table></figure>
 <p>上面的代码就在GPU:0上建立了两个显存均为 2GB 的虚拟 GPU。</p>
 <h4 id="Tensorflow-错误"><a href="#Tensorflow-错误" class="headerlink" title="Tensorflow 错误"></a>Tensorflow 错误</h4><p>Could not create cudnn handle: CUDNN_STATUS_ALLOC_FAILED</p>
 <p>解决方案：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">import tensorflow as tf</span><br><span class="line">import os</span><br><span class="line">gpus &#x3D; tf.config.experimental.list_physical_devices(device_type&#x3D;&#39;GPU&#39;)</span><br><span class="line">for gpu in gpus:</span><br><span class="line">    tf.config.experimental.set_memory_growth(gpu, True)</span><br><span class="line">os.environ[&#39;CUDA_VISIBLE_DEVICES&#39;]&#x3D;&#39;2&#39;</span><br></pre></td></tr></table></figure>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>1、关于seq2seq的整个流程，可以参考<a target="_blank" rel="noopener" href="https://www.toutiao.com/i6648878247188627972/。">https://www.toutiao.com/i6648878247188627972/。</a></p>
+
+
+
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>1、关于seq2seq的整个流程，可以参考<a target="_blank" rel="noopener" href="https://www.toutiao.com/i6648878247188627972/%E3%80%82">https://www.toutiao.com/i6648878247188627972/。</a></p>
 <p>2、关于loss函数中的trick，对于Seq2Seq模型来说，输入和输出序列的class便是词汇表的大小，而对于训练集来说，输入和输出的词汇表的大小是比较大的。为了减少计算每个词的softmax的时候的资源压力，通常会减少词汇表的大小，但是便会带来另外一个问题，由于词汇表的词量的减少，语句的Embeding的id表示时容易大频率的出现未登录词‘UNK’。所以计算词汇表的softmax的时候，并不采用全部的词汇表中的词，而是进行一定手段的sampled的采样，从而近似的表示词汇表的loss输出，sampled采样需要定义好候选分布Q。即按照什么分布去采样。因此loss函数可以用sampled_softmax_loss。</p>
 <p>3、在训练过程中通常采用的是teacher-forcing进行训练纠正，但是在预测阶段，是不知道真实标签的，所以会引起Exposure Bias， 使用Beam Search的Encoder的方式也能一定程度上降低Exposure Bias问题。</p>
 <p>4、关于oov问题和低频词。OOV表示的是词汇表外的未登录词，低频词则是词汇表中的出现次数较低的词。在Decoder阶段时预测的词来自于词汇表，这就造成了未登录词难以生成，低频词也比较小的概率被预测生成。PGN网络可以解决（之后的课程会有）。</p>
@@ -785,7 +816,7 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">181k</span>
+    <span title="站点总字数">182k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
