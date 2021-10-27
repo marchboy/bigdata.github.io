@@ -1,0 +1,74 @@
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="38.775ex" height="7.843ex" style="font-size: 15px; vertical-align: -3.338ex;" viewBox="0 -1939.5 16694.7 3376.7" role="img" focusable="false" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<path stroke-width="1" id="E1-MJMAIN-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path>
+<path stroke-width="1" id="E1-MJMAIN-2212" d="M84 237T84 250T98 270H679Q694 262 694 250T679 230H98Q84 237 84 250Z"></path>
+</defs>
+<g stroke="currentColor" fill="currentColor" stroke-width="0" transform="matrix(1 0 0 -1 0 0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">影</text>
+<g transform="translate(1148,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">响</text>
+</g>
+<g transform="translate(2296,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">系</text>
+</g>
+<g transform="translate(3444,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">数</text>
+</g>
+ <use xlink:href="#E1-MJMAIN-3D" x="4870" y="0"></use>
+<g transform="translate(5648,0)">
+<g transform="translate(397,0)">
+<rect stroke="none" width="10528" height="60" x="0" y="220"></rect>
+<g transform="translate(60,949)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">今</text>
+<g transform="translate(1148,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">日</text>
+</g>
+<g transform="translate(2296,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">数</text>
+</g>
+<g transform="translate(3444,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">据</text>
+</g>
+ <use xlink:href="#E1-MJMAIN-2212" x="4814" y="0"></use>
+<g transform="translate(5815,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">昨</text>
+</g>
+<g transform="translate(6963,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">日</text>
+</g>
+<g transform="translate(8111,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">数</text>
+</g>
+<g transform="translate(9259,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">据</text>
+</g>
+</g>
+<g transform="translate(60,-881)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">今</text>
+<g transform="translate(1148,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">日</text>
+</g>
+<g transform="translate(2296,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">总</text>
+</g>
+<g transform="translate(3444,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">量</text>
+</g>
+ <use xlink:href="#E1-MJMAIN-2212" x="4814" y="0"></use>
+<g transform="translate(5815,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">昨</text>
+</g>
+<g transform="translate(6963,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">日</text>
+</g>
+<g transform="translate(8111,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">总</text>
+</g>
+<g transform="translate(9259,0)">
+<text font-family="monospace" stroke="none" transform="scale(71.759) matrix(1 0 0 -1 0 0)">量</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>
