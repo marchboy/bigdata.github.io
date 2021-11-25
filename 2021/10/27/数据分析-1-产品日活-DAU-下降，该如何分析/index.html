@@ -264,6 +264,13 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
   
   <span class="post-meta-item">
     
@@ -307,9 +314,9 @@
 </blockquote>
 <p>这是一道经典的数据分析师面试题，考察的重点不在于从哪些指标去分析，而是面对这样的问题时的<strong>分析框架与逻辑思维</strong>，这是一个优秀的数据分析师必须具备的能力。</p>
 <p>针对数据异常类问题，可参考如下分析框架：</p>
-<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/1.jpg" alt></p>
+<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/1.jpg"></p>
 <h2 id="1-对数据异常原因做出假设，利用数据验证"><a href="#1-对数据异常原因做出假设，利用数据验证" class="headerlink" title="1. 对数据异常原因做出假设，利用数据验证"></a>1. 对数据异常原因做出假设，利用数据验证</h2><p>影响DAU因素较多，对所有维度直接拆解耗时耗力。所以需要结合以往经验及各种信息，对数据异常的原因做出假设，然后对数据从不同维度拆分来验证假设。可能随着之前的假设的验证不断进行新的假设，直到定位原因。</p>
-<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/2.jpg" alt></p>
+<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/2.jpg"></p>
 <h2 id="2-确认数据真实性"><a href="#2-确认数据真实性" class="headerlink" title="2. 确认数据真实性"></a>2. 确认数据真实性</h2><ul>
 <li><p>将时间轴拉长(3个月)，做同比和环比，看近期异常还是历史异常；</p>
 </li>
@@ -318,16 +325,16 @@
 <li><p>找数据流相关产品和研发确实数据真实性。</p>
 </li>
 </ul>
-<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/3.jpg" alt></p>
-<h2 id="3-常见拆分维度"><a href="#3-常见拆分维度" class="headerlink" title="3. 常见拆分维度"></a>3. 常见拆分维度</h2><p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/4.jpg" alt></p>
+<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/3.jpg"></p>
+<h2 id="3-常见拆分维度"><a href="#3-常见拆分维度" class="headerlink" title="3. 常见拆分维度"></a>3. 常见拆分维度</h2><p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/4.jpg"></p>
 <p>根据以上维度拆分之后，每项数据都需要和历史数据做对比，计算影响系数。</p>
-<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/equation.svg" alt></p>
+<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/equation.svg"></p>
 <p>影响系数越大，说明此处为主要原因所在。</p>
 <p>通过上述维度进行初步拆分，可以大致定位数据异常范围。</p>
 <h2 id="4-外部原因分析"><a href="#4-外部原因分析" class="headerlink" title="4. 外部原因分析"></a>4. 外部原因分析</h2><p>外部：外部原因分析可以根据PEST（政治、经济、社会、技术）模型进行分析。</p>
-<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/5.jpg" alt></p>
+<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/5.jpg"></p>
 <h2 id="5-内部原因分析"><a href="#5-内部原因分析" class="headerlink" title="5. 内部原因分析"></a>5. 内部原因分析</h2><p>通过初步分析定位范围之后，需要进行进一步的排查，一般从三个维度来分析：产品、技术、运营；可以和这几个人一起拉一个会讨论一下。同时应注意数据统计口径是否发生变化。</p>
-<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/6.jpg" alt></p>
+<p><img src="/2021/10/27/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90-1-%E4%BA%A7%E5%93%81%E6%97%A5%E6%B4%BB-DAU-%E4%B8%8B%E9%99%8D%EF%BC%8C%E8%AF%A5%E5%A6%82%E4%BD%95%E5%88%86%E6%9E%90/6.jpg"></p>
 <h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>所以我们整个的分析流程大致为：</p>
 <p>先结合以往数据异常进行假设 —— 在一个假设得到验证之后 —— 从不同维度进行拆解，确定异常范围 —— 从产品、运营、技术侧逐一排查，最终找到原因。</p>
 <p>以上分析框架不仅局限于DAU波动，对于数据异常类问题即可根据以上模型进行分析。</p>

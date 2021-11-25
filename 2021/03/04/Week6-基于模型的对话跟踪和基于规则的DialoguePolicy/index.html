@@ -29,10 +29,10 @@
 <meta property="og:description" content="Model-based DST and Rule-based Dialogue PolicyModel-based Dialogue State Tracking(DST)Review任务型对话系统（task-oriented dialogue system）的目标是协助用户完成特定的任务，比如订机票、打车、日程管理等。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/task-oriented-dialogue.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/对话状态表示.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/%E5%AF%B9%E8%AF%9D%E7%8A%B6%E6%80%81%E8%A1%A8%E7%A4%BA.png">
 <meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/端到端的DST.png">
-<meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST与DSI对比.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84DST.png">
+<meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST%E4%B8%8EDSI%E5%AF%B9%E6%AF%94.png">
 <meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/input-and-output.png">
 <meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/simple_bert_model_for_dst.png">
 <meta property="og:image" content="https://marchboy.github.io/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/personl-Info.PNG">
@@ -281,6 +281,13 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
             </span>
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
   
   <span class="post-meta-item">
     
@@ -328,13 +335,13 @@
 <p><strong>自然语言生成（natural language generation, NLG），</strong></p>
 </blockquote>
 <p>在这个过程中需要跟各种各样的数据库进行查询甚至更新等操作。</p>
-<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/task-oriented-dialogue.png" alt></p>
+<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/task-oriented-dialogue.png"></p>
 <p><strong>对话跟踪模块及其限制</strong></p>
 <p>对话状态跟踪模块是任务型对话系统的一个核心模块，对话状态表示了用户在每轮对话所寻求的内容的关键信息，它是从对话开始到当前轮的所有信息的累积，表示形式是一些 slot-value pairs 的集合，inform 表示用户对所寻求的内容的限制，request 表示用户想要寻求哪些内容。</p>
-<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/对话状态表示.png" alt></p>
-<h3 id="What’s-DST"><a href="#What’s-DST" class="headerlink" title="What’s DST"></a><strong>What’s DST</strong></h3><p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST.png" alt></p>
+<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/%E5%AF%B9%E8%AF%9D%E7%8A%B6%E6%80%81%E8%A1%A8%E7%A4%BA.png"></p>
+<h3 id="What’s-DST"><a href="#What’s-DST" class="headerlink" title="What’s DST"></a><strong>What’s DST</strong></h3><p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST.png"></p>
 <p>DST 的做法是先通过 NLU 模块对用户对话进行意图识别和槽位解析，然后将结果输入到 DST 模块中，由 DST 模块处理 NLU 模块带来的一些不确定性，得到最终的对话状态。目前越来越多的工作直接通过一个端到端的 DST 模型来直接处理用户对话（以及历史对话记录）得到当前的对话状态，如图 3 所示</p>
-<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/端到端的DST.png" alt="端到端的DST"></p>
+<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/%E7%AB%AF%E5%88%B0%E7%AB%AF%E7%9A%84DST.png" alt="端到端的DST"></p>
 <p>延申知识点：DSI</p>
 <p><strong>Dialogue State Induction Using Neural Latent Variable Models</strong></p>
 <p><strong>基于神经隐变量模型的对话状态推理</strong></p>
@@ -344,32 +351,30 @@
 <p><strong>视频接：</strong><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1fV41127tq">https://www.bilibili.com/video/BV1fV41127tq</a></p>
 <p>论文总结：</p>
 <p>对话状态跟踪模块是任务型对话系统中的核心部件，目前主流的对话状态跟踪的方法需要在大量人工标注的数据上进行训练。然而，对于现实世界中的各种客户服务对话系统来说，人工标注的过程存在代价高、标注慢、错误率高以及难以覆盖数量庞大的不同领域等问题。</p>
-<p>基于这些问题，提出了一个新的任务：<strong>对话状态推理 (dialogue state induction, DSI)</strong>，任务的目标是从大量的生对话语料中自动推理得到对话状态，并能更好的用于下游任务比如策略学习和对话生成。</p>
+<p>基于这些问题，提出了一个新的任务：**对话状态推理 (dialogue state induction, DSI)**，任务的目标是从大量的生对话语料中自动推理得到对话状态，并能更好的用于下游任务比如策略学习和对话生成。</p>
 <p>DSI 与 DST 的区别如图 5 所示，和 DST 相似的是，DSI 的输出也是 slot-value pairs 形式的对话状态，不同的是，在训练过程中 DST 依赖于对话语料以及人工标注的对话状态，而 DSI 不依赖于人工标注，可以在生对话中自动生成 slot-value pairs。</p>
-<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST与DSI对比.png" alt></p>
+<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DST%E4%B8%8EDSI%E5%AF%B9%E6%AF%94.png"></p>
 <p><strong>Input and Output</strong></p>
-<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/input-and-output.png" alt></p>
+<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/input-and-output.png"></p>
 <p><strong>BERT-based model for DST（基于Bert模型的对话跟踪）</strong></p>
-<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/simple_bert_model_for_dst.png" alt></p>
+<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/simple_bert_model_for_dst.png"></p>
 <p>上图显示了我们提议的BERT在DST中的应用。在较高的级别上，给定一个对话框上下文和一个候选槽位值对，我们的模型将输出一个得分，以指示该候选对象的相关性。换句话说，该方法类似于句子对的分类任务。</p>
 <p>第一个输入对应于对话框上下文，它由上一回合的系统话语（system utterance）和当前回合的用户话语（user utterance）组成。这两个话语由[SEP] Token分隔。</p>
 <p>第二个输入是候选的slot-value对。 我们简单地将候选对表示为标记序列（单词或单词片段）。 将两个输入段连接成一个单个令牌序列，然后简单地传递给BERT以获取输出向量（$h_1，h_2···，h_M$）。 在此，$M$表示输入令牌的总数（包括特殊标记，例如[CLS]和[SEP]）。</p>
-<p>基于对应于第一特殊令牌-[CLS]（即h1）的输出矢量，候选时隙值对相关的概率为：</p>
-<script type="math/tex; mode=display">
-y = σ(Wh_1 + b) ∈ R</script><p>其中变换矩阵W和偏置项b是模型参数，σ表示Sigmoid函数。 它将分数压缩到0到1之间的概率。</p>
+<p>基于对应于第一特殊令牌-[CLS]（即h1）的输出矢量，候选时隙值对相关的概率为：<br>$$<br>y = σ(Wh_1 + b) ∈ R<br>$$<br>其中变换矩阵W和偏置项b是模型参数，σ表示Sigmoid函数。 它将分数压缩到0到1之间的概率。</p>
 <p>在每个Turn中，使用所提出的基于BERT的模型来估计每个候选slot-value对的概率值。 此后，仅将预测概率值至少为0.5的slot-value对选择出来作为该turn的最终预测值。 为了获得当前回合的对话状态，我们使用新预测的槽值对来更新上一回合状态下的对应值。 例如，假设用户在当前回合中指定了一个food = chinese的餐馆。 如果对话框状态没有现有的food参数，则可以将food = chinese添加到对话框状态。 如果以前指定过food = korean，我们将其替换为food = chinese。</p>
 <p><strong>论文链接：</strong><a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1910.12995.pdf">https://arxiv.org/pdf/1910.12995.pdf</a></p>
 <p><strong>代码链接：</strong><a target="_blank" rel="noopener" href="https://github.com/laituan245/BERT-Dialog-State-Tracking">https://github.com/laituan245/BERT-Dialog-State-Tracking</a></p>
 <p><strong>代码链接：</strong><a target="_blank" rel="noopener" href="https://github.com/BSlience/BERT-DST/">https://github.com/BSlience/BERT-DST/</a></p>
-<h3 id="Further-DST"><a href="#Further-DST" class="headerlink" title="Further DST"></a>Further DST</h3><p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/personl-Info.PNG" alt></p>
-<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/UserExperience.png" alt></p>
-<h2 id="Rule-based-Dialogue-Policy-DP"><a href="#Rule-based-Dialogue-Policy-DP" class="headerlink" title="Rule-based Dialogue Policy(DP)"></a>Rule-based Dialogue Policy(DP)</h2><h3 id="Review-1"><a href="#Review-1" class="headerlink" title="Review"></a>Review</h3><p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DPReview.png" alt></p>
+<h3 id="Further-DST"><a href="#Further-DST" class="headerlink" title="Further DST"></a>Further DST</h3><p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/personl-Info.PNG"></p>
+<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/UserExperience.png"></p>
+<h2 id="Rule-based-Dialogue-Policy-DP"><a href="#Rule-based-Dialogue-Policy-DP" class="headerlink" title="Rule-based Dialogue Policy(DP)"></a>Rule-based Dialogue Policy(DP)</h2><h3 id="Review-1"><a href="#Review-1" class="headerlink" title="Review"></a>Review</h3><p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/DPReview.png"></p>
 <h3 id="Action"><a href="#Action" class="headerlink" title="Action"></a>Action</h3><p>Dialogue Policy: Rule-Based, Change Slot, Repeat Intent, System state</p>
-<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/SystemState.png" alt></p>
-<h3 id="RASA-Policy"><a href="#RASA-Policy" class="headerlink" title="RASA Policy"></a>RASA Policy</h3><p> <img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/Transformers.png" alt></p>
-<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/Action.png" alt></p>
+<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/SystemState.png"></p>
+<h3 id="RASA-Policy"><a href="#RASA-Policy" class="headerlink" title="RASA Policy"></a>RASA Policy</h3><p> <img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/Transformers.png"></p>
+<p><img src="/2021/03/04/Week6-%E5%9F%BA%E4%BA%8E%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%AF%B9%E8%AF%9D%E8%B7%9F%E8%B8%AA%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A7%84%E5%88%99%E7%9A%84DialoguePolicy/Action.png"></p>
 <p>详细可参考youtube视频：</p>
-<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=dmD3sqzxDXs&amp;list=PL75e0qA87dlG-za8eLI6t0_Pbxafk-cxb&amp;index=30&amp;ab_channel=Rasa">RASA Whiteboard RulePolicy</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=dmD3sqzxDXs&list=PL75e0qA87dlG-za8eLI6t0_Pbxafk-cxb&index=30&ab_channel=Rasa">RASA Whiteboard RulePolicy</a></p>
 <h2 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h2><p><a target="_blank" rel="noopener" href="https://yan624.github.io/posts/89f2cf08.html">DST论文笔记</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yagreenhand/article/details/100050602">DST文章学习</a></p>
 <p><a target="_blank" rel="noopener" href="https://blog.csdn.net/yizhen_nlp/article/details/108649313">Dialogue State Induction Using Neural Latent Variable Models</a></p>
