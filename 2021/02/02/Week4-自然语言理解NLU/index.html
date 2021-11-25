@@ -329,81 +329,65 @@
 <p>在对话系统的NLU中，意图识别（Intent Detection）和槽位填充（Slot Filling）是两个重要的子任务。其中，意图识别可以看做是NLP中的一个分类任务，而槽位填充可以看做是一个序列标注任务。</p>
 <p>在早期的系统中，通常的做法是将两者拆分成两个独立的子任务。但这种做法跟人类的语言理解方式是不一致的，事实上我们在实践中发现，两者很多时候是具有较强相关性的，比如下边的例子：</p>
 <blockquote>
-<p>1.我要听[北京天安门, song] – Intent：播放歌曲<br>2.帮我叫个车，到[北京天安门, location] – Inent：打车<br>3.播放[忘情水, song] – Intent：播放歌曲<br>4.播放[复仇者联盟, movie] – Intent：播放视频</p>
+<p>1.我要听[北京天安门, song] — Intent：播放歌曲<br>2.帮我叫个车，到[北京天安门, location] — Inent：打车<br>3.播放[忘情水, song] — Intent：播放歌曲<br>4.播放[复仇者联盟, movie] — Intent：播放视频</p>
 </blockquote>
 <p>例子1和2中，可以看到同样是“北京天安门”，由于意图的不同，该实体具备完全不同的槽位类型。</p>
-<p>例子3和4中，由于槽位类型的不同，导致了最终意图的不同，这往往意味着，在对话系统中的后继流程中将展现出完全不同的行为—–打开网易音乐播放歌曲 or 打开爱奇艺播放电影。</p>
+<p>例子3和4中，由于槽位类型的不同，导致了最终意图的不同，这往往意味着，在对话系统中的后继流程中将展现出完全不同的行为——-打开网易音乐播放歌曲 or 打开爱奇艺播放电影。</p>
 <p><strong>情形二  Multi Intents：</strong></p>
 <p>在对话NLU中，可能还会出现一些多意图的情形： 如景点距离我多远，能帮我导航出来吗？</p>
 <p>这里就涉及到用户的几个意图：找景点、找距离。</p>
 <p>那在做多分类的时候，一般是在网络输出层（Output Layer）上，需要接上一层Softmax activation function；接着输出每一类的概率，针对每一类的概率之后，需要识别每一个分类来判断它是属于0还是1，所以还需要接上一层Sigmoid，并且Loss也不能使用交叉熵了。有：</p>
-<p>Softmax激活函数<br>$$<br>Softmax_activation_function = \frac{e^{z_i}}{\sum_{j=1}^Ke^{z_j}}<br>$$<br>交叉熵<br>$$<br>Cross Entropy = -\sum_{c=1}^M{y_{i,c}}log(p_{i,c})<br>$$</p>
-<p>Sigmoid激活函数<br>$$<br>Sigmoid = \frac{1}{e^x + 1}<br>$$<br>信息熵<br>$$<br>H(X)=−\sum_{i=1}^n p(xi)log(p(xi))<br>$$</p>
-<p><strong>情形三  多轮返回（Multi Turn）</strong></p>
+<p>Softmax激活函数</p>
+<script type="math/tex; mode=display">
+Softmax\_activation\_function = \frac{e^{z_i}}{\sum_{j=1}^Ke^{z_j}}</script><p>交叉熵</p>
+<script type="math/tex; mode=display">
+Cross Entropy = -\sum_{c=1}^M{y_{i,c}}log(p_{i,c})</script><p>Sigmoid激活函数</p>
+<script type="math/tex; mode=display">
+Sigmoid = \frac{1}{e^x + 1}</script><p>信息熵</p>
+<script type="math/tex; mode=display">
+H(X)=−\sum_{i=1}^n p(xi)log(p(xi))</script><p><strong>情形三  多轮返回（Multi Turn）</strong></p>
 <p>包含上下文的信息，需要引入history，例如：</p>
-<p>今天天气不好啊，我下午能去做什么呢—&gt; 去打球、在家打游戏，出去唱K</p>
+<p>今天天气不好啊，我下午能去做什么呢—-&gt; 去打球、在家打游戏，出去唱K</p>
 <p>在此引出BERT框架，大致为：</p>
-<p>预料【输入】 –&gt; 分词（Tokenization）–&gt;</p>
-<p>CLS、               Tok1、…、Tok N –&gt; <strong>BERT</strong> –&gt;</p>
-<p>C（vector）、 T1、   …、 T N     —&gt;  Dense Layer +Activation  –&gt; Probalities【输出】</p>
+<p>预料【输入】 —&gt; 分词（Tokenization）—&gt;</p>
+<p>CLS、               Tok1、…、Tok N —&gt; <strong>BERT</strong> —&gt;</p>
+<p>C（vector）、 T1、   …、 T N     —-&gt;  Dense Layer +Activation  —&gt; Probalities【输出】</p>
 <h1 id="关于Bert"><a href="#关于Bert" class="headerlink" title="关于Bert"></a>关于Bert</h1><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/46cb208d45c3">彻底理解 Google BERT 模型</a></p>
 <p>以下摘自论文【BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding】：</p>
 <blockquote>
 <p>BERT is designed to pre-train depp bidirectional represntations from <strong>unlabeled text</strong> by jointlly conditioning on both <strong>left and right context</strong> in all layers.</p>
 <p>As a result, the pre-trained BERT model can be finetuned with just one <strong>additional output</strong> layer to create state-of-the-art models for a wide range of tasks, such as question answering and language inference, without substantial taskspecific architecture modifications.</p>
-</blockquote>
-<blockquote>
 <p>The masked language model <strong>randomly masks some of the tokens</strong> from the input, and the objective is to predict the original vocabulary id of the masked word based only on its context. Unlike left-toright language model pre-training, the MLM objective enables the representation to fuse the left and the right context, which allows us to pretrain a deep bidirectional Transformer.</p>
-</blockquote>
-<blockquote>
 <p>During fine-tuning, all parameters are fine-tuned. </p>
 <p>[CLS] is a special symbol added in front of every input example, </p>
 <p>[CLS] 一个全局的向量，放在第一个句子的首位，经过 BERT 得到的的表征向量 <strong>C</strong> 可以用于后续的分类任务。 [CLS] we must add this token to the start of each sentence, so BERT knows we’re doing classification。</p>
-</blockquote>
-<blockquote>
 <p>[SEP] is a special separator token (e.g. separating questions/answers).</p>
 <p>[SEP] 句子结尾的标记，用于分开两个输入句子，例如输入句子 A 和 B，要在句子 A，B 后面增加 [SEP] 标志。</p>
-</blockquote>
-<blockquote>
 <p>[UNK] 标志指的是未知字符。</p>
 <p>[UNK] BERT understands tokens that were in the training set. Everything else can be encoded using the <code>[UNK]</code> (unknown) token。</p>
-</blockquote>
-<blockquote>
 <p>[MASK] 标志用于遮盖句子中的一些单词，将单词用 [MASK] 遮盖之后，再利用 BERT 输出的 [MASK] 向量预测单词是什么。</p>
 </blockquote>
 <p>摘自【<a target="_blank" rel="noopener" href="https://colab.research.google.com/drive/1PHv-IRLPCtv7oTcIGbsgZHqrB5LPvB7S#scrollTo=Tbodro8Fpmwr">sentiment-analysis-with-bert</a>】</p>
 <blockquote>
 <p>BERT (introduced in <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1810.04805">this paper</a>) stands for Bidirectional Encoder Representations from Transformers.</p>
 <p>BERT（本文介绍）代表来自Transformers的双向编码器表示。</p>
-</blockquote>
-<blockquote>
 <p>Bidirectional - to understand the text you’re looking you’ll have to look back (at the previous words) and forward (at the next words)</p>
 <p>双向-要理解您要查找的文本，您必须向后（在前一个单词处）和向前（在后一个单词处）。</p>
-</blockquote>
-<blockquote>
 <p>The Transformer reads entire sequences of tokens at once. In a sense, the model is non-directional, while LSTMs read sequentially (left-to-right or right-to-left). The attention mechanism allows for learning contextual relations between words.</p>
 <p>Transformer一次读取整个令牌序列。从某种意义上说，该模型是无方向性的，而LSTM则按顺序读取（从左到右或从右到左）。注意机制允许学习单词之间的上下文关系。</p>
-</blockquote>
-<blockquote>
 <p>BERT was trained by masking 15% of the tokens with the goal to guess them. An additional objective was to predict the next sentence.</p>
 <p>BERT通过掩盖15％的tokens来进行训练，目的是猜测它们。另一个目标是预测下一个句子。</p>
-</blockquote>
-<blockquote>
 <h4 id="Masked-Language-Modeling-Masked-LM"><a href="#Masked-Language-Modeling-Masked-LM" class="headerlink" title="Masked Language Modeling (Masked LM)"></a>Masked Language Modeling (Masked LM)</h4><p>The objective of this task is to guess the masked tokens. Let’s look at an example, and try to not make it harder than it has to be:</p>
 <p>这个任务的目的是猜测被屏蔽的Tokens。让我们看一个例子，尽量不要让它变得比原来更难：</p>
 <p>That’s <code>[mask]</code> she <code>[mask]</code> -&gt; That’s what she said</p>
-</blockquote>
-<blockquote>
 <h4 id="Next-Sentence-Prediction-NSP"><a href="#Next-Sentence-Prediction-NSP" class="headerlink" title="Next Sentence Prediction (NSP)"></a>Next Sentence Prediction (NSP)</h4><p>Given a pair of two sentences, the task is to say whether or not the second follows the first (binary classification). Let’s continue with the example:</p>
 <p><strong><em>Input</em> = <code>[CLS]</code> That’s <code>[mask]</code> she <code>[mask]</code>. [SEP] Hahaha, nice! [SEP]</strong></p>
-<p><em><strong>Label* = *IsNext</strong></em></p>
+<p><strong><em>Label</em> = <em>IsNext</em></strong></p>
 <p><strong><em>Input</em> = <code>[CLS]</code> That’s <code>[mask]</code> she <code>[mask]</code>. [SEP] Dwight, you ignorant <code>[mask]</code>! [SEP]</strong></p>
-<p><em><strong>Label* = *NotNext</strong></em></p>
+<p><strong><em>Label</em> = <em>NotNext</em></strong></p>
 <p>The training corpus was comprised of two entries: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1506.06724">Toronto Book Corpus</a> (800M words) and English Wikipedia (2,500M words).</p>
 <p>While the original Transformer has an encoder (for reading the input) and a decoder (that makes the prediction), BERT uses only the decoder.原始的Transformer具有一个编码器（用于读取输入）和一个解码器（用于进行预测），而BERT仅使用解码器。</p>
 <p>BERT is simply a pre-trained stack of Transformer Encoders. How many Encoders? We have two versions - with 12 (BERT base) and 24 (BERT Large).</p>
-</blockquote>
-<blockquote>
 <h4 id="Is-This-Thing-Useful-in-Practice"><a href="#Is-This-Thing-Useful-in-Practice" class="headerlink" title="Is This Thing Useful in Practice?"></a>Is This Thing Useful in Practice?</h4><p>The BERT paper was released along with <a target="_blank" rel="noopener" href="https://github.com/google-research/bert">the source code</a> and pre-trained models.</p>
 <p>The best part is that you can do Transfer Learning (thanks to the ideas from OpenAI Transformer) with BERT for many NLP tasks - Classification, Question Answering, Entity Recognition, etc. You can train with small amounts of data and achieve great performance!</p>
 </blockquote>
@@ -424,10 +408,10 @@
 <p>2、增加每一个单词的样本数量</p>
 <p>3、避免OOV</p>
 <p>WordPieces带来的问题：</p>
-<p>probability—pro+ ##bali + ##lity </p>
+<p>probability—-pro+ ##bali + ##lity </p>
 <p>如果bali被masked，则很容易预测到probability这个单词，在中文中亦是如此。</p>
 <p>解决方案：Whole Word Masking</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Dingtalk_20210202211237.jpg"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Dingtalk_20210202211237.jpg" alt></p>
 <blockquote>
 <p>补充点：</p>
 <p>1、关于whole word piece（WWP），它是对BERT的一个很有效的改进</p>
@@ -456,18 +440,18 @@
 <p>Attention 是挑重点，就算文本比较长，也能从中间抓住重点，不丢失重要的信息。</p>
 <p><strong>Attention原理</strong></p>
 <p>attention 引入 Encoder-Decoder 框架下，完成机器翻译任务的大致流程。</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/attention-encoderdecoder.gif"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/attention-encoderdecoder.gif" alt></p>
 <p><strong>Attention基本原理的基本步骤:</strong></p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Attention.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Attention.png" alt></p>
 <p>第一步： query 和 key 进行相似度计算，得到权值</p>
 <p>第二步：将权值进行归一化，得到直接可用的权重</p>
 <p>第三步：将权重和 value 进行加权求和</p>
 <p>Attenttion 类型：</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Attentiontypes.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Attentiontypes.png" alt></p>
 <p><a target="_blank" rel="noopener" href="https://easyai.tech/ai-definition/attention/">EasyAI-Attention 机制</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/43493999">NLP中的Attention原理和源码解析</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/guoyaohua/p/9429924.html">Attention Model（注意力模型）学习总结</a></p>
-<h1 id="关于Transformer"><a href="#关于Transformer" class="headerlink" title="关于Transformer"></a>关于Transformer</h1><p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/transformer.png"></p>
+<h1 id="关于Transformer"><a href="#关于Transformer" class="headerlink" title="关于Transformer"></a>关于Transformer</h1><p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/transformer.png" alt></p>
 <p><strong>参考老师PPT32-45页</strong></p>
 <p>参考：</p>
 <p>1、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/48508221">论文详解Transformer （Attention Is All You Need）</a></p>
@@ -475,16 +459,16 @@
 <p>3、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/347492368">Transformer 一篇就够了（二）： Transformer中的Self-attenstion</a></p>
 <p>4、技术细节 <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54530247">模型优化之Layer Normalization</a></p>
 <p>5、<a target="_blank" rel="noopener" href="https://medium.com/huggingface/multi-label-text-classification-using-bert-the-mighty-transformer-69714fa3fb3d">Multi-label Text Classification using BERT – The Mighty Transformer</a></p>
-<h1 id="NLU-Slot-Extraction"><a href="#NLU-Slot-Extraction" class="headerlink" title="NLU: Slot Extraction"></a>NLU: Slot Extraction</h1><p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/sequenceLabeling.png"></p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/slot.png"></p>
+<h1 id="NLU-Slot-Extraction"><a href="#NLU-Slot-Extraction" class="headerlink" title="NLU: Slot Extraction"></a>NLU: Slot Extraction</h1><p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/sequenceLabeling.png" alt></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/slot.png" alt></p>
 <h1 id="NLU-Joint-Intent-Slot-extraction"><a href="#NLU-Joint-Intent-Slot-extraction" class="headerlink" title="NLU: Joint Intent-Slot extraction"></a>NLU: Joint Intent-Slot extraction</h1><h4 id="Attention-Based-Recurrent-Neural-Network-Models-for-Joint-Intent-Detection-and-Slot-Filling（2016）"><a href="#Attention-Based-Recurrent-Neural-Network-Models-for-Joint-Intent-Detection-and-Slot-Filling（2016）" class="headerlink" title="Attention-Based Recurrent Neural Network Models for Joint Intent Detection and Slot Filling（2016）"></a>Attention-Based Recurrent Neural Network Models for Joint Intent Detection and Slot Filling（2016）</h4><p>基于注意力的编码器-解码器神经网络模型最近在机器翻译和语音识别中显示出令人鼓舞的结果。在这项工作中，我们提出了一种基于注意力的神经网络模型，用于联合意图检测和slot filling，这对于许多语音理解和对话系统都是至关重要的步骤。与机器翻译和语音识别不同，对齐在slot filling中是显式的。我们探索将对齐信息整合到编码器-解码器框架中的不同策略。从编码器-解码器模型中的注意力机制中学习，我们进一步建议将注意力引入基于对齐的RNN模型。这种关注为意图分类和slot filling预测提供了更多信息。我们的独立任务模型在ATIS任务上实现了最优的意图检测错误率和slot fillingF1分数。与独立任务模型相比，我们的联合训练模型在意图检测上进一步获得了0.56％的绝对误差（相对值23.8％的相对误差），在slot filling上获得了0.23％的绝对增益。</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Encode-decoder.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Encode-decoder.png" alt></p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shengyan5515/article/details/105691543">Attention-Based Recurrent Neural Network Models for Joint Intent Detection and Slot Filling论文笔记</a></p>
 <h4 id="Slot-Gated-Modeling-for-Joint-Slot-Filling-and-Intent-Prediction（2018）"><a href="#Slot-Gated-Modeling-for-Joint-Slot-Filling-and-Intent-Prediction（2018）" class="headerlink" title="Slot-Gated Modeling for Joint Slot Filling and Intent Prediction（2018）"></a>Slot-Gated Modeling for Joint Slot Filling and Intent Prediction（2018）</h4><p>基于注意力的递归神经网络模型用于联合意图检测和插槽填充，具有最先进的性能，同时具有独立的注意力权重。考虑到插槽和意图之间存在很强的关系，本文提出了一种插槽门，其重点是学习意图和插槽注意向量之间的关系，以便通过全局优化获得更好的语义框架结果。实验表明，与基准ATIS和Snips数据集上的注意力模型相比，我们提出的模型显著提高了句子级语义框架的准确率，相对注意度模型分别提高了4.2％和1.9％。</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Slot-gated.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Slot-gated.png" alt></p>
 <p>笔记：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shengyan5515/article/details/105776303">Slot-Gated Modeling for Joint Slot Filling and Intent Prediction论文笔记</a></p>
 <h4 id="BERT-for-Joint-Intent-Classification-and-Slot-Filling（2019）"><a href="#BERT-for-Joint-Intent-Classification-and-Slot-Filling（2019）" class="headerlink" title="BERT for Joint Intent Classification and Slot Filling（2019）"></a>BERT for Joint Intent Classification and Slot Filling（2019）</h4><p>意图分类和slot filling是自然语言理解的两个基本任务。它们经常遭受小规模的人工标签训练数据的困扰，导致泛化能力差，尤其是对于稀有单词。最近，一种新的语言表示模型BERT（来自Transformers的双向编码器表示）有助于在大型未标记的语料库上进行预训练深层的双向表征，并在处理完各种自然语言处理任务后创建了最新的模型简单的微调。但是，在探索BERT以获得自然语言理解方面并没有付出很多努力。在这项工作中，我们提出了一个基于BERT的联合意图分类和slot filling模型。实验结果表明，与基于注意力的递归神经网络模型和slot-gated模型相比，我们提出的模型在多个公共基准数据集上的意图分类准确性，slot filling F1和句子级语义准确性都有了显着提高。</p>
-<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Bert.png"></p>
+<p><img src="/2021/02/02/Week4-%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E7%90%86%E8%A7%A3NLU/Bert.png" alt></p>
 <p>笔记：<a target="_blank" rel="noopener" href="https://blog.csdn.net/shengyan5515/article/details/105678169">BERT for Joint Intent Classification and Slot Filling论文笔记</a></p>
 
     </div>
@@ -792,6 +776,15 @@ setInterval("createtime()",250);
       </span>
       <span class="site-uv" title="总访客量">
         <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
       </span>
     </span>
 </div>
