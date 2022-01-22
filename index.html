@@ -209,6 +209,341 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/" class="post-title-link" itemprop="url">如何优雅的设计DWS层</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-01-13 01:06:36 / 修改时间：01:16:15" itemprop="dateCreated datePublished" datetime="2022-01-13T01:06:36+08:00">2022-01-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据仓库</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/" class="post-meta-item leancloud_visitors" data-flag-title="如何优雅的设计DWS层" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>今天和大家聊一个老生常谈的话题，如何设计DWS层？</p>
+<p>对于数仓的分层，想必大家都不陌生。基于OneData方法论的三层数仓划分：</p>
+<p><strong>数据引入层</strong>（ODS，Operational Data Store）、<strong>数据公共层</strong>（CDM，Common Dimenions Model）和<strong>数据应用层</strong>（ADS，Application Data Store）早就深入人心。</p>
+<p>当然啦，涉及到每一层具体该怎么开发、建模，可能大家都有自己的理解。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/" class="post-title-link" itemprop="url">做数据分析，一个不断上演的悲剧</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-01-13 00:43:06 / 修改时间：00:45:50" itemprop="dateCreated datePublished" datetime="2022-01-13T00:43:06+08:00">2022-01-13</time>
+            </span>
+
+          
+            <span id="/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/" class="post-meta-item leancloud_visitors" data-flag-title="做数据分析，一个不断上演的悲剧" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="一"><a href="#一" class="headerlink" title="一"></a>一</h3><p>小A是一家大型互联网公司的数据分析师。</p>
+<p>这是一个近年来非常高光的岗位，当年小A为了进入大厂做数据分析，花费了巨大的心血。他也非常珍惜这个机会。</p>
+<p>在大厂中，想要更好地发展，唯一的途径就是晋升。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">如何利用「波士顿矩阵」进行数据分析</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-01-12 22:54:23" itemprop="dateCreated datePublished" datetime="2022-01-12T22:54:23+08:00">2022-01-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-13 00:23:48" itemprop="dateModified" datetime="2022-01-13T00:23:48+08:00">2022-01-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">数据分析</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" class="post-meta-item leancloud_visitors" data-flag-title="如何利用「波士顿矩阵」进行数据分析" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>产品是公司销售活动中重要的维度之一，那你了解公司产品布局吗？公司的哪些产品是盈利的？哪些产品的占有率高？别总是一提到产品分析就开始头疼，不知道该从何下手；一面对海量产品数据，挠破头也想不出体现数据价值的办法。</p>
+<p>今天给大家分享一个数据分析模型—<strong>波士顿矩阵</strong>。</p>
+<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/1.jpg"></p>
+<p>**波士顿矩阵(BCG Matrix)**，又叫做市场增长率-相对市场份额矩阵、四象限分析法、产品系列结构管理法等，是波士顿公司首创的一种用来分析和规划企业产品组合的方法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/12/16/AARRR%E6%A8%A1%E5%9E%8B%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -232,10 +567,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2021-12-16 09:40:15 / 修改时间：19:05:01" itemprop="dateCreated datePublished" datetime="2021-12-16T09:40:15+08:00">2021-12-16</time>
+              <time title="创建时间：2021-12-16 09:40:15" itemprop="dateCreated datePublished" datetime="2021-12-16T09:40:15+08:00">2021-12-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-01-12 22:58:45" itemprop="dateModified" datetime="2022-01-12T22:58:45+08:00">2022-01-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -1022,369 +1363,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="进军要努力呀">
-      <meta itemprop="description" content="可怕的是自己内心的堕落">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ComputerScience">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/" class="post-title-link" itemprop="url">week4_NLG过程的优化与项目Inference</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2021-05-16T00:00:00+08:00">2021-05-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-24 21:45:39" itemprop="dateModified" datetime="2021-05-24T21:45:39+08:00">2021-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%91%98%E8%A6%81%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">摘要自动生成</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/" class="post-meta-item leancloud_visitors" data-flag-title="week4_NLG过程的优化与项目Inference" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>3.6k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>3 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Text-Summarization-NLG"><a href="#Text-Summarization-NLG" class="headerlink" title="Text Summarization - NLG"></a>Text Summarization - NLG</h2><p>Natural Language Generation</p>
-<h3 id="NLG-Introduction"><a href="#NLG-Introduction" class="headerlink" title="NLG Introduction"></a>NLG Introduction</h3><h4 id="1、Application"><a href="#1、Application" class="headerlink" title="1、Application"></a>1、Application</h4>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/16/week4_NLG%E8%BF%87%E7%A8%8B%E7%9A%84%E4%BC%98%E5%8C%96%E5%92%8C%E9%A1%B9%E7%9B%AEInference/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="进军要努力呀">
-      <meta itemprop="description" content="可怕的是自己内心的堕落">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ComputerScience">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">week3_基于Seq2Seq架构的模型搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-24 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-24T00:00:00+08:00">2021-04-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-05-24 21:48:33" itemprop="dateModified" datetime="2021-05-24T21:48:33+08:00">2021-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%91%98%E8%A6%81%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">摘要自动生成</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/" class="post-meta-item leancloud_visitors" data-flag-title="week3_基于Seq2Seq架构的模型搭建" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>8.5k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>8 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Text-Summarization"><a href="#Text-Summarization" class="headerlink" title="Text Summarization"></a>Text Summarization</h3><h4 id="Definitions"><a href="#Definitions" class="headerlink" title="Definitions"></a>Definitions</h4><p>Automatic text summarization is the task of producing a concise and fluent summary while preserving key information content and overall meaning.</p>
-<p>自动文本摘要是生成简洁流畅的摘要，同时保留关键信息内容和整体含义的任务</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/04/24/week3_%E5%9F%BA%E4%BA%8ESeq2Seq%E6%9E%B6%E6%9E%84%E7%9A%84%E6%A8%A1%E5%9E%8B%E6%90%AD%E5%BB%BA/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="进军要努力呀">
-      <meta itemprop="description" content="可怕的是自己内心的堕落">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ComputerScience">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/" class="post-title-link" itemprop="url">week2_项目导论中与中文词向量实践</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-15 00:00:00" itemprop="dateCreated datePublished" datetime="2021-04-15T00:00:00+08:00">2021-04-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-04-18 23:51:56" itemprop="dateModified" datetime="2021-04-18T23:51:56+08:00">2021-04-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
-                </span>
-                  ，
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%91%98%E8%A6%81%E8%87%AA%E5%8A%A8%E7%94%9F%E6%88%90/" itemprop="url" rel="index"><span itemprop="name">摘要自动生成</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/" class="post-meta-item leancloud_visitors" data-flag-title="week2_项目导论中与中文词向量实践" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.9k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="一、Preview（Text-Summarization）"><a href="#一、Preview（Text-Summarization）" class="headerlink" title="一、Preview（Text Summarization）"></a>一、Preview（Text Summarization）</h2><h3 id="1、What’s-a-good-algorithm-engineer"><a href="#1、What’s-a-good-algorithm-engineer" class="headerlink" title="1、What’s a good algorithm engineer?"></a>1、What’s a good algorithm engineer?</h3><p>算法基础</p>
-<p>代码功底</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/04/15/week2_%E9%A1%B9%E7%9B%AE%E5%AF%BC%E8%AE%BA%E4%B8%AD%E4%B8%8E%E4%B8%AD%E6%96%87%E8%AF%8D%E5%90%91%E9%87%8F%E5%AE%9E%E8%B7%B5/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1456,14 +1434,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">48</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -1538,7 +1516,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1548,13 +1526,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">193k</span>
+    <span title="站点总字数">200k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:56</span>
+    <span title="站点阅读时长">3:02</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>

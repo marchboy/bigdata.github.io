@@ -209,6 +209,371 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/01/11/Week3-RASA%E6%BA%90%E7%A0%81%E5%92%8C%E5%AE%9A%E5%88%B6%E5%8C%96%E4%BD%A0%E7%9A%84%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/11/Week3-RASA%E6%BA%90%E7%A0%81%E5%92%8C%E5%AE%9A%E5%88%B6%E5%8C%96%E4%BD%A0%E7%9A%84%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="post-title-link" itemprop="url">week3-RASA源码和定制化你的对话机器人</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-11 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-11T00:00:00+08:00">2021-01-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-18 01:48:46" itemprop="dateModified" datetime="2021-04-18T01:48:46+08:00">2021-04-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BB%BB%E5%8A%A1%E5%9E%8B%E5%AF%B9%E8%AF%9D/" itemprop="url" rel="index"><span itemprop="name">任务型对话</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/01/11/Week3-RASA%E6%BA%90%E7%A0%81%E5%92%8C%E5%AE%9A%E5%88%B6%E5%8C%96%E4%BD%A0%E7%9A%84%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="post-meta-item leancloud_visitors" data-flag-title="week3-RASA源码和定制化你的对话机器人" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/01/11/Week3-RASA%E6%BA%90%E7%A0%81%E5%92%8C%E5%AE%9A%E5%88%B6%E5%8C%96%E4%BD%A0%E7%9A%84%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/01/11/Week3-RASA%E6%BA%90%E7%A0%81%E5%92%8C%E5%AE%9A%E5%88%B6%E5%8C%96%E4%BD%A0%E7%9A%84%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>26k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>23 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="一、Setting-up-RASA-Source-Code"><a href="#一、Setting-up-RASA-Source-Code" class="headerlink" title="一、Setting up RASA Source Code"></a>一、Setting up RASA Source Code</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-1、Python Environment Setup</span></span></span><br><span class="line">Python环境配置、创建新的虚拟环境以及pip的安装方法，详见Week2笔记</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-2、Building from Source</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## 这里介绍源码的安装方法</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-3、安装poetry</span></span></span><br><span class="line">curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python</span><br><span class="line"><span class="meta">#</span><span class="bash"> 关于poetry，截至目前pypi并未托管potery的whl文件，如果上述指令执行缓慢，或者由于网络原因不能下载；</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 可下载poetry.py和poetry源码，执行以下命令行安装；</span></span><br><span class="line">python get-poetry.py --file poetry-1.1.4-win32.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-4、下载rasa源码</span></span></span><br><span class="line">git clone https://github.com/RasaHQ/rasa.git</span><br><span class="line">cd rasa</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## Step-5、安装</span></span></span><br><span class="line">poetry install</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## 总结下安装过程：</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## poetry install对网络的要求很高，如果中途网络断开，再次执行poetry install会直接报错，这里尚不清楚为何重复执行后不会像pip那样重新请求网络资源安装，而是会直接出错。迫不得已，手动pip安装了poetry.lock文件要求的包版本，再执行poetry install至成功安装，非常耗时，前前后后折腾约2小时。</span></span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">## STEP-6:特别地，若有需要安装RASA的附加依赖，如：</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> Dependencies <span class="keyword">for</span> spaCy</span></span><br><span class="line">pip3 install rasa[spacy]</span><br><span class="line">python3 -m spacy download en_core_web_md</span><br><span class="line">python3 -m spacy link en_core_web_md en</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Dependencies <span class="keyword">for</span> MITIE</span></span><br><span class="line">pip3 install git+https://github.com/mit-nlp/MITIE.git</span><br><span class="line">pip3 install rasa[mitie]    # pip list可以查看到已安装好了mitie包</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="二、Optimize-NLU"><a href="#二、Optimize-NLU" class="headerlink" title="二、Optimize NLU"></a>二、Optimize NLU</h3><h4 id="2-0-如何增强RASA-NLU-Lifestyle"><a href="#2-0-如何增强RASA-NLU-Lifestyle" class="headerlink" title="2.0 如何增强RASA NLU - Lifestyle"></a>2.0 如何增强RASA NLU - Lifestyle</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/11/Week3-RASA%E6%BA%90%E7%A0%81%E5%92%8C%E5%AE%9A%E5%88%B6%E5%8C%96%E4%BD%A0%E7%9A%84%E5%AF%B9%E8%AF%9D%E6%9C%BA%E5%99%A8%E4%BA%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2021/01/04/Week2-%E4%BD%BF%E7%94%A8RASA%E5%88%B6%E4%BD%9C%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/01/04/Week2-%E4%BD%BF%E7%94%A8RASA%E5%88%B6%E4%BD%9C%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="post-title-link" itemprop="url">week2-使用RASA制作你的第一个对话机器人</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-01-04 00:00:00" itemprop="dateCreated datePublished" datetime="2021-01-04T00:00:00+08:00">2021-01-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-18 01:48:36" itemprop="dateModified" datetime="2021-04-18T01:48:36+08:00">2021-04-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BB%BB%E5%8A%A1%E5%9E%8B%E5%AF%B9%E8%AF%9D/" itemprop="url" rel="index"><span itemprop="name">任务型对话</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2021/01/04/Week2-%E4%BD%BF%E7%94%A8RASA%E5%88%B6%E4%BD%9C%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/" class="post-meta-item leancloud_visitors" data-flag-title="week2-使用RASA制作你的第一个对话机器人" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2021/01/04/Week2-%E4%BD%BF%E7%94%A8RASA%E5%88%B6%E4%BD%9C%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/01/04/Week2-%E4%BD%BF%E7%94%A8RASA%E5%88%B6%E4%BD%9C%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="RASA学习分享"><a href="#RASA学习分享" class="headerlink" title="RASA学习分享"></a>RASA学习分享</h2><h3 id="一、Rasa-Installation"><a href="#一、Rasa-Installation" class="headerlink" title="一、Rasa Installation"></a>一、Rasa Installation</h3><p>Environment：Windows 10 64Bit</p>
+<h4 id="Step-1-Create-virtual-environmnent"><a href="#Step-1-Create-virtual-environmnent" class="headerlink" title="Step 1:  Create virtual environmnent"></a>Step 1:  Create virtual environmnent</h4>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/04/Week2-%E4%BD%BF%E7%94%A8RASA%E5%88%B6%E4%BD%9C%E4%BD%A0%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%9C%BA%E5%99%A8%E4%BA%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/" class="post-title-link" itemprop="url">week1-对话系统导论</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-12-25 00:00:00" itemprop="dateCreated datePublished" datetime="2020-12-25T00:00:00+08:00">2020-12-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2021-04-18 01:47:59" itemprop="dateModified" datetime="2021-04-18T01:47:59+08:00">2021-04-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index"><span itemprop="name">NLP</span></a>
+                </span>
+                  ，
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BB%BB%E5%8A%A1%E5%9E%8B%E5%AF%B9%E8%AF%9D/" itemprop="url" rel="index"><span itemprop="name">任务型对话</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/" class="post-meta-item leancloud_visitors" data-flag-title="week1-对话系统导论" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>7 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="对话系统导论学习分享"><a href="#对话系统导论学习分享" class="headerlink" title="对话系统导论学习分享"></a>对话系统导论学习分享</h2><h3 id="一、对话系统的分类"><a href="#一、对话系统的分类" class="headerlink" title="一、对话系统的分类"></a>一、对话系统的分类</h3><p>1、模块化对话系统，即分模块串行处理对话任务，每个模块负责特定的任务，并将结果传递给下一个模块。在具体的实现上，可以针对任一模块采用基于规则的人工设计方式，或者基于数据驱动的模型方式。</p>
+<p>2、端到端的对话系统，由输入直接到输出的端到端对话系统，忽略中间过程，采用数据驱动的模型实现。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/12/25/Week1-%E6%99%BA%E8%83%BD%E5%AF%B9%E8%AF%9D%E7%B3%BB%E7%BB%9F%E5%AF%BC%E8%AE%BA/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2020/11/21/Spark%E7%AC%94%E8%AE%B0-%E9%9B%86%E7%BE%A4%E6%90%AD%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -988,351 +1353,6 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="进军要努力呀">
-      <meta itemprop="description" content="可怕的是自己内心的堕落">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ComputerScience">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/" class="post-title-link" itemprop="url">Spark笔记-玩转SparkSession</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-12 10:45:35" itemprop="dateCreated datePublished" datetime="2020-10-12T10:45:35+08:00">2020-10-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-10-21 21:41:27" itemprop="dateModified" datetime="2020-10-21T21:41:27+08:00">2020-10-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/" class="post-meta-item leancloud_visitors" data-flag-title="Spark笔记-玩转SparkSession" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.5k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="关于SparkConf和SparkContext"><a href="#关于SparkConf和SparkContext" class="headerlink" title="关于SparkConf和SparkContext"></a>关于SparkConf和SparkContext</h3><p>1、每个Spark应用程序都需要一个Spark环境，这是Spark RDD API的主要入口点。Spark Shell提供了一个名为“sc”的预配置Spark环境和一个名为“spark”的预配置Spark会话；</p>
-<p>2、任何Spark程序都是SparkContext开始的（SparkContext是允许驱动程序【spark drive】通过资源管理器访问集群）；</p>
-<p>3、SparkContext的初始化需要一个SparkConf对象，<strong>SparkConf包含了Spark集群配置的各种参数；</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/12/Spark%E7%AC%94%E8%AE%B0-%E7%8E%A9%E8%BD%ACSparkSession/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="进军要努力呀">
-      <meta itemprop="description" content="可怕的是自己内心的堕落">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ComputerScience">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/" class="post-title-link" itemprop="url">Spark笔记-Spark任务提交方式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-11 10:48:43" itemprop="dateCreated datePublished" datetime="2020-10-11T10:48:43+08:00">2020-10-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-12 01:01:19" itemprop="dateModified" datetime="2021-03-12T01:01:19+08:00">2021-03-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spark/" itemprop="url" rel="index"><span itemprop="name">Spark</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/" class="post-meta-item leancloud_visitors" data-flag-title="Spark笔记-Spark任务提交方式" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>5.1k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="Spark任务提交方式"><a href="#Spark任务提交方式" class="headerlink" title="Spark任务提交方式"></a>Spark任务提交方式</h2><h3 id="Standalone模式两种提交任务方式"><a href="#Standalone模式两种提交任务方式" class="headerlink" title="Standalone模式两种提交任务方式"></a>Standalone模式两种提交任务方式</h3><h4 id="Standalone-client提交方式"><a href="#Standalone-client提交方式" class="headerlink" title="Standalone-client提交方式"></a>Standalone-client提交方式</h4><p><strong>提交命令：</strong></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/11/Spark%E7%AC%94%E8%AE%B0-Spark%E4%BB%BB%E5%8A%A1%E6%8F%90%E4%BA%A4%E6%96%B9%E5%BC%8F/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="进军要努力呀">
-      <meta itemprop="description" content="可怕的是自己内心的堕落">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ComputerScience">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/" class="post-title-link" itemprop="url">Windows安装Hadoop</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-10-10 00:01:02 / 修改时间：00:45:51" itemprop="dateCreated datePublished" datetime="2020-10-10T00:01:02+08:00">2020-10-10</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hadoop/" itemprop="url" rel="index"><span itemprop="name">Hadoop</span></a>
-                </span>
-            </span>
-
-          
-            <span id="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/" class="post-meta-item leancloud_visitors" data-flag-title="Windows安装Hadoop" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>2.7k</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="far fa-clock"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>主机：Windows 10<br>Hadoop：2.7.7<br>Java：1.8.0_241</p>
-<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><p>1、确认Java已经安装，并已经添加到环境变量中，测试方法：cmd中输入<code>java -version</code>，显示如下：</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/10/Windows%E5%AE%89%E8%A3%85Hadoop/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1404,14 +1424,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">48</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -1486,7 +1506,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1496,13 +1516,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">193k</span>
+    <span title="站点总字数">200k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:56</span>
+    <span title="站点阅读时长">3:02</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
@@ -1627,6 +1647,59 @@ setInterval("createtime()",250);
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 

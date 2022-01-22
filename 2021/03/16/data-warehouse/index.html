@@ -29,7 +29,7 @@
 <meta property="og:description" content="数据仓库背景1、数仓是什么，其实就是存储数据，体现历史变化的一个数据仓库。因为互联网时代到来，基于数据量的大小，分为了传统数仓和现代数仓。 2、传统数仓，使用传统的关系型数据库进行数据存储，因为关系型数据库本身可以使用SQL以及函数等做数据分析。所以把数据存储和数据分析功能集合为一体，加上一个可视化界面，就能从数据存储，数据分析，数据展示完整方案。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-15T16:00:00.000Z">
-<meta property="article:modified_time" content="2021-03-17T16:14:01.453Z">
+<meta property="article:modified_time" content="2022-01-12T17:30:50.093Z">
 <meta property="article:author" content="进军要努力呀">
 <meta property="article:tag" content="应用">
 <meta name="twitter:card" content="summary">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2021-03-18 00:14:01" itemprop="dateModified" datetime="2021-03-18T00:14:01+08:00">2021-03-18</time>
+                <time title="修改时间：2022-01-13 01:30:50" itemprop="dateModified" datetime="2022-01-13T01:30:50+08:00">2022-01-13</time>
               </span>
 
           
@@ -252,13 +252,6 @@
               </span>
               <span class="post-meta-item-text">阅读次数：</span>
               <span class="leancloud-visitors-count"></span>
-            </span>
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
             </span>
   
   <span class="post-meta-item">
@@ -279,14 +272,14 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6k</span>
+              <span>6.4k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="far fa-clock"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>6 分钟</span>
             </span>
 
         </div>
@@ -301,10 +294,16 @@
         <h2 id="数据仓库"><a href="#数据仓库" class="headerlink" title="数据仓库"></a>数据仓库</h2><h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>1、<strong>数仓是什么，其实就是存储数据，体现历史变化的一个数据仓库。</strong>因为互联网时代到来，基于数据量的大小，分为了传统数仓和现代数仓。</p>
 <p>2、传统数仓，使用传统的关系型数据库进行数据存储，因为关系型数据库本身可以使用SQL以及函数等做数据分析。所以把数据存储和数据分析功能集合为一体，加上一个可视化界面，就能从数据存储，数据分析，数据展示完整方案。</p>
 <p>3、到了互联网时代，由于上网用户剧增，特别是移动互联网时代，海量的网络设备，导致了海量的数据产生，企业需要也希望从这些海量数据中挖掘有效信息，如行为日志数据，业务数据，爬虫数据等等中提炼出有价值信息。但传统的关系型数据库由于本身技术限制，无法很好承担这么大数据量存储和分析的任务，现代大数据技术应运而生。而数仓就是做这些海量数据存储的地方。</p>
-<h3 id="经典数仓分层架构"><a href="#经典数仓分层架构" class="headerlink" title="经典数仓分层架构"></a>经典数仓分层架构</h3><p>​    <strong>ADS</strong></p>
-<p>​    <strong>DWS           DIM</strong></p>
-<p>​    <strong>DWD</strong></p>
-<p>​    <strong>ODS</strong></p>
+<h3 id="经典数仓分层架构"><a href="#经典数仓分层架构" class="headerlink" title="经典数仓分层架构"></a>经典数仓分层架构</h3><p>​    <strong>ADS</strong>：应用服务层</p>
+<p>​    <strong>DWS</strong>：数仓汇总层</p>
+<p>​    <strong>DWD</strong>：数仓明细层</p>
+<p>​    <strong>ODS</strong>：操作数据（最原始的数据）层 —— 贴源层</p>
+<p>​    <strong>DIM层</strong>：存储维表</p>
+<p>ODS层：对应着外部数据源ETL到数仓体系之后的表！</p>
+<p>DWD层：数仓明细层；一般是对ODS层的表按主题进行加工和划分；本层中表记录的还是明细数据；</p>
+<p>DWS层：数仓汇总层；</p>
+<p>ADS层： 应用层，主要是一些结果报表！</p>
+<p>分层的意义：数据管理更明晰！运算复用度更高！需求开发更快捷！便于解耦底层业务（数据）变化！</p>
 <h4 id="数据运营层（ODS）"><a href="#数据运营层（ODS）" class="headerlink" title="数据运营层（ODS）"></a>数据运营层（ODS）</h4><p>Operation Data Store 数据准备区，也称为贴源层。数据仓库源头系统的数据表通常会原封不动的存储一份，这称为ODS层，是后续数据仓库加工数据的来源。</p>
 <p><strong>ODS层数据的来源方式：</strong></p>
 <ul>
@@ -321,13 +320,30 @@
 </li>
 <li>消息队列：即来自ActiveMQ、Kafka的数据等。</li>
 </ul>
+<ol>
+<li>主要作用：直接映射操作数据（原始数据），数据备份；</li>
+<li>建模方法：与原始数据结构保持完全一致</li>
+<li>存储周期：相对来说，存储周期较短；视数据规模，增长速度，以及业务的需求而定；对于埋点日志数据ODS层存储，通常可以选择3个月或者半年；存1年的是土豪公司（或者确有需要）</li>
+</ol>
 <h4 id="数据仓库层（DW）"><a href="#数据仓库层（DW）" class="headerlink" title="数据仓库层（DW）"></a>数据仓库层（DW）</h4><p>DW数据分层，由下到上为DWD，DWB，DWS。</p>
 <ul>
-<li>DWD: data warehouse details 细节数据层，是业务层与数据仓库的隔离层。主要对ODS数据层做一些数据清洗和规范化的操作。</li>
-<li>数据清洗：去除空值、脏数据、超过极限范围的</li>
-<li>DWB: data warehouse base 数据基础层，存储的是客观数据，一般用作中间层，可以认为是大量指标的数据层。</li>
-<li><strong>DWS: data warehouse service 数据服务层，基于DWB上的基础数据，整合汇总成分析某一个主题域的服务数据层，一般是宽表。用于提供后续的业务查询，OLAP分析，数据分发等。</strong></li>
-<li>用户行为，轻度聚合<ul>
+<li><p>DWD: data warehouse details 细节数据层，是业务层与数据仓库的隔离层。主要对ODS数据层做一些数据清洗和规范化的操作。</p>
+<blockquote>
+<ol>
+<li>数据内容:对ODS层数据做ETL处理后的扁平化明细数据</li>
+<li>存储格式:以orc/parquet文件格式存储</li>
+<li>存储周期6个月</li>
+</ol>
+</blockquote>
+</li>
+<li><p>数据清洗：去除空值、脏数据、超过极限范围的</p>
+</li>
+<li><p>DWB: data warehouse base 数据基础层，存储的是客观数据，一般用作中间层，可以认为是大量指标的数据层。</p>
+</li>
+<li><p><strong>DWS: data warehouse service 数据服务层，基于DWB上的基础数据，整合汇总成分析某一个主题域的服务数据层，一般是宽表。用于提供后续的业务查询，OLAP分析，数据分发等。</strong></p>
+</li>
+<li><p>用户行为，轻度聚合</p>
+<ul>
 <li>主要对ODS/DWD层数据做一些轻度的汇总。</li>
 </ul>
 </li>
@@ -447,6 +463,7 @@
 <h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>1、<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9bcfab62644f">数据仓库中的ODS DW DM理解</a></p>
 <p>2、<a target="_blank" rel="noopener" href="https://blog.csdn.net/xiaohu21/article/details/109149589">数仓数据分层(ODS DWD DWS ADS)换个角度看</a></p>
 <p>3、<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0b6414f92442">数据仓库介绍</a></p>
+<p>4、<a target="_blank" rel="noopener" href="https://blog.csdn.net/while__false/article/details/108405761">数仓ODS,DWD,DWS层</a></p>
 
     </div>
 
@@ -617,14 +634,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">45</span>
+          <span class="site-state-item-count">48</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -699,7 +716,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2021</span>
+  <span itemprop="copyrightYear">2022</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -709,13 +726,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">193k</span>
+    <span title="站点总字数">200k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:56</span>
+    <span title="站点阅读时长">3:02</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>

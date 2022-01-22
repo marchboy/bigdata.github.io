@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="一小A是一家大型互联网公司的数据分析师。 这是一个近年来非常高光的岗位，当年小A为了进入大厂做数据分析，花费了巨大的心血。他也非常珍惜这个机会。 在大厂中，想要更好地发展，唯一的途径就是晋升。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="做数据分析，一个不断上演的悲剧">
+<meta property="og:url" content="https://marchboy.github.io/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/index.html">
+<meta property="og:site_name" content="ComputerScience">
+<meta property="og:description" content="一小A是一家大型互联网公司的数据分析师。 这是一个近年来非常高光的岗位，当年小A为了进入大厂做数据分析，花费了巨大的心血。他也非常珍惜这个机会。 在大厂中，想要更好地发展，唯一的途径就是晋升。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-12T16:43:06.000Z">
+<meta property="article:modified_time" content="2022-01-12T16:45:50.318Z">
+<meta property="article:author" content="进军要努力呀">
+<meta property="article:tag" content="应用">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://marchboy.github.io/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>做数据分析，一个不断上演的悲剧 | ComputerScience</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-74793810-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-74793810-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a5f7448ac0b523badc121b2d870f1b0c";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ComputerScience</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">温故而知新</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://marchboy.github.io/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="进军要努力呀">
+      <meta itemprop="description" content="可怕的是自己内心的堕落">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ComputerScience">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          做数据分析，一个不断上演的悲剧
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-01-13 00:43:06 / 修改时间：00:45:50" itemprop="dateCreated datePublished" datetime="2022-01-13T00:43:06+08:00">2022-01-13</time>
+            </span>
+
+          
+            <span id="/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/" class="post-meta-item leancloud_visitors" data-flag-title="做数据分析，一个不断上演的悲剧" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="far fa-file-word"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="far fa-clock"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="一"><a href="#一" class="headerlink" title="一"></a>一</h3><p>小A是一家大型互联网公司的数据分析师。</p>
+<p>这是一个近年来非常高光的岗位，当年小A为了进入大厂做数据分析，花费了巨大的心血。他也非常珍惜这个机会。</p>
+<p>在大厂中，想要更好地发展，唯一的途径就是晋升。</p>
+<p>小A也是这么想的。</p>
+<p>为了得到晋升的机会，小A决定大力支持对接的业务，希望通过最终亮眼的业绩数字获得领导的认可。虽然这只是一条边缘业务线，对整体业绩的贡献非常低，但是小A依然投入了极大的热情。</p>
+<p>到了年底，对接的业务终于收获到了不错的成绩。小A觉得自己的付出总算有所汇报了，小A对晋升满怀期待。</p>
+<p>结果，小A的考评却是C。</p>
+<p>小A的主管老李说：虽然你很勤奋，每天跟业务一起做各种分析，但是我没有看到你对业务的全局思考。虽然业务增长不错，但是你能说清楚业务的增长和你有多少关联吗？你看看小B，虽然他的业务做的不太好，但是小B对业务的思考非常清晰，每个月我都能看到全局的业务分析。业务没做起来不是小B的问题，他有这样的思考能力我相信换一个你这样的业务可以做得更好。</p>
+<p>小A很郁闷，小B是他心中典型的空谈派，只会罗列数据，不解决实际问题。</p>
+<h3 id="二"><a href="#二" class="headerlink" title="二"></a>二</h3><p>老李是这家公司的BI主管。</p>
+<p>做上主管的位子时，老李就知道，自己想要继续晋升，就必须做出一点亮眼的东西。</p>
+<p>业务支持这类工作，老李尽量不去做，因为最终往往会被业务领导摘果子。</p>
+<p>老李想起了手下的小A，他和当年的自己多像啊，今年对业务的支持也做的还不错。</p>
+<p>但是多年职场经验告诉他，不能写到自己晋升ppt里的工作，就是不重要的。</p>
+<p>这很残酷，但很真实。 </p>
+<p>老李明白，要想在大领导<strong>王总</strong>面前露脸，就要经常向上做汇报，做王总的随身顾问。一旦王总离不开自己，那么晋升就指日可待了。</p>
+<p>于是老李对团队内部进行了改组，业务支持分析师全都调配成为取数工具人，为自己每月的月度数据汇报提供弹药。</p>
+<p>老李对数据现状了如指掌，极大地方便了王总做决策。王总很满意，每次做决策前都会叫上老李一起讨论。</p>
+<p>到了年底，老李对自己的晋升满怀期待。</p>
+<p>但是半路杀出来一个业务总监的坚决反对。</p>
+<p>业务总监认为，今年的数据分析团队对业务支持非常差，导致很多的业务项目缺乏数据支持而失败，这是有严重的管理责任的。</p>
+<p>晋升的事也因为业务总监的极力反对而作罢。</p>
+<h3 id="三"><a href="#三" class="headerlink" title="三"></a>三</h3><p>王总是职业经理人，是这家公司的CEO。</p>
+<p>王总上任CEO时，董事会对他的要求是业绩增长，并且是连续地增长。</p>
+<p>王总盘点了一下目前的状况，发现公司虽然业务仍在快速发展，但是管理却很混乱，有些业务没人说得清目前的状况是什么。</p>
+<p>这就是大公司的坏处，业务太复杂，人员太多，管理成本太大。</p>
+<p>虽然王总自己是从基层起来的，知道业务开展的初期都是乱糟糟的。但是他现在是CEO，他对于这种近乎失控的状态非常没有安全感，他非常想知道底下究竟发生了什么。</p>
+<p>他希望控制这一切。</p>
+<p>于是他开始发展自己的信息渠道，最终他培养了老李成为自己的数据顾问。渐渐地王总对公司的业务状况了解得愈来愈清晰，任何新发起的业务王总都能获得最新的信息。</p>
+<p>全公司那么多人，那么多业务线，最终做到了信息通道顺畅，公司的各个部分就如同一个人的手脚一般听从指挥。</p>
+<p>王总自诩这是“<strong>管理的胜利</strong>”。</p>
+<p>业绩也确实增长了好长一段时间。</p>
+<p>但是随后，王总发现公司的业务团队逐渐缺乏活力，好几次新的业务机会都被竞争对手打败。</p>
+<p>王总对下一次的董事会会议有了一丝担忧。</p>
+<h3 id="四"><a href="#四" class="headerlink" title="四"></a><strong>四</strong></h3><p>小白是一个运营。</p>
+<p>他很怀念在这家公司的前几年。那个时候，自己负责的业务自由度很大，可以天马行空地做很多自己觉得有趣的方案。</p>
+<p>小白当时和BI同学小A配合得也非常好，当年做的那个项目虽然很边缘，但是增长的成绩有目共睹。</p>
+<p>现在小白还是对工作投入了很大的热情，但是他发现，很多地方和之前不一样了。</p>
+<p>小白想要做一个新项目，项目还没有步入正轨，就被要求每月甚至每周对业务状况进行详细的汇报。这极大地增加了工作强度，而且很多项目是实验性的，商业模式还不清晰，这类项目经常会因为无法说清项目价值而被强制关闭。</p>
+<p>小白很郁闷，他合上笔记本，看着身边的同事们，若有所思。</p>
+<p>每个人都获得了一些自己想获得的，却也失去了一些不想失去的。</p>
+<p>每个人都没有做错什么，但是又好像有什么不对。</p>
+<p>（完）</p>
+
+    </div>
+
+    
+    
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;"> ------ 本文结束------</div>
+    
+</div>
+        <div class="reward-container">
+  <div>Donate comment here.</div>
+  <button onclick="var qr = document.getElementById('qr'); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+      
+      <div style="display: inline-block;">
+        <img src="/images/wechatpay.png" alt="进军要努力呀 微信支付">
+        <p>微信支付</p>
+      </div>
+      
+      <div style="display: inline-block;">
+        <img src="/images/alipay.png" alt="进军要努力呀 支付宝">
+        <p>支付宝</p>
+      </div>
+
+  </div>
+</div>
+
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>进军要努力呀
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://marchboy.github.io/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/" title="做数据分析，一个不断上演的悲剧">https://marchboy.github.io/2022/01/13/做数据分析，一个不断上演的悲剧/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+        
+
+  <div class="followme">
+    <p>欢迎关注我的其它发布渠道</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="prev" title="如何利用「波士顿矩阵」进行数据分析">
+      <i class="fa fa-chevron-left"></i> 如何利用「波士顿矩阵」进行数据分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/" rel="next" title="如何优雅的设计DWS层">
+      如何优雅的设计DWS层 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+      <div class="tabs tabs-comment">
+        <ul class="nav-tabs">
+            <li class="tab"><a href="#comment-gitalk">gitalk</a></li>
+            <li class="tab"><a href="#comment-valine">valine</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane gitalk" id="comment-gitalk">
+              <div class="comments" id="gitalk-container"></div>
+            </div>
+            <div class="tab-pane valine" id="comment-valine">
+              <div class="comments" id="valine-comments"></div>
+            </div>
+        </div>
+      </div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80"><span class="nav-number">1.</span> <span class="nav-text">一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C"><span class="nav-number">2.</span> <span class="nav-text">二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89"><span class="nav-number">3.</span> <span class="nav-text">三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B"><span class="nav-number">4.</span> <span class="nav-text">四</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="进军要努力呀"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">进军要努力呀</p>
+  <div class="site-description" itemprop="description">可怕的是自己内心的堕落</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/marchboy" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;marchboy" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jjgdut@gmail.com" title="E-Mail → mailto:jjgdut@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://plus.google.com/yourname" title="Google → https:&#x2F;&#x2F;plus.google.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-google fa-fw"></i>Google</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://youtube.com/yourname" title="YouTube → https:&#x2F;&#x2F;youtube.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-youtube fa-fw"></i>YouTube</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://www.cnblogs.com/pinard" title="https:&#x2F;&#x2F;www.cnblogs.com&#x2F;pinard" rel="noopener" target="_blank">刘建平Pinard</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://vel.life/" title="https:&#x2F;&#x2F;vel.life&#x2F;" rel="noopener" target="_blank">思维之海</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://wulc.me/" title="https:&#x2F;&#x2F;wulc.me&#x2F;" rel="noopener" target="_blank">吴良超的学习笔记</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://blog.csdn.net/IT_job" title="https:&#x2F;&#x2F;blog.csdn.net&#x2F;IT_job" rel="noopener" target="_blank">IT_job的博客</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://www.zdaiot.com/categories/" title="https:&#x2F;&#x2F;www.zdaiot.com&#x2F;categories&#x2F;" rel="noopener" target="_blank">zdaiot</a>
+        </li>
+    </ul>
+  </div>
+
+
+      </div>
+	 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1858139145&auto=0&height=66"></iframe>
+        <div class="back-to-top motion-element">
+          <i class="fa fa-arrow-up"></i>
+          <span>0%</span>
+        </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">进军要努力呀</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-area"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">200k</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:02</span>
+</div><!-- ����ҳ�ײ�������վ����ʱ�� -->
+<span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
+<script>
+    var now = new Date();
+    function createtime() {
+        var grt= new Date("09/01/2020 00:00:00");//�˴��޸���Ľ�վʱ�������վ����ʱ��
+        now.setTime(now.getTime()+250);
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days);
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours);
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;}
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;}
+        document.getElementById("timeDate").innerHTML = "Run for "+dnum+" Days ";
+        document.getElementById("times").innerHTML = hnum + " Hours " + mnum + " m " + snum + " s";
+    }
+setInterval("createtime()",250);
+</script>
+
+
+
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : '9de70fca612487225ccc',
+      clientSecret: 'c5242111211342b5c4846f7f261816d1940d3996',
+      repo        : 'marchboy.github.io',
+      owner       : 'marchboy',
+      admin       : ['marchboy'],
+      id          : '818bf07a119127e249dc3225325c83bf',
+        language: '',
+      distractionFreeMode: false
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'qAoqMWohGTiECb1RgaNqvgNB-MdYXbMMI',
+      appKey     : 'ISI8QFSo7GcRyExPHSjMkz7R',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
