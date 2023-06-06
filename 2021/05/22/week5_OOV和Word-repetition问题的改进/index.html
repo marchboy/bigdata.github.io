@@ -298,7 +298,7 @@
                 <i class="far fa-file-word"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>6k</span>
+              <span>5.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -346,7 +346,7 @@
 </li>
 <li><p>unigram language model(看下ppt中的步骤)。 </p>
 </li>
-<li><p>PGN网络（重点难点，参考一下 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/monkeyT/p/12337556.html%EF%BC%89">https://www.cnblogs.com/monkeyT/p/12337556.html）</a></p>
+<li><p>PGN网络（重点难点，参考一下 <a target="_blank" rel="noopener" href="https://www.cnblogs.com/monkeyT/p/12337556.html）">https://www.cnblogs.com/monkeyT/p/12337556.html）</a></p>
 </li>
 </ul>
 <h3 id="Subword"><a href="#Subword" class="headerlink" title="Subword"></a>Subword</h3><h4 id="sub-word-generation"><a href="#sub-word-generation" class="headerlink" title="sub-word generation"></a>sub-word generation</h4><p>For a word, we generate character n-grams of length FROM n to m(n&lt;m)  present in it.</p>
@@ -362,25 +362,27 @@
 <p><strong>1. 该网络通过指向（pointer）从源文本中复制单词，有助于准确地复制信息，同时保留通过生成器产生新单词的能力；</strong><br><strong>2. 使用coverage机制来跟踪已总结的内容，防止重复。</strong> </p>
 <p>接下来从下面几个部分介绍Pointer-Generator-Network原理：<br>1、Baseline sequence-to-sequence;<br>2、Pointer-Generator-Network;<br>3、Coverage Mechanism。</p>
 <h4 id="Baseline-sequence-to-sequence"><a href="#Baseline-sequence-to-sequence" class="headerlink" title="Baseline sequence-to-sequence"></a>Baseline sequence-to-sequence</h4><p>Pointer-Generator Networks是在Baseline sequence-to-sequence模型的基础上构建的，我们首先Baseline seq2seq+attention。其架构图如下：</p>
-<p><img src="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/Baseline_Seq2Seq.png"></p>
-<p>该模型可以<strong>关注原文本中的相关单词以生成新单词</strong>进行概括。比如：模型可能<strong>注意到原文</strong>中的**”victorious”<strong>和</strong>“ win”<strong>这个两个单词，在摘要”Germany beat Argentina 2-0”中</strong>生成了新的单词beat** 。</p>
+<p><img src="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/Baseline_Seq2Seq.png" alt></p>
+<p>该模型可以<strong>关注原文本中的相关单词以生成新单词</strong>进行概括。比如：模型可能<strong>注意到原文</strong>中的<strong>“victorious”</strong>和<strong>“ win”</strong>这个两个单词，在摘要”Germany beat Argentina 2-0”中<strong>生成了新的单词beat</strong> 。</p>
 <p>Seq2Seq的模型结构是<strong>经典的Encoder-Decoder模型</strong>，即先用Encoder将原文本编码成一个中间层的隐藏状态，然后用Decoder来将该隐藏状态解码成为另一个文本。Baseline Seq2Seq在<strong>Encoder端</strong>是一个双向的LSTM，这个<strong>双向的LSTM可以捕捉原文本的长距离依赖关系以及位置信息，</strong>编码时词嵌入经过双向LSTM后得到编码状态$h_i$。在<strong>Decoder端</strong>，<strong>解码器是一个单向的LSTM</strong>，训练阶段时参考摘要词依次输入(测试阶段时是上一步的生成词)，在时间步$t$得到解码状态$s_t$。使用$h_i$和$s_t$得到该时间步原文第$i$个词注意力权重。</p>
 <h4 id="Pointer-Generator-Network-1"><a href="#Pointer-Generator-Network-1" class="headerlink" title="Pointer-Generator-Network"></a>Pointer-Generator-Network</h4><p>原文中的Pointer-Generator Networks是一个混合了 Baseline seq2seq和PointerNetwork的网络，它具有Baseline seq2seq的生成能力和PointerNetwork的Copy能力。该网络的结构如下：</p>
-<p><img src="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/pointer-generationer-structure.png"></p>
+<p><img src="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/pointer-generationer-structure.png" alt></p>
 <p><strong>如何权衡一个词应该是生成的还是复制的？</strong></p>
 <p>　　<strong>原文中引入了一个权重$p_{gen}$ 。</strong></p>
-<p>　　从Baseline seq2seq的模型结构中得到了$s_t$和$h_t^*$，和解码器输入$x_t$一起来计算$p_{gen}$：<br>$$<br>p_{gen} = \sigma(w_{h^*}^T h_t^* + w_s^Ts_t + w_x^Tx_t + b_{ptr})<br>$$<br>　　这时，会扩充单词表形成一个更大的单词表–扩充单词表(将原文当中的单词也加入到其中)，该时间步的预测词概率为：</p>
-<p>$$<br>P(w) = p_{gen}P_{vocab}(w) + (1 - p_{gen}) \sum_{i:w_i=w} a_i^t<br>$$</p>
-<p>　　其中 atiait 表示的是原文档中的词。我们可以看到解码器一个词的输出概率有其是否拷贝是否生成的概率和决定。<strong>当一个词不出现在常规的单词表上时$P_{vocab}(w)$ 为0，当该词不出现在文档中$\sum_{i:w_i=w} a_i^t$为0。</strong></p>
+<p>　　从Baseline seq2seq的模型结构中得到了$s<em>t$和$h_t^*$，和解码器输入$x_t$一起来计算$p</em>{gen}$：</p>
+<script type="math/tex; mode=display">
+p_{gen} = \sigma(w_{h^*}^T h_t^* + w_s^Ts_t + w_x^Tx_t + b_{ptr})</script><p>　　这时，会扩充单词表形成一个更大的单词表—扩充单词表(将原文当中的单词也加入到其中)，该时间步的预测词概率为：</p>
+<script type="math/tex; mode=display">
+P(w) = p_{gen}P_{vocab}(w) + (1 - p_{gen}) \sum_{i:w_i=w} a_i^t</script><p>　　其中 atiait 表示的是原文档中的词。我们可以看到解码器一个词的输出概率有其是否拷贝是否生成的概率和决定。<strong>当一个词不出现在常规的单词表上时$P<em>{vocab}(w)$ 为0，当该词不出现在文档中$\sum</em>{i:w_i=w} a_i^t$为0。</strong></p>
 <h4 id="Coverage-mechanism"><a href="#Coverage-mechanism" class="headerlink" title="Coverage mechanism"></a>Coverage mechanism</h4><p>原文的特色是运用了Coverage Mechanism来解决重复生成文本的问题，下图反映了前两个模型与添加了Coverage Mechanism生成摘要的结果：</p>
-<p><img src="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/CoverageMechanism.png"></p>
-<p>蓝色的字体表示的是参考摘要，三个模型的生成摘要的结果差别挺大<br>红色字体表明了不准确的摘要细节生成(UNK未登录词，无法解决OOV问题);<br>绿色的字体表明了模型生成了重复文本。<br>为了解决此问题–Repitition，原文使用了在机器翻译中解决“过翻译”和“漏翻译”的机制–Coverage Mechanism。</p>
+<p><img src="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/CoverageMechanism.png" alt></p>
+<p>蓝色的字体表示的是参考摘要，三个模型的生成摘要的结果差别挺大<br>红色字体表明了不准确的摘要细节生成(UNK未登录词，无法解决OOV问题);<br>绿色的字体表明了模型生成了重复文本。<br>为了解决此问题—Repitition，原文使用了在机器翻译中解决“过翻译”和“漏翻译”的机制—Coverage Mechanism。</p>
 <p>具体实现上，就是将先前时间步的注意力权重加到一起得到所谓的覆盖向量 ct(coveragevector)，用先前的注意力权重决策来影响当前注意力权重的决策，这样就避免在同一位置重复，从而避免重复生成文本。</p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/think90/p/11590469.html">指针生成网络(Pointer-Generator-Network)原理与实战</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zingp/p/11571593.html">指针生成网络(Pointer-Generator-Network)原理与实战</a></p>
-<h3 id="Word-Repetition"><a href="#Word-Repetition" class="headerlink" title="Word Repetition"></a>Word Repetition</h3><p>生成式任务存在文本重复问题解决方法–Coverage(每次预测都会的到概率分布，根据概率去强迫模型关注之前没有关注的内容)。</p>
-<p><img src="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/word_repetion.png"></p>
-<h3 id="Text-Summarization-在阿⾥"><a href="#Text-Summarization-在阿⾥" class="headerlink" title="Text Summarization 在阿⾥"></a>Text Summarization 在阿⾥</h3><p>[论文：Multi-Source Pointer Network for Product Title Summarization](<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1808.06885.pdf">Multi-Source Pointer Network for Product Title Summarization (arxiv.org)</a>)</p>
+<h3 id="Word-Repetition"><a href="#Word-Repetition" class="headerlink" title="Word Repetition"></a>Word Repetition</h3><p>生成式任务存在文本重复问题解决方法—Coverage(每次预测都会的到概率分布，根据概率去强迫模型关注之前没有关注的内容)。</p>
+<p><img src="/2021/05/22/week5_OOV%E5%92%8CWord-repetition%E9%97%AE%E9%A2%98%E7%9A%84%E6%94%B9%E8%BF%9B/word_repetion.png" alt></p>
+<h3 id="Text-Summarization-在阿⾥"><a href="#Text-Summarization-在阿⾥" class="headerlink" title="Text Summarization 在阿⾥"></a>Text Summarization 在阿⾥</h3><p><a href="[Multi-Source Pointer Network for Product Title Summarization (arxiv.org">论文：Multi-Source Pointer Network for Product Title Summarization</a>](<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1808.06885.pdf">https://arxiv.org/pdf/1808.06885.pdf</a>))</p>
 <p>商品标题摘要这个特殊问题天然存在对模型的两个限制：<br>1）摘要中不能引⼊不相关信息<br>2）摘要中必须保留源⽂本的关键信息（如品牌名和商品名）</p>
 <h3 id="Hyper-Parameter-Tuning"><a href="#Hyper-Parameter-Tuning" class="headerlink" title="Hyper-Parameter Tuning"></a>Hyper-Parameter Tuning</h3><h4 id="Hand-Turning"><a href="#Hand-Turning" class="headerlink" title="Hand Turning"></a>Hand Turning</h4><h5 id="Good-Coding-Style"><a href="#Good-Coding-Style" class="headerlink" title="Good Coding Style"></a>Good Coding Style</h5><ul>
 <li>将各个参数的设置部分集中在⼀起。如果参数的设置分布在代码的各个地方，那么修改的过程想必会⾮常痛苦。</li>
@@ -397,13 +399,15 @@
 <li>减少训练类别。例如⼿写数字识别任务，原来是10个类别， 那么我们可以先在2个类别上训练，看看结果如何。</li>
 </ul>
 <h5 id="Experiment-Number"><a href="#Experiment-Number" class="headerlink" title="Experiment Number"></a>Experiment Number</h5><ul>
-<li>learning rate: 1 0.1 0.01 0.001, ⼀般从1开始尝试。很少见learning rate⼤于10的。<br>学习率⼀般要随着训练进⾏衰减。<br>衰减系数⼀般是0.5。<br>衰减时机，可以是验证集准确率不再上升时，或固定训练多少个周期以后。<br>不过更建议使⽤⾃适应梯度的办法，例如adam,adadelta,rmsprop等，这些⼀般使⽤相关论⽂提供的默认值即可，可以避免再费劲调节学习率。<br>对RNN来说，有个经验，如果RNN要处理的序列⽐较长，或者RNN层数⽐较多，那么learning rate⼀般⼩⼀些⽐较好，否则有可能出现结果不收敛，甚⾄Nan等问题。</li>
-<li>⽹络层数： 先从1层开始。</li>
+<li><p>learning rate: 1 0.1 0.01 0.001, ⼀般从1开始尝试。很少见learning rate⼤于10的。<br>学习率⼀般要随着训练进⾏衰减。<br>衰减系数⼀般是0.5。<br>衰减时机，可以是验证集准确率不再上升时，或固定训练多少个周期以后。<br>不过更建议使⽤⾃适应梯度的办法，例如adam,adadelta,rmsprop等，这些⼀般使⽤相关论⽂提供的默认值即可，可以避免再费劲调节学习率。<br>对RNN来说，有个经验，如果RNN要处理的序列⽐较长，或者RNN层数⽐较多，那么learning rate⼀般⼩⼀些⽐较好，否则有可能出现结果不收敛，甚⾄Nan等问题。</p>
+</li>
+<li><p>⽹络层数： 先从1层开始。</p>
+</li>
 <li>每层结点数： 16 32 128，超过1000的情况⽐较少见。超过1W的从来没有见过。</li>
 <li>batch size: 128上下开始。batch size值增加，的确能提⾼训练速度。但是有可能收敛结果变差。如果显存⼤⼩允许，可以考虑从⼀个⽐较⼤的值开始尝试。因为batch size太⼤，⼀般不会对结果有太⼤的影响，⽽batch size太⼩的话，结果有可能很差。</li>
 <li>clip c(梯度裁剪): 限制最⼤梯度,其实是value = sqrt(w1^2+w2^2….),如果value超过了阈值，就算⼀个衰减系系数,让value的值等于阈值: 5,10,15</li>
 <li>dropout： 0.5</li>
-<li> L2正则：1.0，超过10的很少见。</li>
+<li>L2正则：1.0，超过10的很少见。</li>
 <li>词向量embedding⼤⼩：128，256</li>
 <li>正负样本⽐例： 这个是⾮常忽视，但是在很多分类问题上，又⾮常重要的参数。很多⼈往往习惯使⽤训练数据中默认的正负类别⽐例，当训练数据⾮常不平衡的时候，模型很有可能会偏向数⽬较⼤的类别，从⽽影响最终训练结果。除了尝试训练数据默认的正负类别⽐例之外，建议对数⽬较⼩的样本做过采样，例如进⾏复制。提⾼他们的⽐例，看看效果如何，这个对多分类问题同样适⽤。在使⽤mini-batch⽅法进⾏训练的时候，尽量让⼀个batch内，各类别的⽐例平衡，这个在图像识别等多分类任务上⾮常重要。</li>
 </ul>
@@ -586,7 +590,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -668,7 +672,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -678,13 +682,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">200k</span>
+    <span title="站点总字数">208k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:02</span>
+    <span title="站点阅读时长">3:10</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>

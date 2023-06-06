@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"marchboy.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":true,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="产品是公司销售活动中重要的维度之一，那你了解公司产品布局吗？公司的哪些产品是盈利的？哪些产品的占有率高？别总是一提到产品分析就开始头疼，不知道该从何下手；一面对海量产品数据，挠破头也想不出体现数据价值的办法。 今天给大家分享一个数据分析模型—波士顿矩阵。  **波士顿矩阵(BCG Matrix)**，又叫做市场增长率-相对市场份额矩阵、四象限分析法、产品系列结构管理法等，是波士顿公司首创的一种用来">
+  <meta name="description" content="产品是公司销售活动中重要的维度之一，那你了解公司产品布局吗？公司的哪些产品是盈利的？哪些产品的占有率高？别总是一提到产品分析就开始头疼，不知道该从何下手；一面对海量产品数据，挠破头也想不出体现数据价值的办法。 今天给大家分享一个数据分析模型—-波士顿矩阵。  波士顿矩阵(BCG Matrix)，又叫做市场增长率-相对市场份额矩阵、四象限分析法、产品系列结构管理法等，是波士顿公司首创的一种用来分析和">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何利用「波士顿矩阵」进行数据分析">
 <meta property="og:url" content="https://marchboy.github.io/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="ComputerScience">
-<meta property="og:description" content="产品是公司销售活动中重要的维度之一，那你了解公司产品布局吗？公司的哪些产品是盈利的？哪些产品的占有率高？别总是一提到产品分析就开始头疼，不知道该从何下手；一面对海量产品数据，挠破头也想不出体现数据价值的办法。 今天给大家分享一个数据分析模型—波士顿矩阵。  **波士顿矩阵(BCG Matrix)**，又叫做市场增长率-相对市场份额矩阵、四象限分析法、产品系列结构管理法等，是波士顿公司首创的一种用来">
+<meta property="og:description" content="产品是公司销售活动中重要的维度之一，那你了解公司产品布局吗？公司的哪些产品是盈利的？哪些产品的占有率高？别总是一提到产品分析就开始头疼，不知道该从何下手；一面对海量产品数据，挠破头也想不出体现数据价值的办法。 今天给大家分享一个数据分析模型—-波士顿矩阵。  波士顿矩阵(BCG Matrix)，又叫做市场增长率-相对市场份额矩阵、四象限分析法、产品系列结构管理法等，是波士顿公司首创的一种用来分析和">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://marchboy.github.io/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/1.jpg">
 <meta property="og:image" content="https://marchboy.github.io/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/2.jpg">
@@ -325,11 +325,11 @@
 
       
         <p>产品是公司销售活动中重要的维度之一，那你了解公司产品布局吗？公司的哪些产品是盈利的？哪些产品的占有率高？别总是一提到产品分析就开始头疼，不知道该从何下手；一面对海量产品数据，挠破头也想不出体现数据价值的办法。</p>
-<p>今天给大家分享一个数据分析模型—<strong>波士顿矩阵</strong>。</p>
-<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/1.jpg"></p>
-<p>**波士顿矩阵(BCG Matrix)**，又叫做市场增长率-相对市场份额矩阵、四象限分析法、产品系列结构管理法等，是波士顿公司首创的一种用来分析和规划企业产品组合的方法。</p>
+<p>今天给大家分享一个数据分析模型—-<strong>波士顿矩阵</strong>。</p>
+<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/1.jpg" alt></p>
+<p><strong>波士顿矩阵(BCG Matrix)</strong>，又叫做市场增长率-相对市场份额矩阵、四象限分析法、产品系列结构管理法等，是波士顿公司首创的一种用来分析和规划企业产品组合的方法。</p>
 <p>其主要关注的两个指标是<strong>销售增长率</strong>和<strong>市场占有率</strong>，前者反映了市场引力，后者反映了市场实力。这种方法的核心在于分析<strong>企业相关经营业务之间现金流量的平衡问题</strong>，找出企业现金资源的产生单位和最佳使用单位。</p>
-<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/2.jpg"></p>
+<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/2.jpg" alt></p>
 <blockquote>
 <p><strong>明星类产品</strong>：高增长且高市占，发展前景好，竞争力强，需加大投资以支持其发展；</p>
 <p><strong>问题类产品</strong>：高增长但低市占，发展前景好但市场开拓不足，需谨慎投资；</p>
@@ -338,42 +338,42 @@
 </blockquote>
 <h3 id="波士顿模型案例"><a href="#波士顿模型案例" class="headerlink" title="波士顿模型案例"></a>波士顿模型案例</h3><p>数据分析模型有了，那具体怎么运用呢？</p>
 <p>今天带大家以<strong>宝洁</strong>的例子去看一下怎么发挥波士顿矩阵的作用。宝洁仅用了十余年时间，就在中国日化市场上占据高位。其实刚入中国市场，宝洁旗下共有六大洗发水品牌，包括飘柔、潘婷、海飞丝、沙宣洗发护发系列、润妍、伊卡璐等。他们在思考对于产品规划的时候就采取了波士顿矩阵。</p>
-<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/3.jpg"></p>
-<p>第一、明星产品–沙宣。沙宣凭借<strong>很高的市场渗透率和占有率</strong>以及稳定的客户群成为了明星产品。这类产品可能成为企业的金牛产品，因而需要<strong>加大投资</strong>以支持其迅速发展。</p>
-<p>第二、金牛产品–飘柔、海飞丝。这两个产品在当时<strong>销量增长率低但相对市场占有率高</strong>，已进入成熟期。宝洁认为其可以为企业提供资金，<strong>无需增大投资，只需在短期内为企业回收资金</strong>，支持明星产品。</p>
-<p>第三、问题产品–伊卡璐。伊卡璐是宝洁开辟染发产品线的先导产品，其<strong>市场占有率低</strong>，处于引进期，产生的现金流不多。但公司对于其发展仍抱有希望，因此采取<strong>选择性投资</strong>。</p>
-<p>第四、瘦狗产品–润妍。该品牌<strong>销售增长率低，相对市场占有率也偏低</strong>，采用<strong>撤退战略</strong>，逐渐减少批量,最终撤退淘汰。</p>
+<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/3.jpg" alt></p>
+<p>第一、明星产品—沙宣。沙宣凭借<strong>很高的市场渗透率和占有率</strong>以及稳定的客户群成为了明星产品。这类产品可能成为企业的金牛产品，因而需要<strong>加大投资</strong>以支持其迅速发展。</p>
+<p>第二、金牛产品—飘柔、海飞丝。这两个产品在当时<strong>销量增长率低但相对市场占有率高</strong>，已进入成熟期。宝洁认为其可以为企业提供资金，<strong>无需增大投资，只需在短期内为企业回收资金</strong>，支持明星产品。</p>
+<p>第三、问题产品—伊卡璐。伊卡璐是宝洁开辟染发产品线的先导产品，其<strong>市场占有率低</strong>，处于引进期，产生的现金流不多。但公司对于其发展仍抱有希望，因此采取<strong>选择性投资</strong>。</p>
+<p>第四、瘦狗产品—润妍。该品牌<strong>销售增长率低，相对市场占有率也偏低</strong>，采用<strong>撤退战略</strong>，逐渐减少批量,最终撤退淘汰。</p>
 <h3 id="波士顿模型新发展以及具体操作"><a href="#波士顿模型新发展以及具体操作" class="headerlink" title="波士顿模型新发展以及具体操作"></a><strong>波士顿模型新发展以及具体操作</strong></h3><p>波士顿矩阵无疑在当时帮助宝洁在洗发护发领域站住了脚步，但宝洁的成功不可复制，宝洁使用的数据分析模型我们更是要以发展的目光看待。随着公司市场规模的不断扩大，业务不断增多，在纷繁复杂的维度和巨大的数据体量下，仅仅利用EXCEL制作一张静态图表已经满足不了数据分析的需求。</p>
-<p>不过别着急，时代在进步，工具也在进步。一种更灵活、更快捷的数据分析工具—现代商业智能（BI）软件应运而生。</p>
+<p>不过别着急，时代在进步，工具也在进步。一种更灵活、更快捷的数据分析工具—-现代商业智能（BI）软件应运而生。</p>
 <p>如何用BI来实现波士顿矩阵的搭建呢？我以国内通用BI工具Fine BI为例，给大家演示一下。</p>
 <h4 id="1、创建仪表板数据准备"><a href="#1、创建仪表板数据准备" class="headerlink" title="1、创建仪表板数据准备"></a>1、创建仪表板数据准备</h4><p>采用一个RFM明细数据作为样本，将之导入到Fine BI中，创建一个仪表板。如下图所示：</p>
-<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/4.jpg"></p>
+<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/4.jpg" alt></p>
 <h4 id="2、添加计算指标"><a href="#2、添加计算指标" class="headerlink" title="2、添加计算指标"></a>2、添加计算指标</h4><p>利用函数功能创建一个计算指标，设置指标名称和客单价公式。如下图所示：</p>
 <blockquote>
 <p>客单价=sum_agg(消费金额)/count_agg(客户名称)</p>
 </blockquote>
-<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/5.jpg"></p>
+<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/5.jpg" alt></p>
 <h4 id="3、使用散点图制作波士顿矩阵图"><a href="#3、使用散点图制作波士顿矩阵图" class="headerlink" title="3、使用散点图制作波士顿矩阵图"></a>3、使用散点图制作波士顿矩阵图</h4><p>1）观察原始数据表，将客户名称字段拖入客户类型字段下面，形成钻取。如下图所示：</p>
-<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/6.jpg"></p>
+<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/6.jpg" alt></p>
 <p>2）拖动记录数（总行数）进入横轴，拖动刚才设置的客单价指标进入纵轴。如下图所示：</p>
-<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/7.jpg"></p>
+<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/7.jpg" alt></p>
 <p>3）添加两条警戒线，一条消费平均金额，一条消费平均次数。如下图所示：</p>
-<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/8.jpg"></p>
-<h4 id="4、效果查看"><a href="#4、效果查看" class="headerlink" title="4、效果查看"></a>4、效果查看</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/9.jpg"></p>
+<p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/8.jpg" alt></p>
+<h4 id="4、效果查看"><a href="#4、效果查看" class="headerlink" title="4、效果查看"></a>4、效果查看</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/9.jpg" alt></p>
 <p>根据动态波士顿分析，我们能够获取更为详细准确的用户画像。</p>
 <p>消费次数大于平均值，单次消费力度大于平均水平是明星客户，需要重点关注以及最高的礼遇；</p>
 <p>消费次数大于平均值，但单次消费力度小于平均水平为金牛客户，频繁的消费频次能带来较为稳定的现金流，这类客户是企业利润基石；</p>
 <p>消费小于平均值，但单次消费力度小于平均水平是问题客户，有希望转化为明星客户，由于消费频次不高，所以需要重点跟进和长期跟踪；</p>
 <p>消费小于平均值，单次消费力度小于平均水平属于瘦狗客户，不需要过多投入。</p>
-<h4 id="5、进阶分析"><a href="#5、进阶分析" class="headerlink" title="5、进阶分析"></a>5、进阶分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/10.jpg"></p>
+<h4 id="5、进阶分析"><a href="#5、进阶分析" class="headerlink" title="5、进阶分析"></a>5、进阶分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/10.jpg" alt></p>
 <p>除了动态展示波士顿矩阵，Fine BI还能快速实现其他数据分析模型的制作，清晰展示数据分析结果。</p>
 <h3 id="Fine-BI还实现其他数据分析模型"><a href="#Fine-BI还实现其他数据分析模型" class="headerlink" title="Fine BI还实现其他数据分析模型"></a>Fine BI还实现其他数据分析模型</h3><p>如：</p>
-<h4 id="1、AARRR模型"><a href="#1、AARRR模型" class="headerlink" title="1、AARRR模型"></a>1、AARRR模型</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/11.jpg"></p>
-<h4 id="2、KANO模型"><a href="#2、KANO模型" class="headerlink" title="2、KANO模型"></a>2、KANO模型</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/12.jpg"></p>
-<h4 id="3、用户粘性分析"><a href="#3、用户粘性分析" class="headerlink" title="3、用户粘性分析"></a>3、用户粘性分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/13.jpg"></p>
-<h4 id="4、RFM分析"><a href="#4、RFM分析" class="headerlink" title="4、RFM分析"></a>4、RFM分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/14.jpg"></p>
-<h4 id="5、购物篮分析"><a href="#5、购物篮分析" class="headerlink" title="5、购物篮分析"></a>5、购物篮分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/15.jpg"></p>
-<h4 id="6、转化分析"><a href="#6、转化分析" class="headerlink" title="6、转化分析"></a>6、转化分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/16.jpg"></p>
+<h4 id="1、AARRR模型"><a href="#1、AARRR模型" class="headerlink" title="1、AARRR模型"></a>1、AARRR模型</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/11.jpg" alt></p>
+<h4 id="2、KANO模型"><a href="#2、KANO模型" class="headerlink" title="2、KANO模型"></a>2、KANO模型</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/12.jpg" alt></p>
+<h4 id="3、用户粘性分析"><a href="#3、用户粘性分析" class="headerlink" title="3、用户粘性分析"></a>3、用户粘性分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/13.jpg" alt></p>
+<h4 id="4、RFM分析"><a href="#4、RFM分析" class="headerlink" title="4、RFM分析"></a>4、RFM分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/14.jpg" alt></p>
+<h4 id="5、购物篮分析"><a href="#5、购物篮分析" class="headerlink" title="5、购物篮分析"></a>5、购物篮分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/15.jpg" alt></p>
+<h4 id="6、转化分析"><a href="#6、转化分析" class="headerlink" title="6、转化分析"></a>6、转化分析</h4><p><img src="/2022/01/12/%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8%E3%80%8C%E6%B3%A2%E5%A3%AB%E9%A1%BF%E7%9F%A9%E9%98%B5%E3%80%8D%E8%BF%9B%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/16.jpg" alt></p>
 
     </div>
 
@@ -548,7 +548,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -630,7 +630,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -640,13 +640,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">200k</span>
+    <span title="站点总字数">208k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:02</span>
+    <span title="站点阅读时长">3:10</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>

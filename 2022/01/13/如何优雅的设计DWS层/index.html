@@ -318,7 +318,7 @@
 </ul>
 <p>问题的根源就在于数据模型的无法复用，以及数据开发都是烟囱式的。所以要解决这个问题，就要搞清楚健壮的数据模型该如何设计。</p>
 <h2 id="一、常见的数仓分层设计思路"><a href="#一、常见的数仓分层设计思路" class="headerlink" title="一、常见的数仓分层设计思路"></a>一、常见的数仓分层设计思路</h2><p>下图是数仓分层的逻辑架构图，大家不妨回忆一下数据模型的分层设计：</p>
-<p><img src="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/1.jpg"></p>
+<p><img src="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/1.jpg" alt></p>
 <ul>
 <li><p><strong>数据引入层（ODS，Operational Data Store，又称数据基础层）</strong>：将原始数据几乎无处理地存放在数据仓库系统中，结构上与源系统基本保持一致，是数据仓库的数据准备区。这一层的主要职责是将基础数据同步、存储。</p>
 </li>
@@ -352,10 +352,10 @@
 </ul>
 <h2 id="四、图解DWS层设计流程"><a href="#四、图解DWS层设计流程" class="headerlink" title="四、图解DWS层设计流程"></a>四、图解DWS层设计流程</h2><p>以电商零售的场景为例，我们已经基于ODS层的订单表、用户表、商品表、优惠券表等，经过ETL完成了DWD层的建模，一般是采用星型模型。</p>
 <p>这里严格按照：<strong>业务过程→声明粒度→确认维度→确认事实</strong> 完成建模，过程如下：</p>
-<p><img src="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/2.jpg"></p>
+<p><img src="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/2.jpg" alt></p>
 <p>接下来，便是到了DWS层设计的环节。按照我们上面的设计思路，通过从维度表去看事实表，便可得出每天的宽表。</p>
 <p>这样即可统计各个主题对象的当天行为，服务于ADS层的主题宽表以及一些业务的明细数据，也可以以应对一些特殊的需求，例如：购买行为，统计商品复购率等。</p>
-<p><img src="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/3.jpg"></p>
+<p><img src="/2022/01/13/%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E7%9A%84%E8%AE%BE%E8%AE%A1DWS%E5%B1%82/3.jpg" alt></p>
 <p>通过外键获取相关的度量值，我们整合多个DWD的明细事实表度量值来构成新表。</p>
 <p>在这里，我们还是要遵循上文提到的设计原则，在设计上尽量体现出公共性、使用简单并且用户很容易理解。</p>
 <h2 id="五、思考：如何设计出完美的DWS层？"><a href="#五、思考：如何设计出完美的DWS层？" class="headerlink" title="五、思考：如何设计出完美的DWS层？"></a>五、思考：如何设计出完美的DWS层？</h2><p>在我们数据中台实际实施落地的过程中，团队不但要建设公共数据层，形成数据中台，还要承担着新需求的压力。</p>
@@ -444,7 +444,10 @@
     <a href="/2022/01/13/%E5%81%9A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%EF%BC%8C%E4%B8%80%E4%B8%AA%E4%B8%8D%E6%96%AD%E4%B8%8A%E6%BC%94%E7%9A%84%E6%82%B2%E5%89%A7/" rel="prev" title="做数据分析，一个不断上演的悲剧">
       <i class="fa fa-chevron-left"></i> 做数据分析，一个不断上演的悲剧
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/05/29/%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9%E4%B8%8E%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96/" rel="next" title="特征选择与特征提取">
+      特征选择与特征提取 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -533,7 +536,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">48</span>
+          <span class="site-state-item-count">50</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -615,7 +618,7 @@
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -625,13 +628,13 @@
       <i class="fa fa-chart-area"></i>
     </span>
       <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">200k</span>
+    <span title="站点总字数">208k</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span class="post-meta-item-text">站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:02</span>
+    <span title="站点阅读时长">3:10</span>
 </div><!-- ����ҳ�ײ�������վ����ʱ�� -->
 <span id="timeDate">��������...</span><span id="times">����ʱ����...</span>
 <script>
